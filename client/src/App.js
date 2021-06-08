@@ -1,8 +1,12 @@
+import React from 'react'
 
+import ProductCard from './components/ProductCards/ProductCards'
 
 function App() {
   return (
-    <div>Hello world!</div>
+    <div>
+      <ProductCard></ProductCard>
+    </div>
   );
 }
 

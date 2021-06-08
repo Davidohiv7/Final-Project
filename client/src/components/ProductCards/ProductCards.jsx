@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import useStyles from './ProductsCardsStyles'
-import { Card, CardMedia, Typography, CardContent, Box } from '@material-ui/core';
-import StarIcon from '@material-ui/icons/Star';
+import { Card, CardMedia, Typography, CardContent, Box, Button } from '@material-ui/core';
+import {FavoriteBorderIcon, ShoppingCartOutlinedIcon, StarIcon} from '@material-ui/icons';
+
 
 function ProductCards() {
 
     const classes = useStyles();
 
     const [scoreArray, setScoreArray] = useState([]);
+    const [quantity, setQuantity] = useState(1);
 
     const productExample = {
         name: 'Pansito',
@@ -40,9 +42,35 @@ function ProductCards() {
                 <Typography align='center' variant="h6" color='secondary' >{productExample.name}</Typography>
                 <Box display="flex" justifyContent="center">
                     {
-                        scoreArray.map(() => <StarIcon color='inherit' />) 
+                        scoreArray.map(() => <StarIcon color='secondary' />) 
                     }
                 </Box>
+                <Typography align ='center' variant='body1' color='secondary'>Price: ${productExample.price}.00</Typography>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<FavoriteBorderIcon />}
+                  >
+                    Save
+                  </Button>
+
+                 <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<ShoppingCartOutlinedIcon />}
+                  >
+                    Save
+                  </Button>
+
+                  <TextField
+                          id="outlined-number"
+                          type="number"
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          variant="outlined"
+                        />
+
             </CardContent>
         </Card>
     );

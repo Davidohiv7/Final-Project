@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     },
     price: {
-      type: DataTypes.FLOAT(8, 2),
+      type: DataTypes.DECIMAL(8, 2),
       allowNull: false
     },
     stock: {
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     score: {
-      type: DataTypes.FLOAT(2, 1),
+      type: DataTypes.DECIMAL(2, 1),
       allowNull: true
     },
     createdAt: {

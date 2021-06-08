@@ -18,7 +18,7 @@ module.exports = {
         allowNull: true
       },
       price: {
-        type: Sequelize.FLOAT(8, 2),
+        type: Sequelize.DECIMAL(8, 2),
         allowNull: false
       },
       stock: {
@@ -26,7 +26,7 @@ module.exports = {
         allowNull: false
       },
       score: {
-        type: Sequelize.FLOAT(2, 1),
+        type: Sequelize.DECIMAL(2, 1),
         allowNull: true
       },
       createdAt: {
@@ -183,7 +183,7 @@ module.exports = {
         allowNull: false
       },
       total: {
-        type: Sequelize.FLOAT(10, 2)
+        type: Sequelize.DECIMAL(10, 2)
       }
     })
 
@@ -215,7 +215,7 @@ module.exports = {
         allowNull: false
       },
       subtotal: {
-        type: Sequelize.FLOAT(10, 2)
+        type: Sequelize.DECIMAL(10, 2)
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -252,7 +252,7 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       score: {
-        type: Sequelize.FLOAT(2, 1)
+        type: Sequelize.DECIMAL(2, 1)
       },
       createdAt: {
         type: Sequelize.DATE,

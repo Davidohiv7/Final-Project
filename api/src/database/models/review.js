@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
     },
     score: {
-      type: DataTypes.FLOAT(2, 1)
+      type: DataTypes.DECIMAL(2, 1)
     },
     createdAt: {
       type: DataTypes.DATE,

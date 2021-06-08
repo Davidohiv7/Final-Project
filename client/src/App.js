@@ -1,8 +1,9 @@
-
+import React from 'react';
+import Catalogue from './components/Catalogue/Catalogue'
 
 function App() {
   return (
-    <div>Hello world!</div>
+    <Catalogue/>
   );
 }
 

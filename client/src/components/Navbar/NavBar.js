@@ -5,7 +5,7 @@ import useStyles from './NavBarStyles';
 import { Link } from 'react-router-dom'
 
 export default function NavBar() {
-  const classes = useStyles();
+  let classes = useStyles();
 
   return (
     <div className={classes.root}>

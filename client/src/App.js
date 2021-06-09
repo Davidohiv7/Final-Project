@@ -1,11 +1,22 @@
 import React from 'react';
-import NavBar from './components/Navbar/NavBar'
+import NavBar from './Views/NavBar/NavBar'
+import Home from './Views/Home/Home'
+
+import { Route } from 'react-router-dom';
 
 function App() {
   return (
     <div>
-      <NavBar/>
-      Hello world!
+      <Route
+        path='/'
+        render={() => <NavBar/>}
+      />
+
+      <Route
+        exact path='/'
+        render={() => <Home/>}
+      />
+
     </div>
   );
 }

@@ -11,21 +11,25 @@ export default function NavBar() {
     <div className={classes.root}>
       <AppBar position="static" color="primary">
         <Toolbar>
-            <Link to="/" className={classes.link}>
-                < Eco className = {
-                    classes.logo
-                }
-                />
-                <Typography variant="h3" className={classes.title}>
-                    Onion
-                </Typography>
-            </Link>
+          <Link to="/" className={classes.link}>
+              < Eco className = {
+                  classes.logo
+              }
+              />
+            <Typography variant="h3" className={classes.title}>
+                Onion
+            </Typography>
+          </Link>
+          <div className={classes.div}>
             <Link to="/cart">
                 <Button className={classes.button}> 
                     <ShoppingCart/>
                 </Button>
             </Link>
-            <Button className={classes.button}>Login</Button>
+            <Link to="/login">
+              <Button className={classes.button}>Login/Register</Button>
+            </Link>
+          </div>
         </Toolbar>
       </AppBar>
     </div>

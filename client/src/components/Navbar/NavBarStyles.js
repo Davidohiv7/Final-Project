@@ -21,8 +21,12 @@ const useStyles = makeStyles((theme) => ({
     link: {
         textDecoration: "none",
         color: "white",
-        flexGrow: 1,
-    }
+    },
+    div: {
+        position: "absolute;right:0;top:0",
+        marginTop: theme.spacing(2),
+        marginRight: theme.spacing(1),
+    },
 }));
 
 export default useStyles;

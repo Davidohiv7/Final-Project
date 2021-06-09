@@ -111,6 +111,7 @@ export default function ProductCards() {
 //Custom styles
 const useStyles = makeStyles({
     body: {
+      boxShadow: '1px 1px 8px -1px rgba(0,0,0,0.6)',
       width: 220,
       height: 300,
       backgroundColor: '#CE1212',

@@ -15,18 +15,23 @@ const useStyles = makeStyles((theme) => ({
     },
     catalogueMainContainer: {
         backgroundColor: theme.palette.secondary.main,
+        boxShadow: '1px 1px 15px -1px rgba(0,0,0,0.6)',
         width: '70%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         height: 'fit-content',
         padding: '15px',
+        borderRadius: '10px',
     },
     searchSortContainer: {
       display: 'flex',  
       justifyContent: 'space-between',
       alignItems: 'center',
-      width: '90%',
+      width: '98%',
+      borderRadius: '10px',
+      padding: '5px',
+      marginBottom: '24px',
     },
     search: {
       position: 'relative',
@@ -36,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
       borderRadius: theme.shape.borderRadius,
       backgroundColor: theme.palette.common.white,
       '&:hover': {
-        backgroundColor: fade(theme.palette.common.white, 0.25),
+        backgroundColor: fade(theme.palette.common.white),
       },
       marginLeft: 0,
       width: '100%',
@@ -69,7 +74,11 @@ const useStyles = makeStyles((theme) => ({
     },
     sortForm: {
       margin: theme.spacing(1),
+      marginTop: '0px',
       width: '200px'
+    },
+    select: {
+      fontSize: '12px',
     },
     gridContainer: {
       display: 'flex',
@@ -88,10 +97,12 @@ function SortSelect(props) {
             <InputLabel id='sortLabel'>Ordenar por...</InputLabel>
             <Select
                 labelId='sortLabel'
+                className={classes.select}
                 value={value}
                 onChange={handleChange}
             >
-                <MenuItem value={0}>Predeterminado</MenuItem>
+                <MenuItem value={null}>-</MenuItem>
+                <MenuItem value={0}>A-Z</MenuItem>
                 <MenuItem value={1}>Mayor Precio</MenuItem>
                 <MenuItem value={2}>Menor Precio</MenuItem>
             </Select>
@@ -101,7 +112,7 @@ function SortSelect(props) {
 
 
 export function Catalogue({ products, getAllProducts }) {
-    const [sort, setSort] = useState(0);
+    const [sort, setSort] = useState();
     
     const classes = useStyles();
     

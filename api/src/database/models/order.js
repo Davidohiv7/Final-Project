@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     total: {
-      type: DataTypes.FLOAT(10, 2)
+      type: DataTypes.DECIMAL(10, 2)
     }
   }, { tableName: 'order' })
 

@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     subtotal: {
-      type: DataTypes.FLOAT(10, 2)
+      type: DataTypes.DECIMAL(10, 2)
     },
     createdAt: {
       type: DataTypes.DATE,

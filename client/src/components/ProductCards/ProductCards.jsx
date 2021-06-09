@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from "react-router-dom";
 
 import { makeStyles } from '@material-ui/core/styles';
 //Imports Material UI components:
@@ -11,31 +10,34 @@ import CardContent from '@material-ui/core/CardContent'
 import Box from '@material-ui/core/Box'
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
+import Modal from '@material-ui/core/Modal'
+import Fade from '@material-ui/core/Fade'
+import Backdrop from '@material-ui/core/Backdrop';
 //Imports Material UI icons:
 import { FavoriteBorder, ShoppingCartOutlined, Star } from '@material-ui/icons';
 
-//Custom functinos
-import { createArrayFromNumber, addToCart, addToFavorites } from '../../assets/utils/productCardFunctions'
-
+//Custom functions
+import { createArrayFromNumber, addToFavorites } from '../../assets/utils/productCardFunctions'
+//React components
+import ProductDetailsCard from '../ProductDetailsCard/ProductDetailsCard'
 
 
 
 export default function ProductCards() {
 
     const classes = useStyles();
-    let history = useHistory();
 
     const [scoreArray, setScoreArray] = useState([]);
-    const [quantity, setQuantity] = useState(1);
+    const [modalState, setModalState] = useState(false);
 
     //Hardcoded product data
     const product = {
         id: '1234jhgABC',
         name: 'Pan',
-        image: 'https://assets.bonappetit.com/photos/5f84743360f032defe1f5376/16:9/w_2560%2Cc_limit/Pullman-Loaf-Lede-new.jpg',
+        image: 'https://ep01.epimg.net/elpais/imagenes/2018/02/22/buenavida/1519317833_625490_1519382023_noticia_normal.jpg',
         score: 5,
         price: 5,
+        description: 'Lorem ipsum dolor sit amet consectetur adipiscing, elit interdum congue aptent nulla mus nullam, convallis in luctus taciti curae. Turpis nostra aliquam ut fringilla fusce non enim nullam, ',
     }
 
     useEffect(() => {
@@ -44,77 +46,76 @@ export default function ProductCards() {
     }, [])
 
 
-    function toDetails() {
-        history.push(`/product/${product.id}`)
-    }
-
     return (
-        <Card className={classes.body}>
-            <IconButton 
-                color="primary" 
-                aria-label="upload picture" 
-                component="span" 
-                className={classes.favButton}
-                onClick={() => addToFavorites(product)}
-            >
-                <FavoriteBorder/>
-            </IconButton>
-            <CardActionArea onClick={() => toDetails()}>
-                <CardMedia
-                    className={classes.image}
-                    title={product.name}
-                    image={product.image}
-                />
-                <CardContent className={classes.cardContent}>
-                    <Typography align='center' variant="h6" color='secondary' >{product.name}</Typography>
-                    <Box display="flex" justifyContent="center">
-                        {
-                            scoreArray.map(number => <Star key={number} color='secondary' />) 
-                        }
-                    </Box>
-                    <Typography align ='center' variant='body1' color='secondary'>Price: ${product.price}.00</Typography>
-                </CardContent>
-            </CardActionArea>
-            
-            <Box>
-                <Box display="flex" justifyContent="center" alignItems="center" >
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        startIcon={<ShoppingCartOutlined/>}
-                        onClick={() => addToCart(product, quantity, setQuantity)}
-                    >
-                        add
-                    </Button>
-                    <TextField
-                        size='small'
-                        value={quantity}
-                        onChange={e => setQuantity(Number(e.target.value))}
-                        className={classes.quantityInput}
-                        type="number"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        InputProps={{
-                            inputProps: { 
-                                max: 99, min: 1
-                            }
-                        }}
-                        variant="outlined"
+        <Box>
+            <Card className={classes.body}>
+                <IconButton 
+                    color="primary" 
+                    aria-label="upload picture" 
+                    component="span" 
+                    className={classes.favButton}
+                    onClick={() => addToFavorites(product)}
+                >
+                    <FavoriteBorder/>
+                </IconButton>
+                <CardActionArea onClick={() => setModalState(true)}>
+                    <CardMedia
+                        className={classes.image}
+                        title={product.name}
+                        image={product.image}
                     />
-                </Box>
-            </Box>
-        </Card>
+                    <CardContent className={classes.cardContent}>
+                        <Typography align='center' variant="h6" color='secondary' >{product.name}</Typography>
+                        <Box display="flex" justifyContent="center">
+                            {
+                                scoreArray.map(number => <Star key={number} color='secondary' />) 
+                            }
+                        </Box>
+                        <Box display="flex" justifyContent="center" alignItems="center" >
+                            <Typography align ='center' variant='body1' color='secondary'>${product.price}.00 EA</Typography>
+                        </Box>
+                    </CardContent>
+                </CardActionArea>
+                
+                    <Box display="flex" justifyContent="center" alignItems="center" >
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            startIcon={<ShoppingCartOutlined/>}
+                            onClick={() => setModalState(true)}
+                        >
+                            add to cart
+                        </Button>
+                    </Box>
+            </Card>
+            <Modal
+                aria-labelledby="Product details"
+                aria-describedby="Product details"
+                className={classes.modal}
+                open={modalState}
+                onClose={() => setModalState(false)}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                    timeout: 500,
+                }}
+            >
+                <Fade in={modalState}>
+                    <ProductDetailsCard scoreArray={scoreArray} product={product}></ProductDetailsCard>
+                </Fade>
+            </Modal>
+        </Box>
+        
     );
 }
 
 //Custom styles
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     body: {
       width: 220,
       height: 300,
-      backgroundColor: '#CE1212',
-      borderRadius: 15,
+      backgroundColor: theme.palette.primary.main,
+      borderRadius: theme.shape.borderRadius,
     },
     image: {
       height: 150,
@@ -125,11 +126,16 @@ const useStyles = makeStyles({
     quantityInput: {
       width: 65,
       borderRadius: 5,
-      backgroundColor: "white",
+      backgroundColor: theme.palette.common.white,
     },
     favButton: {
       position: 'absolute',
       zIndex: 2,
       transform: 'translate(170px, 0px);'
-    }
-  });
+    },
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+    }));

@@ -7,7 +7,6 @@ import { connect } from "react-redux";
 import { getAllProducts } from '../../actions/actions'
 import ProductCards from '../ProductCards/ProductCards.jsx'
 
-
 // Styles
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -167,6 +166,7 @@ export function Catalogue({ products, getAllProducts }) {
             <div>
               {/* <Pagination /> */}
             </div>
+
         </Paper>
     )
 };

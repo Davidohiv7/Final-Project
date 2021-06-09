@@ -27,7 +27,7 @@ function ProductCards() {
     const [quantity, setQuantity] = useState(1);
 
     //Hardcoded product data
-    const productExample = {
+    const product = {
         id: '1234jhgABC',
         name: 'Pan',
         image: 'https://assets.bonappetit.com/photos/5f84743360f032defe1f5376/16:9/w_2560%2Cc_limit/Pullman-Loaf-Lede-new.jpg',
@@ -36,13 +36,13 @@ function ProductCards() {
     }
 
     useEffect(() => {
-        const newScoreArray = createArrayFromNumber(productExample.score)
+        const newScoreArray = createArrayFromNumber(product.score)
         setScoreArray(newScoreArray)
     }, [])
 
 
     function toDetails() {
-        history.push(`/product/${productExample.id}`)
+        history.push(`/product/${product.id}`)
     }
 
     return (
@@ -52,24 +52,24 @@ function ProductCards() {
                 aria-label="upload picture" 
                 component="span" 
                 className={classes.favButton}
-                onClick={() => addToFavorites(productExample)}
+                onClick={() => addToFavorites(product)}
             >
                 <FavoriteBorder/>
             </IconButton>
             <CardActionArea onClick={() => toDetails()}>
                 <CardMedia
                     className={classes.image}
-                    title={productExample.name}
-                    image={productExample.image}
+                    title={product.name}
+                    image={product.image}
                 />
                 <CardContent className={classes.cardContent}>
-                    <Typography align='center' variant="h6" color='secondary' >{productExample.name}</Typography>
+                    <Typography align='center' variant="h6" color='secondary' >{product.name}</Typography>
                     <Box display="flex" justifyContent="center">
                         {
                             scoreArray.map(number => <Star key={number} color='secondary' />) 
                         }
                     </Box>
-                    <Typography align ='center' variant='body1' color='secondary'>Price: ${productExample.price}.00</Typography>
+                    <Typography align ='center' variant='body1' color='secondary'>Price: ${product.price}.00</Typography>
                 </CardContent>
             </CardActionArea>
             
@@ -79,7 +79,7 @@ function ProductCards() {
                         variant="contained"
                         color="primary"
                         startIcon={<ShoppingCartOutlined/>}
-                        onClick={() => addToCart(productExample, quantity, setQuantity)}
+                        onClick={() => addToCart(product, quantity, setQuantity)}
                     >
                         add
                     </Button>

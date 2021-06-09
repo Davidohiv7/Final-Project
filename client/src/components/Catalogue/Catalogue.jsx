@@ -5,6 +5,7 @@ import { Grid, Paper, MenuItem, InputLabel, InputBase, FormControl, Select } fro
 import SearchIcon from '@material-ui/icons/Search';
 import { connect } from "react-redux";
 import { getAllProducts } from '../../actions/actions'
+import ProductCards from '../ProductCards/ProductCards.jsx'
 
 
 // Styles
@@ -13,8 +14,13 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
     },
     catalogueMainContainer: {
-        width: '60%',
+        backgroundColor: theme.palette.secondary.main,
+        width: '70%',
         display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        height: 'fit-content',
+        padding: '15px',
     },
     searchSortContainer: {
       display: 'flex',  
@@ -28,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
       alignItems: 'center',
       height: '100%',
       borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
+      backgroundColor: theme.palette.common.white,
       '&:hover': {
         backgroundColor: fade(theme.palette.common.white, 0.25),
       },
@@ -63,7 +69,14 @@ const useStyles = makeStyles((theme) => ({
     },
     sortForm: {
       margin: theme.spacing(1),
-      minWidth: 150
+      width: '200px'
+    },
+    gridContainer: {
+      display: 'flex',
+      justifyContent: 'space-evenly',
+    },
+    productCard: {
+      margin: '10px',
     }
   }));
 
@@ -115,6 +128,13 @@ export function Catalogue({ products, getAllProducts }) {
     };
 
 
+
+    //Hardcoded product number
+    let productsHard = ['1', '2', '3', '4', '5', '6', '7', '8'];
+
+
+
+
     return (
         <Paper className={classes.catalogueMainContainer}>
             <div className={classes.searchSortContainer}> 
@@ -134,8 +154,15 @@ export function Catalogue({ products, getAllProducts }) {
                 </div>
                 <SortSelect value={sort} handleChange={handleSortChange}/>
             </div>
-            <Grid>
-                        
+            <Grid container spacing={1} className={classes.gridContainer}>
+                {productsHard.map(product => {
+                    return (
+                      <Grid item> 
+                        <ProductCards className={classes.productCard} />
+                      </Grid>
+                    )
+                } )}
+               
             </Grid>
             <div>
               {/* <Pagination /> */}

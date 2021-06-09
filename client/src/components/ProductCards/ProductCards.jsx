@@ -18,7 +18,10 @@ import { FavoriteBorder, ShoppingCartOutlined, Star } from '@material-ui/icons';
 //Custom functinos
 import { createArrayFromNumber, addToCart, addToFavorites } from '../../assets/utils/productCardFunctions'
 
-function ProductCards() {
+
+
+
+export default function ProductCards() {
 
     const classes = useStyles();
     let history = useHistory();
@@ -130,7 +133,3 @@ const useStyles = makeStyles({
       transform: 'translate(170px, 0px);'
     }
   });
-
-
-
-export default ProductCards;

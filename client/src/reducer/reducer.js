@@ -1,7 +1,7 @@
 import {GET_PRODUCTS} from '../actions/actions'
 
 const initialState = {
-    products: {},
+    products: [],
 };
 
 const reducer = (state = initialState, action) => {

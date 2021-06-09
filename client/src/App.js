@@ -1,12 +1,14 @@
 import React from 'react';
 import NavBar from './Views/NavBar/NavBar'
-import Home from './Views/Home/Home'
+import Home from './Views/Home/Home.jsx'
+import { ThemeProvider } from '@material-ui/core/styles'
+import theme from './themeConfig'
 
 import { Route } from 'react-router-dom';
 
-function App() {
+export default function App() {
   return (
-    <div>
+    <ThemeProvider theme = {theme}>
       <Route
         path='/'
         render={() => <NavBar/>}
@@ -17,8 +19,6 @@ function App() {
         render={() => <Home/>}
       />
 
-    </div>
-  );
+    </ThemeProvider>
+  )
 }
-
-export default App;

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from "react-router-dom";
 
 import { makeStyles } from '@material-ui/core/styles';
 //Imports Material UI components:
@@ -15,35 +16,45 @@ import TextField from '@material-ui/core/TextField'
 import { FavoriteBorder, ShoppingCartOutlined, Star } from '@material-ui/icons';
 
 //Custom functinos
-import { createArrayFromNumber } from '../../assets/utils/productCardFunctions'
+import { createArrayFromNumber, addToCart, addToFavorites } from '../../assets/utils/productCardFunctions'
 
 function ProductCards() {
 
     const classes = useStyles();
+    let history = useHistory();
 
     const [scoreArray, setScoreArray] = useState([]);
     const [quantity, setQuantity] = useState(1);
 
     //Hardcoded product data
     const productExample = {
+        id: '1234jhgABC',
         name: 'Pan',
         image: 'https://assets.bonappetit.com/photos/5f84743360f032defe1f5376/16:9/w_2560%2Cc_limit/Pullman-Loaf-Lede-new.jpg',
         score: 5,
         price: 5,
     }
 
-    
-
     useEffect(() => {
         const newScoreArray = createArrayFromNumber(productExample.score)
         setScoreArray(newScoreArray)
     }, [])
 
+
+    function toDetails() {
+        history.push(`/product/${productExample.id}`)
+    }
+
     return (
         <Card className={classes.body}>
-            
-            <CardActionArea>
-                <IconButton color="primary" aria-label="upload picture" component="span" className={classes.favButton}>
+            <CardActionArea onClick={() => toDetails()}>
+                <IconButton 
+                color="primary" 
+                aria-label="upload picture" 
+                component="span" 
+                className={classes.favButton}
+                onClick={() => addToFavorites(productExample)}
+                >
                     <FavoriteBorder/>
                 </IconButton>
                 <CardMedia
@@ -55,7 +66,7 @@ function ProductCards() {
                     <Typography align='center' variant="h6" color='secondary' >{productExample.name}</Typography>
                     <Box display="flex" justifyContent="center">
                         {
-                            scoreArray.map(() => <Star color='secondary' />) 
+                            scoreArray.map(number => <Star key={number} color='secondary' />) 
                         }
                     </Box>
                     <Typography align ='center' variant='body1' color='secondary'>Price: ${productExample.price}.00</Typography>
@@ -63,11 +74,12 @@ function ProductCards() {
             </CardActionArea>
             
             <Box>
-                <Box display="flex" justifyContent="center" alignItems="center">
+                <Box display="flex" justifyContent="center" alignItems="center" >
                     <Button
                         variant="contained"
                         color="primary"
                         startIcon={<ShoppingCartOutlined/>}
+                        onClick={() => addToCart(productExample, quantity, setQuantity)}
                     >
                         add
                     </Button>

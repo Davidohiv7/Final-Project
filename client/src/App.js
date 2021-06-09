@@ -2,7 +2,7 @@ import React from 'react'
 
 import ProductCard from './components/ProductCards/ProductCards'
 
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+import { ThemeProvider } from '@material-ui/core/styles'
 
 import theme from './themeConfig.js';
 

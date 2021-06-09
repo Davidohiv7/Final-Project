@@ -1,13 +1,24 @@
 import React from 'react';
-import NavBar from './components/Navbar/NavBar'
+import NavBar from './Views/NavBar/NavBar'
+import Home from './Views/Home/Home.jsx'
+import { ThemeProvider } from '@material-ui/core/styles'
+import theme from './themeConfig'
 
-function App() {
+import { Route } from 'react-router-dom';
+
+export default function App() {
   return (
-    <div>
-      <NavBar/>
-      Hello world!
-    </div>
-  );
-}
+    <ThemeProvider theme = {theme}>
+      <Route
+        path='/'
+        render={() => <NavBar/>}
+      />
 
-export default App;
+      <Route
+        exact path='/'
+        render={() => <Home/>}
+      />
+
+    </ThemeProvider>
+  )
+}

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { Grid, Paper, MenuItem, InputLabel, InputBase, FormControl, Select } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { connect } from "react-redux";
-import { getAllProducts } from '../../actions/actions'
+import { getAllProducts, changeSort } from '../../actions/actions'
 import ProductCards from '../ProductCards/ProductCards.jsx'
 
 
@@ -88,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-function SortSelect({ dispatch, handleChange, value }) {
+function SortSelect({ handleChange, value }) {
     const classes = useStyles();
 
     return (
@@ -101,23 +101,22 @@ function SortSelect({ dispatch, handleChange, value }) {
                 onChange={handleChange}
                 label='Ordenar por...'
             >
-                <MenuItem value={0}>A-Z</MenuItem>
-                <MenuItem value={1}>Mayor Precio</MenuItem>
-                <MenuItem value={2}>Menor Precio</MenuItem>
+                <MenuItem value={''}>-</MenuItem>
+                <MenuItem value={'0'}>A-Z</MenuItem>
+                <MenuItem value={'1'}>Mayor Precio</MenuItem>
+                <MenuItem value={'2'}>Menor Precio</MenuItem>
             </Select>
         </FormControl>
     );
 }
 
 
-export function Catalogue({ products, getAllProducts }) {
-    const [sort, setSort] = useState('');
-    
+export function Catalogue({ sortValue, products, getAllProducts, changeSort }) {
     const classes = useStyles();
     
     //
     const handleSortChange = event => {
-      setSort(event.target.value);
+      changeSort(event.target.value);
     };
 
     //Get All Products when loading the page
@@ -132,11 +131,23 @@ export function Catalogue({ products, getAllProducts }) {
     useEffect(() => {
         chargeProducts();
     }, [products]);
+
+    //Sort products on store change
+    function sortProducts() {
+      
+    };
+
+    useEffect(() => {
+      sortProducts();
+      console.log(sortValue);
+    }, [sortValue])
     
     //Get the products from the store and charge them in the page
     function chargeProducts() {
 
     };
+
+    
 
 
 
@@ -163,7 +174,7 @@ export function Catalogue({ products, getAllProducts }) {
                     />
                 
                 </div>
-                <SortSelect value={sort} handleChange={handleSortChange}/>
+                <SortSelect value={sortValue} handleChange={handleSortChange}/>
             </div>
             <Grid container spacing={1} className={classes.gridContainer}>
                 {productsHard.map(product => {
@@ -185,11 +196,13 @@ export function Catalogue({ products, getAllProducts }) {
 function mapStateToProps(state) {
     return {
         products: state.products,
+        sortValue: state.sortValue
     };
 }
 function mapDispatchToProps(dispatch) {
     return {
         getAllProducts: () =>  dispatch(getAllProducts()),
+        changeSort: value => dispatch(changeSort(value))
     };
 }
 

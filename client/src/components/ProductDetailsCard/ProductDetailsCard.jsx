@@ -10,6 +10,9 @@ import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 //Imports Material UI icons:
 import { Star, ShoppingCartOutlined, FavoriteBorder } from '@material-ui/icons';
 //Custom functions
@@ -20,6 +23,11 @@ export default function ProductDetailsCard({ product, scoreArray }) {
     const classes = useStyles();
 
     const [quantity, setQuantity] = useState(1);
+    const [selectedTab, setSelectedTab] = useState(0);
+
+    const handleChange = (event, newValue) => {
+      setSelectedTab(newValue);
+    };
 
     return (
         <Paper className={classes.root} elevation={24} variant='elevation' >
@@ -45,7 +53,15 @@ export default function ProductDetailsCard({ product, scoreArray }) {
                             </Box>
                         </CardContent>
 
-                            
+                        <CardContent>
+                           <Tabs value={selectedTab} onChange={handleChange} >
+                               <Tab label="Description"  />
+                               <Tab label="Reviews"  />
+                           </Tabs>
+                           {selectedTab === 0 && <Typography>{product.description}</Typography>}
+                           {selectedTab === 1 && <Typography>Que rico y saludable esta ese pan me muero dame 10</Typography>}
+                    
+                        </CardContent>
 
                         <Button
                             variant="outlined"

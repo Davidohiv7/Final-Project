@@ -10,17 +10,16 @@ export function addToCart(product, quantity, setQuantity) {
     const cartString = localStorage.getItem('cart')
     let newCart
     if(!cartString) {
-        newCart = [{id: product.id, name: product.name, quantity }]
+        newCart = [{id: product.id, name: product.name, quantity, price: product.price}]
     }
     if(cartString) {
         newCart = JSON.parse(cartString)
         const currentProductIndex = newCart.findIndex(p => p.id === product.id)
         if(currentProductIndex !== -1) {
-            console.log(quantity)
             newCart[currentProductIndex].quantity = newCart[currentProductIndex].quantity + quantity
         }
         if(currentProductIndex === -1) {
-            newCart.push({id: product.id, name: product.name, quantity })
+            newCart.push({id: product.id, name: product.name, quantity, price: product.price })
         }
     }
     const cartData = JSON.stringify(newCart)

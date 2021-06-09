@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
+//Import components
+import ProductDetailsTab from './ProductDetailsTab/ProductDetailsTab.jsx'
 //Imports Material UI components:
 import Paper from '@material-ui/core/Paper'
 import Card from '@material-ui/core/Card'
@@ -10,24 +12,18 @@ import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import IconButton from '@material-ui/core/IconButton'
+import Divider from '@material-ui/core/Divider'
 //Imports Material UI icons:
-import { Star, ShoppingCartOutlined, FavoriteBorder } from '@material-ui/icons';
+import { Star, ShoppingCartOutlined, FavoriteBorder, Close } from '@material-ui/icons';
 //Custom functions
-import { addToCart } from '../../assets/utils/productCardFunctions'
+import { addToCart, addToFavorites } from '../../assets/utils/productCardFunctions'
 
-export default function ProductDetailsCard({ product, scoreArray }) {
+export default function ProductDetailsCard({ product, scoreArray, setModalState }) {
 
     const classes = useStyles();
 
     const [quantity, setQuantity] = useState(1);
-    const [selectedTab, setSelectedTab] = useState(0);
-
-    const handleChange = (event, newValue) => {
-      setSelectedTab(newValue);
-    };
 
     return (
         <Paper className={classes.root} elevation={24} variant='elevation' >
@@ -44,57 +40,75 @@ export default function ProductDetailsCard({ product, scoreArray }) {
                 <Box className={classes.section}>
                     <Card className={classes.card}>
                         <CardContent>
-                            <Typography variant="h3" color="initial">{product.name}</Typography>
-                            <Typography variant="h5" color="initial" display='inline'>${product.price}.00 EA</Typography>
-                            <Box display="flex" justifyContent="center" className={classes.scoreContainer}>
-                                {
-                                    scoreArray.map(number => <Star key={number} color='white' />) 
-                                }
+                            <Typography gutterBottom={false} variant="h3" color="initial">{product.name}</Typography>
+                            <Box display="flex" flexDirection='row' justifyContent="flex-start" alignItems="center">
+                                <Typography variant="h5" color="initial" display='inline'>${product.price}.00 EA</Typography>
+                                <Box display="flex" justifyContent="center" className={classes.scoreContainer}>
+                                    {
+                                        scoreArray.map(number => <Star key={number} color='white' />) 
+                                    }
+                                </Box>
                             </Box>
                         </CardContent>
+                        
+                        <Divider/>
 
+                        <ProductDetailsTab product={product}/>
+                        
+                        <Divider/>
                         <CardContent>
-                           <Tabs value={selectedTab} onChange={handleChange} >
-                               <Tab label="Description"  />
-                               <Tab label="Reviews"  />
-                           </Tabs>
-                           {selectedTab === 0 && <Typography>{product.description}</Typography>}
-                           {selectedTab === 1 && <Typography>Que rico y saludable esta ese pan me muero dame 10</Typography>}
-                    
-                        </CardContent>
+                            <Box display="flex" flexDirection='row' justifyContent="center" alignItems="center" >
+                                <Box display="flex" flexDirection='column' justifyContent="center" alignItems="center" >
+                                    <Button
+                                        className={classes.favButton}
+                                        variant="outlined"
+                                        color="initial"
+                                        startIcon={<FavoriteBorder/>}
+                                        onClick={() => addToFavorites(product)}
+                                    >
+                                        favourites
+                                    </Button>
 
-                        <Button
-                            variant="outlined"
-                            color="initial"
-                            startIcon={<ShoppingCartOutlined/>}
-                            onClick={() => addToCart(product, quantity, setQuantity)}
+                                    <Button
+                                        variant="outlined"
+                                        color="initial"
+                                        startIcon={<ShoppingCartOutlined/>}
+                                        onClick={() => addToCart(product, quantity, setQuantity)}
+                                    >
+                                        add to cart
+                                    </Button>
+                                </Box>
+                                <Box className={classes.cartTotal} display="flex" flexDirection='column-reverse' justifyContent="center" alignItems="center" >
+                                    <TextField
+                                        size='small'
+                                        value={quantity}
+                                        onChange={e => setQuantity(Number(e.target.value))}
+                                        className={classes.quantityInput}
+                                        type="number"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        InputProps={{
+                                            inputProps: { 
+                                                max: 99, min: 1
+                                            }
+                                        }}
+                                        variant="outlined"
+                                    />
+                                    <Typography variant="h5" color="initial" display='inline'>${product.price*quantity}.00 EA</Typography>
+                                </Box>
+                            </Box>
+                        </CardContent>
+                        
+                        <IconButton 
+                            color="initial" 
+                            aria-label="close" 
+                            component="span" 
+                            className={classes.closeButton}
+                            onClick={() => setModalState(false)}
                         >
-                            add to cart
-                        </Button>
-                        <TextField
-                            size='small'
-                            value={quantity}
-                            onChange={e => setQuantity(Number(e.target.value))}
-                            className={classes.quantityInput}
-                            type="number"
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            InputProps={{
-                                inputProps: { 
-                                    max: 99, min: 1
-                                }
-                            }}
-                            variant="outlined"
-                        />
-                        <Button
-                            variant="outlined"
-                            color="initial"
-                            startIcon={<FavoriteBorder/>}
-                            onClick={() => addToCart(product, quantity, setQuantity)}
-                        >
-                            add to favourites
-                        </Button>
+                            <Close/>
+                        </IconButton>
                     </Card>
                 </Box>
             </Box>
@@ -120,7 +134,9 @@ const useStyles = makeStyles((theme) => ({
         width: '100%'
     },
     scoreContainer: {
-        width: 120
+        width: 120,
+        marginBottom: 6,
+        marginLeft: 65
     },
     card: {
         height: '100%',
@@ -133,4 +149,15 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 5,
         backgroundColor: theme.palette.common.white,
       },
+    closeButton: {
+        position: 'absolute',
+        zIndex: 5,
+        transform: 'translate(330px, -500px);'
+      },
+    cartTotal: {
+        marginLeft: 25,
+      },
+    favButton: {
+        width: 155,
+      }
     }));

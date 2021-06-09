@@ -75,18 +75,20 @@ export default function ProductCards() {
                             <Typography align ='center' variant='body1' color='secondary'>${product.price}.00 EA</Typography>
                         </Box>
                     </CardContent>
-                </CardActionArea>
-                
+
                     <Box display="flex" justifyContent="center" alignItems="center" >
                         <Button
-                            variant="contained"
-                            color="primary"
+                            variant="outlined"
+                            color="secondary"
                             startIcon={<ShoppingCartOutlined/>}
                             onClick={() => setModalState(true)}
                         >
                             add to cart
                         </Button>
                     </Box>
+
+                </CardActionArea>
+                
             </Card>
             <Modal
                 aria-labelledby="Product details"
@@ -101,7 +103,7 @@ export default function ProductCards() {
                 }}
             >
                 <Fade in={modalState}>
-                    <ProductDetailsCard scoreArray={scoreArray} product={product}></ProductDetailsCard>
+                    <ProductDetailsCard scoreArray={scoreArray} product={product} setModalState={setModalState}></ProductDetailsCard>
                 </Fade>
             </Modal>
         </Box>

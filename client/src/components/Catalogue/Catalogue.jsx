@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { Grid, Paper, MenuItem, InputLabel, InputBase, FormControl, Select } from '@material-ui/core';
+import { Pagination } from '@material-ui/lab';
 import SearchIcon from '@material-ui/icons/Search';
 import { connect } from "react-redux";
 import { getAllProducts, changeSort } from '../../actions/actions'
@@ -85,6 +86,12 @@ const useStyles = makeStyles((theme) => ({
     },
     productCard: {
       margin: '10px',
+    },
+    paginationContainer: {
+      display: 'flex',
+      justifyContent: 'center',
+      margin: '15px',
+      width: '100%'
     }
   }));
 
@@ -110,14 +117,33 @@ function SortSelect({ handleChange, value }) {
     );
 }
 
+function PaginationBar({ totalPages, index, handleChange }) {
+  return (
+    <>
+      <Pagination 
+        count={totalPages} 
+        page={index} 
+        onChange={handleChange} 
+        color='primary'
+        shape='rounded'
+      />
+    </>
+  );
+}
 
 export function Catalogue({ sortValue, products, getAllProducts, changeSort }) {
+    const [index, setIndex] = useState(1);
     const classes = useStyles();
     
     //
     const handleSortChange = event => {
       changeSort(event.target.value);
     };
+
+    const changeIndex = (event, value) => {
+      setIndex(value);
+      console.log(value);
+    }
 
     //Get All Products when loading the page
     useEffect(() => {
@@ -139,7 +165,6 @@ export function Catalogue({ sortValue, products, getAllProducts, changeSort }) {
 
     useEffect(() => {
       sortProducts();
-      console.log(sortValue);
     }, [sortValue])
     
     //Get the products from the store and charge them in the page
@@ -179,15 +204,20 @@ export function Catalogue({ sortValue, products, getAllProducts, changeSort }) {
             <Grid container spacing={1} className={classes.gridContainer}>
                 {productsHard.map(product => {
                     return (
-                      <Grid key={product.id} item> 
+                      <Grid key={product} item> 
                         <ProductCards className={classes.productCard} />
                       </Grid>
                     )
                 } )}
                
             </Grid>
-            <div>
-              {/* <Pagination /> */}
+            <div className={classes.paginationContainer}>
+              <PaginationBar 
+                className={classes.pagination} 
+                totalPages={5} 
+                index={index} 
+                handleChange={changeIndex}
+              />
             </div>
         </Paper>
     )

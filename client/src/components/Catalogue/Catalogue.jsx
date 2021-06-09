@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { Grid, Paper, MenuItem, InputLabel, InputBase, FormControl, Select } from '@material-ui/core';
-// import { Pagination } from '@material-ui/lab';
 import SearchIcon from '@material-ui/icons/Search';
 import { connect } from "react-redux";
 import { getAllProducts } from '../../actions/actions'
@@ -89,19 +88,19 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-function SortSelect(props) {
+function SortSelect({ dispatch, handleChange, value }) {
     const classes = useStyles();
-    const { handleChange, value } = props;
+
     return (
-        <FormControl fullWidth className={classes.sortForm}>
-            <InputLabel id='sortLabel'>Ordenar por...</InputLabel>
+        <FormControl variant='outlined' fullWidth className={classes.sortForm}>
+            <InputLabel className={classes.select} id='sortLabel'>Ordenar por...</InputLabel>
             <Select
                 labelId='sortLabel'
                 className={classes.select}
                 value={value}
                 onChange={handleChange}
+                label='Ordenar por...'
             >
-                <MenuItem value={null}>-</MenuItem>
                 <MenuItem value={0}>A-Z</MenuItem>
                 <MenuItem value={1}>Mayor Precio</MenuItem>
                 <MenuItem value={2}>Menor Precio</MenuItem>
@@ -112,7 +111,7 @@ function SortSelect(props) {
 
 
 export function Catalogue({ products, getAllProducts }) {
-    const [sort, setSort] = useState();
+    const [sort, setSort] = useState('');
     
     const classes = useStyles();
     
@@ -126,6 +125,7 @@ export function Catalogue({ products, getAllProducts }) {
         if(!products) {
             getAllProducts();
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     
     //Charge Products whenever the 'products' in store change
@@ -168,7 +168,7 @@ export function Catalogue({ products, getAllProducts }) {
             <Grid container spacing={1} className={classes.gridContainer}>
                 {productsHard.map(product => {
                     return (
-                      <Grid item> 
+                      <Grid key={product.id} item> 
                         <ProductCards className={classes.productCard} />
                       </Grid>
                     )

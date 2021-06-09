@@ -41,6 +41,7 @@ export default function ProductCards() {
     useEffect(() => {
         const newScoreArray = createArrayFromNumber(product.score)
         setScoreArray(newScoreArray)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 

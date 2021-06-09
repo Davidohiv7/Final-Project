@@ -47,16 +47,16 @@ function ProductCards() {
 
     return (
         <Card className={classes.body}>
-            <CardActionArea onClick={() => toDetails()}>
-                <IconButton 
+            <IconButton 
                 color="primary" 
                 aria-label="upload picture" 
                 component="span" 
                 className={classes.favButton}
                 onClick={() => addToFavorites(productExample)}
-                >
-                    <FavoriteBorder/>
-                </IconButton>
+            >
+                <FavoriteBorder/>
+            </IconButton>
+            <CardActionArea onClick={() => toDetails()}>
                 <CardMedia
                     className={classes.image}
                     title={productExample.name}
@@ -126,7 +126,8 @@ const useStyles = makeStyles({
     },
     favButton: {
       position: 'absolute',
-      right: 0,
+      zIndex: 2,
+      transform: 'translate(170px, 0px);'
     }
   });
 

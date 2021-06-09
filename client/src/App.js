@@ -6,12 +6,16 @@ import { ThemeProvider } from '@material-ui/core/styles'
 
 import theme from './themeConfig.js';
 
+import Box from '@material-ui/core/Box'
+
 function App() {
   return (
   	<ThemeProvider theme = {theme}>
-  	    <div>
-      		<ProductCard></ProductCard>
-    	</div>	
+  	    <Box display='flex'>
+      		<ProductCard/>
+			<ProductCard/>
+			<ProductCard/>
+    	</Box>	
   	</ThemeProvider>
   );
 }

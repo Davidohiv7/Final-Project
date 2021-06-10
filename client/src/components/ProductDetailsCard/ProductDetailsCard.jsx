@@ -40,7 +40,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                 <Box className={classes.section}>
                     <Card className={classes.card}>
                         <CardContent>
-                            <Typography gutterBottom={false} variant="h3" color="initial">{product.name}</Typography>
+                            <Typography gutterBottom={false} variant="h6" color="initial">{product.name}</Typography>
                             <Box display="flex" flexDirection='row' justifyContent="flex-start" alignItems="center">
                                 <Typography variant="h5" color="initial" display='inline'>${product.price}.00 EA</Typography>
                                 <Box display="flex" justifyContent="center" className={classes.scoreContainer}>

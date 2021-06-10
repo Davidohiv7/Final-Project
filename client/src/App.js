@@ -4,7 +4,7 @@ import NavBar from './Views/NavBar/NavBar'
 import Home from './Views/Home/Home.jsx'
 import { ThemeProvider } from '@material-ui/core/styles'
 import theme from './themeConfig';
-import Footer from "./components/Footer";
+import Footer from "./Views/Footer/Footer";
 import { Route } from 'react-router-dom';
 
 
@@ -21,7 +21,10 @@ export default function App() {
         render={() => <Home/>}
       />
 
-      <Footer />
+      <Route
+        path='/'
+        render={() => <Footer/>}
+      />
     </ThemeProvider>
   )
 }

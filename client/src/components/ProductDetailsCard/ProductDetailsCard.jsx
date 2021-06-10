@@ -40,9 +40,9 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                 <Box className={classes.section}>
                     <Card className={classes.card}>
                         <CardContent>
-                            <Typography gutterBottom={false} variant="h6" color="initial">{product.name}</Typography>
+                            <Typography className={classes.name} gutterBottom={false} variant="h6" color="initial">{product.name}</Typography>
                             <Box display="flex" flexDirection='row' justifyContent="flex-start" alignItems="center">
-                                <Typography variant="h5" color="initial" display='inline'>${product.price}.00 EA</Typography>
+                                <Typography variant="h5" color="initial" display='inline'>${product.price} EA</Typography>
                                 <Box display="flex" justifyContent="center" className={classes.scoreContainer}>
                                     {
                                         scoreArray.map(number => <Star key={number} color='white' />) 
@@ -95,7 +95,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                                         }}
                                         variant="outlined"
                                     />
-                                    <Typography variant="h5" color="initial" display='inline'>${product.price*quantity}.00 EA</Typography>
+                                    <Typography variant="h5" color="initial" display='inline'>${(product.price*quantity).toFixed(2)} EA</Typography>
                                 </Box>
                             </Box>
                         </CardContent>
@@ -143,6 +143,9 @@ const useStyles = makeStyles((theme) => ({
     },
     image: {
         height: '100%',
+    },
+    name: {
+        marginRight: 17,
     },
     quantityInput: {
         width: 65,

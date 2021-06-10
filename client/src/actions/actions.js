@@ -1,14 +1,21 @@
 import Axios from 'axios';
-
-export const GET_PRODUCTS = 'GetProducts';
-export const SET_SORT = 'SetSort';
+import { GET_ALL_PRODUCTS, GET_PRODUCTS, SET_SORT } from '../actions_types/actions_types'
 
 export function getAllProducts() {
     return (dispatch) => {
         return Axios.get("http://localhost:3001/products")
                 .then(res => res.data)
                 .then(res => {
-                    console.log(res.data)
+                   dispatch({type: GET_ALL_PRODUCTS, payload: res.data});
+                });
+    }
+}
+
+export function getProducts(obj) {
+    return (dispatch) => {
+        return Axios.get("http://localhost:3001/products", {params: obj})
+                .then(res => res.data)
+                .then(res => {
                    dispatch({type: GET_PRODUCTS, payload: res.data});
                 });
     }

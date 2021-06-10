@@ -1,7 +1,5 @@
-
-// React/Redux imports
 import React, { useEffect } from 'react';
-import { connect, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getAllProducts } from './../../actions/actions';
 
 // Material UI imports
@@ -18,11 +16,11 @@ import { Home as HomeIcon } from '@material-ui/icons'
 import useStyles from './styles';
 
 // Component imports
-import { Catalogue } from './../../components/Catalogue/Catalogue'
+import Catalogue from './../../components/Catalogue/Catalogue'
 //import FilterButton from '../../components/DropdownFilterButton/dropdownFilterButton'
 
 //------Home-----//
-function Home() {
+export default function Home() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -70,19 +68,3 @@ function Home() {
     </Container>
   );
 }
-
-function mapStateToProps(state) {
-  return {
-      // products: state.products,
-  };
-}
-function mapDispatchToProps(dispatch) {
-  return {
-      // getAllProducts: () =>  dispatch(getAllProducts()),
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Home);

@@ -1,5 +1,6 @@
 
 export const GET_PRODUCTS = 'GetProducts';
+export const SET_SORT = 'SetSort';
 
 export function getAllProducts() {
     // return (dispatch) => {
@@ -9,4 +10,11 @@ export function getAllProducts() {
     //                dispatch({type: GET_PRODUCTS, payload: res});
     //             });
     // }
+}
+
+export const changeSort = value => dispatch => {
+    return dispatch({
+        type: SET_SORT,
+        payload: value
+    })
 }

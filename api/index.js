@@ -1,6 +1,8 @@
+require('dotenv').config();
+
 const server = require('./src/app.js');
+const PORT = process.env.PORT || 3001;
 
-
-server.listen(3001, () => {
-    console.log('API connection established in port 3001'); // eslint-disable-line no-console
+server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 })

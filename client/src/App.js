@@ -1,10 +1,12 @@
+
 import React from 'react';
 import NavBar from './Views/NavBar/NavBar'
 import Home from './Views/Home/Home.jsx'
 import { ThemeProvider } from '@material-ui/core/styles'
-import theme from './themeConfig'
-
+import theme from './themeConfig';
+import Footer from "./components/Footer";
 import { Route } from 'react-router-dom';
+
 
 export default function App() {
   return (
@@ -19,6 +21,7 @@ export default function App() {
         render={() => <Home/>}
       />
 
+      <Footer />
     </ThemeProvider>
   )
 }

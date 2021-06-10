@@ -7,56 +7,31 @@ import { connect } from "react-redux";
 import {
         Grid, 
         Paper, 
-        Container, 
-        MenuList, 
-        MenuItem, 
-        ClickAwayListener, 
-        Button, 
-        Popper, 
-        Grow
+        Container,
       }
 from '@material-ui/core';
 import useStyles from './styles';
 
 // Component imports
 import { Catalogue } from './../../components/Catalogue/Catalogue'
+import FilterButton from './../../components/FilterButton/filterButton'
 
 
 
 //------Home-----//
 function Home() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
 
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
+  //this two const are just hardcoding the db, havent set it yet, but it is ready and seeded.
+  const erase = (name) => {
+    console.log(name)
   };
 
-  const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
-    setOpen(false);
-  };
-
-  function handleListKeyDown(event) {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      setOpen(false);
-    }
+  const testErase = {
+    arrayCategories: ["Veggies", "Fish", "Meat", "Fruits"],
+    other: erase,
   }
-
-  // return focus to the button when we transitioned from !open -> open
-  const prevOpen = React.useRef(open);
-  React.useEffect(() => {
-    if (prevOpen.current === true && open === false) {
-      anchorRef.current.focus();
-    }
-
-    prevOpen.current = open;
-  }, [open]);
-
+  
   //on the drop down Menu we should make a map of the categories. Nothing has been set for that.
 
   return (
@@ -68,34 +43,7 @@ function Home() {
         </Grid>
         <Grid item xs={2}>
           <Paper className={classes.filter} elevation={3}>
-            <Button
-              ref={anchorRef}
-              aria-controls={open ? 'menu-list-grow' : undefined}
-              aria-haspopup="true"
-              onClick={handleToggle}
-            >
-              Filter By Category
-            </Button>
-            <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
-              {({ TransitionProps, placement }) => (
-                <Grow
-                  {...TransitionProps}
-                  style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-                >
-                  <Paper>
-                    <ClickAwayListener onClickAway={handleClose}>
-                      <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                        <MenuItem onClick={handleClose}>Veggies</MenuItem>
-                        <MenuItem onClick={handleClose}>Fruits</MenuItem>
-                        <MenuItem onClick={handleClose}>Diary</MenuItem>
-                        <MenuItem onClick={handleClose}>Top Selection</MenuItem>
-                        <MenuItem onClick={handleClose}>Today's Deals</MenuItem>
-                      </MenuList>
-                    </ClickAwayListener>
-                  </Paper>
-                </Grow>
-              )}
-            </Popper>
+            <FilterButton props={testErase} title="Filter by Categories" />
           </Paper>
         </Grid>
         <Grid item xs={10}>

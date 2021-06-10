@@ -19,7 +19,13 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.primary.main,
         paddingBottom: theme.spacing(40),
         paddingTop: theme.spacing(3),
-    }
+    },
+    button: {
+        background: theme.palette.primary.dark,
+        variant: "contained",
+        color: "white",
+        borderRadius: 5,
+    },
 }));
 
 export default useStyles;

@@ -3,7 +3,7 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 import { Grid, Paper, MenuItem, InputLabel, InputBase, FormControl, Select } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import SearchIcon from '@material-ui/icons/Search';
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import { getAllProducts, changeSort } from '../../actions/actions'
 import ProductCards from '../ProductCards/ProductCards.jsx'
 
@@ -16,11 +16,11 @@ const useStyles = makeStyles((theme) => ({
     catalogueMainContainer: {
         backgroundColor: theme.palette.secondary.main,
         boxShadow: '1px 1px 15px -1px rgba(0,0,0,0.6)',
-        width: '70%',
+        width: '100%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        height: 'fit-content',
+        height: '100%',
         padding: '15px',
         borderRadius: '10px',
     },
@@ -133,16 +133,11 @@ function PaginationBar({ totalPages, index, handleChange }) {
   );
 }
 
+//Params catalogue function products, getAllProducts,
 // Catalogue
-export function Catalogue({ sortValue, products, getAllProducts, changeSort }) {
+export function Catalogue({ sortValue, changeSort }) {
     const classes = useStyles();
-
-
-    // Page index
-    const [index, setIndex] = useState(1);
-
-    // Saving the products from the store
-    const [productsInState, setProductsInState] = useState([]);
+    const { products, pages, nextPage, page } = useSelector((state) => ({ ...state }))
 
     // Setting the params for getAllProducts Action
     const [productParams, setProductParams] = useState({
@@ -152,54 +147,21 @@ export function Catalogue({ sortValue, products, getAllProducts, changeSort }) {
       order: 'ASC',
     });
 
-
-    //Get All Products when loading the page
-    // useEffect(() => {
-    //   getAllProducts(productParams.name, productParams.category, productParams.filter, productParams.order, index);
-
-    // }, [productParams.name, productParams.category, productParams.filter, productParams.order, index]);
-
-    //Charge Products whenever the 'products' in store change
-    useEffect(() => {
-        chargeProducts();
-    }, [products]);
-
-    //
-
-
-
-
-
     //Sort products on store change
-    function sortProducts() {
-      
-    };
+    function sortProducts() {};
 
     useEffect(() => {
       sortProducts();
     }, [sortValue])
     
     //Get the products from the store and charge them in the page
-    function chargeProducts() {
-      setProductsInState(products);
-    };
-
-    
-
-
     const handleSortChange = event => {
       changeSort(event.target.value);
     };
 
-    const changeIndex = (event, value) => {
-      setIndex(value);
-      console.log(value);
+    const handleChange = (event, value) => {
+      
     }
-
-
-    //
-    let productsHard = [1, 2, 3, 4, 5 ,6 ,7 ,8];
-
 
     return (
         <Paper className={classes.catalogueMainContainer}>
@@ -221,41 +183,26 @@ export function Catalogue({ sortValue, products, getAllProducts, changeSort }) {
                 <SortSelect value={sortValue} handleChange={handleSortChange}/>
             </div>
             <Grid container spacing={1} className={classes.gridContainer}>
-                {productsHard.map(product => {
+                {products && products.map(product => {
                     return (
-                      <Grid key={product} item> 
-                        <ProductCards className={classes.productCard} />
+                      <Grid key={product.id} item> 
+                        <ProductCards className={classes.productCard} product={product}/>
                       </Grid>
                     )
                 } )}
-
             </Grid>
             <div className={classes.paginationContainer}>
               <PaginationBar 
                 className={classes.pagination} 
-                totalPages={5} 
-                index={index} 
-                handleChange={changeIndex}
+                totalPages={pages} 
+                index={page} 
+                handleChange={handleChange}
               />
             </div>
         </Paper>
     )
 };
 
-function mapStateToProps(state) {
-    return {
-        products: state.products,
-        sortValue: state.sortValue
-    };
-}
-function mapDispatchToProps(dispatch) {
-    return {
-        getAllProducts: (name, category, filter, order, page) =>  dispatch(getAllProducts(name, category, filter, order, page)),
-        changeSort: value => dispatch(changeSort(value))
-    };
-}
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Catalogue);
+
+export default Catalogue;

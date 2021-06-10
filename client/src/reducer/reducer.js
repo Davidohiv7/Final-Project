@@ -1,22 +1,21 @@
-import { GET_PRODUCTS, SET_SORT } from '../actions/actions'
+import { GET_PRODUCTS } from '../actions/actions'
 
 const initialState = {
-    sortValue: '',
     products: [],
+    nextPage: '',
+    pages: '',
+    page: '',
 };
 
 const reducer = (state = initialState, action = {}) => {
     switch (action.type) {
         case GET_PRODUCTS: {
             return {
-                ...initialState,
-                products: action.payload,
-            }
-        }
-        case SET_SORT: {
-            return {
                 ...state,
-                sortValue: action.payload
+                products: action.payload.products,
+                nextPage: action.payload.nextPage ? action.payload.nextPage : '',
+                page: action.payload.pageNumber,
+                pages: action.payload.pages,
             }
         }
         default:

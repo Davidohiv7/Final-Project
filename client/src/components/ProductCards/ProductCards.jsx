@@ -23,22 +23,14 @@ import ProductDetailsCard from '../ProductDetailsCard/ProductDetailsCard'
 
 
 
-export default function ProductCards() {
+export default function ProductCards({ product }) {
 
     const classes = useStyles();
 
     const [scoreArray, setScoreArray] = useState([]);
     const [modalState, setModalState] = useState(false);
 
-    //Hardcoded product data
-    const product = {
-        id: 'fsadf234jhABC',
-        name: 'Pan',
-        image: 'https://ep01.epimg.net/elpais/imagenes/2018/02/22/buenavida/1519317833_625490_1519382023_noticia_normal.jpg',
-        score: 5,
-        price: 5,
-        description: 'Lorem ipsum dolor sit amet consectetur adipiscing, elit interdum congue aptent nulla mus nullam, convallis in luctus taciti curae. Turpis nostra aliquam ut fringilla fusce non enim nullam, ',
-    }
+    const ImageHC = 'https://ep01.epimg.net/elpais/imagenes/2018/02/22/buenavida/1519317833_625490_1519382023_noticia_normal.jpg';
 
     useEffect(() => {
         const newScoreArray = createArrayFromNumber(product.score)
@@ -63,17 +55,17 @@ export default function ProductCards() {
                     <CardMedia
                         className={classes.image}
                         title={product.name}
-                        image={product.image}
+                        image={ImageHC}
                     />
                     <CardContent className={classes.cardContent}>
-                        <Typography align='center' variant="h6" color='secondary' >{product.name}</Typography>
+                        <Typography align='center' variant="p" color='secondary' >{product.name}</Typography>
                         <Box display="flex" justifyContent="center">
                             {
                                 scoreArray.map(number => <Star key={number} color='secondary' />) 
                             }
                         </Box>
                         <Box display="flex" justifyContent="center" alignItems="center" >
-                            <Typography align ='center' variant='body1' color='secondary'>${product.price}.00 EA</Typography>
+                            <Typography align ='center' variant='body1' color='secondary'>${product.price} EA</Typography>
                         </Box>
                     </CardContent>
 
@@ -135,7 +127,7 @@ const useStyles = makeStyles((theme) => ({
     favButton: {
       position: 'absolute',
       zIndex: 2,
-      transform: 'translate(170px, 0px);'
+      transform: 'translate(60px, 0px);'
     },
     modal: {
         display: 'flex',

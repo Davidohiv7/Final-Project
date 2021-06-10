@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
     },
     grid_container: {
         marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(2),
         borderRadius: 5,
         color: theme.palette.secondary.main,
         textAlign: 'center',
@@ -19,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.primary.main,
         paddingBottom: theme.spacing(40),
         paddingTop: theme.spacing(3),
+        height: "57%",
     },
     button: {
         background: theme.palette.primary.dark,
@@ -28,6 +30,10 @@ const useStyles = makeStyles((theme) => ({
     },
     links: {
         color: theme.palette.secondary.main,
+    },
+    catalogueContainer: {
+        marginLeft: theme.spacing(5),
+        height: "57%",
     }
 }));
 

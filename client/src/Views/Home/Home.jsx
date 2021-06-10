@@ -1,7 +1,8 @@
 
 // React/Redux imports
-import React from 'react';
-import { connect } from "react-redux";
+import React, { useEffect } from 'react';
+import { connect, useDispatch } from "react-redux";
+import { getAllProducts } from './../../actions/actions';
 
 // Material UI imports
 import {
@@ -23,7 +24,12 @@ import { Catalogue } from './../../components/Catalogue/Catalogue'
 //------Home-----//
 function Home() {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getAllProducts())
+  }, []
+  )
   //this two const are just hardcoding the db, havent set it yet, but it is ready and seeded.
   const erase = (name) => {
     console.log(name)
@@ -55,9 +61,9 @@ function Home() {
             </List>
           </Paper>
         </Grid>
-        <Grid item xs={10}>
+        <Grid item xs={9} className={classes.catalogueContainer}>
           <Paper elevation={3}>
-            Catalogue{/* <Catalogue/> */}
+            <Catalogue/>
           </Paper>
         </Grid>
       </Grid>

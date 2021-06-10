@@ -8,15 +8,17 @@ import {
         Grid, 
         Paper, 
         Container,
+        Link,
+        List,
+        ListItem,
       }
 from '@material-ui/core';
+import { Home as HomeIcon } from '@material-ui/icons'
 import useStyles from './styles';
 
 // Component imports
 import { Catalogue } from './../../components/Catalogue/Catalogue'
-import FilterButton from './../../components/FilterButton/filterButton'
-
-
+//import FilterButton from '../../components/DropdownFilterButton/dropdownFilterButton'
 
 //------Home-----//
 function Home() {
@@ -43,12 +45,19 @@ function Home() {
         </Grid>
         <Grid item xs={2}>
           <Paper className={classes.filter} elevation={3}>
-            <FilterButton props={testErase} title="Filter by Categories" />
+            <Link href="/" className={classes.links}><HomeIcon /></Link>
+            <List>
+              {testErase.arrayCategories ? 
+                testErase.arrayCategories.map(category => <ListItem><Link href="#" onClick={console.log(category)} className={classes.links}>
+                  {category}
+                </Link></ListItem>) :
+                <p>No Such Category</p>}
+            </List>
           </Paper>
         </Grid>
         <Grid item xs={10}>
           <Paper elevation={3}>
-                Catalogue{/* <Catalogue/> */}
+            Catalogue{/* <Catalogue/> */}
           </Paper>
         </Grid>
       </Grid>

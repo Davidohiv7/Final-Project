@@ -26,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
         color: "white",
         borderRadius: 5,
     },
+    links: {
+        color: theme.palette.secondary.main,
+    }
 }));
 
 export default useStyles;

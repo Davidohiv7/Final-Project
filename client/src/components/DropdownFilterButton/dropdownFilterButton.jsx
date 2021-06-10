@@ -12,7 +12,7 @@ import {
     Popper,
     Grow
 } from '@material-ui/core';
-import useStyles from './filterButtonStyles';
+import useStyles from './styles';
 
 export default function FilterButton(props) {
     let classes = useStyles();

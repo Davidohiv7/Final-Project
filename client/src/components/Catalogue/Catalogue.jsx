@@ -95,6 +95,7 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
+// Sort Select
 function SortSelect({ handleChange, value }) {
     const classes = useStyles();
 
@@ -117,6 +118,7 @@ function SortSelect({ handleChange, value }) {
     );
 }
 
+// Pagination
 function PaginationBar({ totalPages, index, handleChange }) {
   return (
     <>
@@ -131,33 +133,41 @@ function PaginationBar({ totalPages, index, handleChange }) {
   );
 }
 
-
+// Catalogue
 export function Catalogue({ sortValue, products, getAllProducts, changeSort }) {
-    const [index, setIndex] = useState(1);
     const classes = useStyles();
 
-    //
-    const handleSortChange = event => {
-      changeSort(event.target.value);
-    };
 
-    const changeIndex = (event, value) => {
-      setIndex(value);
-      console.log(value);
-    }
+    // Page index
+    const [index, setIndex] = useState(1);
+
+    // Saving the products from the store
+    const [productsInState, setProductsInState] = useState([]);
+
+    // Setting the params for getAllProducts Action
+    const [productParams, setProductParams] = useState({
+      name: null,
+      category: null,
+      filter: 'name',
+      order: 'ASC',
+    });
+
 
     //Get All Products when loading the page
-    useEffect(() => {
-        if(!products) {
-            getAllProducts();
-        };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    // useEffect(() => {
+    //   getAllProducts(productParams.name, productParams.category, productParams.filter, productParams.order, index);
+
+    // }, [productParams.name, productParams.category, productParams.filter, productParams.order, index]);
 
     //Charge Products whenever the 'products' in store change
     useEffect(() => {
         chargeProducts();
     }, [products]);
+
+    //
+
+
+
 
 
     //Sort products on store change
@@ -171,17 +181,24 @@ export function Catalogue({ sortValue, products, getAllProducts, changeSort }) {
     
     //Get the products from the store and charge them in the page
     function chargeProducts() {
-
+      setProductsInState(products);
     };
 
     
 
 
+    const handleSortChange = event => {
+      changeSort(event.target.value);
+    };
 
-    //Hardcoded product number
-    let productsHard = ['1', '2', '3', '4', '5', '6', '7', '8'];
+    const changeIndex = (event, value) => {
+      setIndex(value);
+      console.log(value);
+    }
 
 
+    //
+    let productsHard = [1, 2, 3, 4, 5 ,6 ,7 ,8];
 
 
     return (
@@ -233,7 +250,7 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
     return {
-        getAllProducts: () =>  dispatch(getAllProducts()),
+        getAllProducts: (name, category, filter, order, page) =>  dispatch(getAllProducts(name, category, filter, order, page)),
         changeSort: value => dispatch(changeSort(value))
     };
 }

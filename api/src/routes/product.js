@@ -10,6 +10,27 @@ router.get('/', async (req, res) => {
   //req will have sort, name, category, page, 
   let { name, category, filter = 'name', order = 'ASC', page = 1, limit = 8 } = req.query;
 
+  
+  async function getCategories(allProducts) {
+    const productIds = allProducts.map(product => product.id);
+
+    // Select all ProductCategories whose ProductId is in the ids array
+    const allProductCategories = await models.ProductCategory.findAll({
+      attributes: ['CategoryId'],
+      where: { ProductId:  { [Op.in]: productIds } },
+    })
+    const categoryIds = allProductCategories.map(item => item.CategoryId)
+
+    // Select all categories
+    const allCategories = await models.Category.findAll({
+      attributes: ['name'],
+      where: { id: { [Op.in]: categoryIds } }
+    })
+    const categories = allCategories.map(category => category.name)
+
+    return categories
+  }
+
   // If the user searches a name in a category
   if (category && name) {
 
@@ -35,6 +56,16 @@ router.get('/', async (req, res) => {
       if (endIndex < count) data.nextPage = pageNumber + 1;
       if (startIndex > 0) data.previousPage = pageNumber - 1;
 
+      // Get all product ids
+      const allProducts = await models.Product.findAll({
+        attributes: ['id'],
+        where: { 
+          name: { [Op.iLike]: `%${name}%` },
+        }
+      })
+
+      const categories = await getCategories(allProducts)
+
       const products = await models.Product.findAll({
         where: { 
           name: { [Op.iLike]: `%${name}%` },
@@ -48,7 +79,7 @@ router.get('/', async (req, res) => {
         offset: (page * limit) - limit,
       });
       
-      response.success(req, res, { ...data, count, pages, pageNumber, products }, 200)
+      response.success(req, res, { ...data, count, pages, pageNumber, products, categories }, 200)
 
     } catch (error) {
       response.error(req, res, error, 500);
@@ -75,6 +106,17 @@ router.get('/', async (req, res) => {
         if (endIndex < count) data.nextPage = pageNumber + 1;
         if (startIndex > 0) data.previousPage = pageNumber - 1;
 
+        // Get all product ids
+        const allProducts = await models.Product.findAll({
+          attributes: ['id'],
+          include: [{
+            model: models.Category,
+            where: { name: { [Op.iLike]: `%${category}%` } }
+          }],
+        })
+
+        const categories = await getCategories(allProducts)
+
         const products = await models.Product.findAll({
           include: [{
             model: models.Category,
@@ -85,7 +127,7 @@ router.get('/', async (req, res) => {
           offset: (page * limit) - limit,
         });
 
-          response.success(req, res, { ...data, count, pages, pageNumber, products }, 200)
+          response.success(req, res, { ...data, count, pages, pageNumber, products, categories }, 200)
 
       } catch (error) {
         response.error(req, res, error, 500);
@@ -111,6 +153,14 @@ router.get('/', async (req, res) => {
       if (endIndex < count) data.nextPage = pageNumber + 1;
       if (startIndex > 0) data.previousPage = pageNumber - 1;
 
+      // Get all product ids
+      const allProducts = await models.Product.findAll({
+        attributes: ['id'],
+        where: { name: { [Op.iLike]: `%${name}%` } },
+      })
+
+      const categories = await getCategories(allProducts)
+
       const products = await models.Product.findAll({
         where: { name: { [Op.iLike]: `%${name}%` } },
         order: [[filter, order]],
@@ -118,7 +168,7 @@ router.get('/', async (req, res) => {
         offset: (page * limit) - limit,
       });
       
-      response.success(req, res, { ...data, count, pages, pageNumber, products }, 200)
+      response.success(req, res, { ...data, count, pages, pageNumber, products, categories }, 200)
 
     } catch (error) {
       response.error(req, res, error, 500);
@@ -139,7 +189,15 @@ router.get('/', async (req, res) => {
         let endIndex = page * limit;
         if (endIndex < count) data.nextPage = pageNumber + 1;
         if (startIndex > 0) data.previousPage = pageNumber - 1;
-          
+
+        // Get all product ids
+        const allProducts = await models.Product.findAll({
+          attributes: ['id'],
+        })
+
+        const categories = await getCategories(allProducts);
+
+        // Get products with applied filters  
         const products = await models.Product.findAll({
           order: [[filter, order]],
           limit: limit,
@@ -149,7 +207,7 @@ router.get('/', async (req, res) => {
           }]
         });
 
-        response.success(req, res, { ...data, count, pages, pageNumber, products }, 200)
+        response.success(req, res, { ...data, count, pages, pageNumber, products, categories }, 200)
           
       } catch (error) {
         response.error(req, res, error, 500);

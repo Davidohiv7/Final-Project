@@ -43,6 +43,7 @@ export default function ProductCards() {
     useEffect(() => {
         const newScoreArray = createArrayFromNumber(product.score)
         setScoreArray(newScoreArray)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
@@ -114,6 +115,7 @@ export default function ProductCards() {
 //Custom styles
 const useStyles = makeStyles((theme) => ({
     body: {
+      boxShadow: '1px 1px 8px -1px rgba(0,0,0,0.6)',
       width: 220,
       height: 300,
       backgroundColor: theme.palette.primary.main,

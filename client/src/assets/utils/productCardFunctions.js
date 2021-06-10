@@ -10,17 +10,16 @@ export function addToCart(product, quantity, setQuantity) {
     const cartString = localStorage.getItem('cart')
     let newCart
     if(!cartString) {
-        newCart = [{id: product.id, name: product.name, quantity }]
+        newCart = [{...product, quantity}]
     }
     if(cartString) {
         newCart = JSON.parse(cartString)
         const currentProductIndex = newCart.findIndex(p => p.id === product.id)
         if(currentProductIndex !== -1) {
-            console.log(quantity)
             newCart[currentProductIndex].quantity = newCart[currentProductIndex].quantity + quantity
         }
         if(currentProductIndex === -1) {
-            newCart.push({id: product.id, name: product.name, quantity })
+            newCart.push({...product, quantity})
         }
     }
     const cartData = JSON.stringify(newCart)
@@ -32,12 +31,13 @@ export function addToFavorites(product) {
     const favouriteString = localStorage.getItem('favourites')
     let newFavourites
     if(!favouriteString) {
-        newFavourites = [product.id]
+        newFavourites = [product]
     }
     if(favouriteString) {
         newFavourites = JSON.parse(favouriteString)
-        if(!newFavourites.includes(product.id)) {
-            newFavourites.push(product.id)
+        const validateIfProductExists = newFavourites.filter(p => p.id === product.id)
+        if(validateIfProductExists.length === 0) {
+            newFavourites.push(product)
         }
     }
     const favouritesData = JSON.stringify(newFavourites)

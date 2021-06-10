@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { Grid, Paper, MenuItem, InputLabel, InputBase, FormControl, Select } from '@material-ui/core';
-// import { Pagination } from '@material-ui/lab';
+import { Pagination } from '@material-ui/lab';
 import SearchIcon from '@material-ui/icons/Search';
 import { connect } from "react-redux";
-import { getAllProducts } from '../../actions/actions'
+import { getAllProducts, changeSort } from '../../actions/actions'
 import ProductCards from '../ProductCards/ProductCards.jsx'
 
 
@@ -86,64 +86,119 @@ const useStyles = makeStyles((theme) => ({
     },
     productCard: {
       margin: '10px',
+    },
+    paginationContainer: {
+      display: 'flex',
+      justifyContent: 'center',
+      margin: '15px',
+      width: '100%'
     }
   }));
 
-function SortSelect(props) {
+// Sort Select
+function SortSelect({ handleChange, value }) {
     const classes = useStyles();
-    const { handleChange, value } = props;
+
     return (
-        <FormControl fullWidth className={classes.sortForm}>
-            <InputLabel id='sortLabel'>Ordenar por...</InputLabel>
+        <FormControl variant='outlined' fullWidth className={classes.sortForm}>
+            <InputLabel className={classes.select} id='sortLabel'>Ordenar por...</InputLabel>
             <Select
                 labelId='sortLabel'
                 className={classes.select}
                 value={value}
                 onChange={handleChange}
+                label='Ordenar por...'
             >
-                <MenuItem value={null}>-</MenuItem>
-                <MenuItem value={0}>A-Z</MenuItem>
-                <MenuItem value={1}>Mayor Precio</MenuItem>
-                <MenuItem value={2}>Menor Precio</MenuItem>
+                <MenuItem value={''}>-</MenuItem>
+                <MenuItem value={'0'}>A-Z</MenuItem>
+                <MenuItem value={'1'}>Mayor Precio</MenuItem>
+                <MenuItem value={'2'}>Menor Precio</MenuItem>
             </Select>
         </FormControl>
     );
 }
 
+// Pagination
+function PaginationBar({ totalPages, index, handleChange }) {
+  return (
+    <>
+      <Pagination 
+        count={totalPages} 
+        page={index} 
+        onChange={handleChange} 
+        color='primary'
+        shape='rounded'
+      />
+    </>
+  );
+}
 
-export function Catalogue({ products, getAllProducts }) {
-    const [sort, setSort] = useState();
-    
+// Catalogue
+export function Catalogue({ sortValue, products, getAllProducts, changeSort }) {
     const classes = useStyles();
-    
-    //
-    const handleSortChange = event => {
-      setSort(event.target.value);
-    };
+
+
+    // Page index
+    const [index, setIndex] = useState(1);
+
+    // Saving the products from the store
+    const [productsInState, setProductsInState] = useState([]);
+
+    // Setting the params for getAllProducts Action
+    const [productParams, setProductParams] = useState({
+      name: null,
+      category: null,
+      filter: 'name',
+      order: 'ASC',
+    });
+
 
     //Get All Products when loading the page
-    useEffect(() => {
-        if(!products) {
-            getAllProducts();
-        };
-    }, []);
-    
+    // useEffect(() => {
+    //   getAllProducts(productParams.name, productParams.category, productParams.filter, productParams.order, index);
+
+    // }, [productParams.name, productParams.category, productParams.filter, productParams.order, index]);
+
     //Charge Products whenever the 'products' in store change
     useEffect(() => {
         chargeProducts();
     }, [products]);
+
+    //
+
+
+
+
+
+    //Sort products on store change
+    function sortProducts() {
+      
+    };
+
+    useEffect(() => {
+      sortProducts();
+    }, [sortValue])
     
     //Get the products from the store and charge them in the page
     function chargeProducts() {
-
+      setProductsInState(products);
     };
 
+    
 
 
-    //Hardcoded product number
-    let productsHard = ['1', '2', '3', '4', '5', '6', '7', '8'];
+    const handleSortChange = event => {
+      changeSort(event.target.value);
+    };
+
+    const changeIndex = (event, value) => {
+      setIndex(value);
+      console.log(value);
+    }
 
 
+    //
+    let productsHard = [1, 2, 3, 4, 5 ,6 ,7 ,8];
 
 
     return (
@@ -161,22 +216,27 @@ export function Catalogue({ products, getAllProducts }) {
                         }}
                         inputProps={{ 'aria-label': 'search' }}
                     />
-                
+
                 </div>
-                <SortSelect value={sort} handleChange={handleSortChange}/>
+                <SortSelect value={sortValue} handleChange={handleSortChange}/>
             </div>
             <Grid container spacing={1} className={classes.gridContainer}>
                 {productsHard.map(product => {
                     return (
-                      <Grid item> 
+                      <Grid key={product} item> 
                         <ProductCards className={classes.productCard} />
                       </Grid>
                     )
                 } )}
-               
+
             </Grid>
-            <div>
-              {/* <Pagination /> */}
+            <div className={classes.paginationContainer}>
+              <PaginationBar 
+                className={classes.pagination} 
+                totalPages={5} 
+                index={index} 
+                handleChange={changeIndex}
+              />
             </div>
         </Paper>
     )
@@ -185,11 +245,13 @@ export function Catalogue({ products, getAllProducts }) {
 function mapStateToProps(state) {
     return {
         products: state.products,
+        sortValue: state.sortValue
     };
 }
 function mapDispatchToProps(dispatch) {
     return {
-        getAllProducts: () =>  dispatch(getAllProducts()),
+        getAllProducts: (name, category, filter, order, page) =>  dispatch(getAllProducts(name, category, filter, order, page)),
+        changeSort: value => dispatch(changeSort(value))
     };
 }
 

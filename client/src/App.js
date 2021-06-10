@@ -5,13 +5,13 @@ import { ThemeProvider } from '@material-ui/core/styles'
 import theme from './themeConfig.js';
 
 import NavBar from './components/Navbar/NavBar'
-import Catalogue from './components/Catalogue/Catalogue'
+import ProductCards from './components/ProductCards/ProductCards'
 
 function App() {
   return (
   	<ThemeProvider theme = {theme}>
       <NavBar/>
-		  <Catalogue/>
+
   	</ThemeProvider>
   );
 }

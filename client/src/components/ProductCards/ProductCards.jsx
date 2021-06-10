@@ -32,7 +32,7 @@ export default function ProductCards() {
 
     //Hardcoded product data
     const product = {
-        id: '1234jhgABC',
+        id: 'fsadf234jhABC',
         name: 'Pan',
         image: 'https://ep01.epimg.net/elpais/imagenes/2018/02/22/buenavida/1519317833_625490_1519382023_noticia_normal.jpg',
         score: 5,

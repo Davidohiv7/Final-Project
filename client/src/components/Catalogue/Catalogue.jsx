@@ -131,10 +131,11 @@ function PaginationBar({ totalPages, index, handleChange }) {
   );
 }
 
+
 export function Catalogue({ sortValue, products, getAllProducts, changeSort }) {
     const [index, setIndex] = useState(1);
     const classes = useStyles();
-    
+
     //
     const handleSortChange = event => {
       changeSort(event.target.value);
@@ -152,11 +153,12 @@ export function Catalogue({ sortValue, products, getAllProducts, changeSort }) {
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    
+
     //Charge Products whenever the 'products' in store change
     useEffect(() => {
         chargeProducts();
     }, [products]);
+
 
     //Sort products on store change
     function sortProducts() {
@@ -197,7 +199,7 @@ export function Catalogue({ sortValue, products, getAllProducts, changeSort }) {
                         }}
                         inputProps={{ 'aria-label': 'search' }}
                     />
-                
+
                 </div>
                 <SortSelect value={sortValue} handleChange={handleSortChange}/>
             </div>
@@ -209,7 +211,7 @@ export function Catalogue({ sortValue, products, getAllProducts, changeSort }) {
                       </Grid>
                     )
                 } )}
-               
+
             </Grid>
             <div className={classes.paginationContainer}>
               <PaginationBar 

@@ -5,7 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon -L",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "npx sequelize db:migrate",
+    "migrate:undo": "npx sequelize db:migrate:undo:all",
+    "migrate:reset": "npx sequelize db:migrate:undo:all && npm run migrate",
+    "seed-data": "npx sequelize db:seed:all",
+    "undo-seed": "npx sequelize db:seed:undo:all"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +24,12 @@
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.7",
-    "passport": "^0.4.1"
+    "passport": "^0.4.1",
+    "pg": "^8.6.0",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.6.2"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.2.0"
   }
 }

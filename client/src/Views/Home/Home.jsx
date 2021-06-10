@@ -1,17 +1,30 @@
-import React from 'react';
-import {  Grid, 
-          Paper, 
-          Container, 
-          MenuList, 
-          MenuItem, 
-          ClickAwayListener, 
-          Button, 
-          Popper, 
-          Grow } from '@material-ui/core';
-import useStyles from './HomeStyles';
-//import { Catalogue } from './../../components/Catalogue/Catalogue'
 
-export default function Home() {
+// React/Redux imports
+import React from 'react';
+import { connect } from "react-redux";
+
+// Material UI imports
+import {
+        Grid, 
+        Paper, 
+        Container, 
+        MenuList, 
+        MenuItem, 
+        ClickAwayListener, 
+        Button, 
+        Popper, 
+        Grow
+      }
+from '@material-ui/core';
+import useStyles from './styles';
+
+// Component imports
+import { Catalogue } from './../../components/Catalogue/Catalogue'
+
+
+
+//------Home-----//
+function Home() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -24,7 +37,6 @@ export default function Home() {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
-
     setOpen(false);
   };
 
@@ -45,17 +57,16 @@ export default function Home() {
     prevOpen.current = open;
   }, [open]);
 
-  //on the deployable Menu we should make a map of the categories. Nothing has been set for that.
+  //on the drop down Menu we should make a map of the categories. Nothing has been set for that.
 
   return (
-    <Container maxWidth="md">
-      <Grid container spacing={2} className={classes.grid_container}>
+    <Container maxWidth="lg">
+      <Grid container spacing={3} className={classes.grid_container}>
         <Grid item xs={12}>
           <Paper className={classes.slide} elevation={3}>
-            <img src="./SlideHotProducts.jpg" alt="Slide Hot Products" />
           </Paper>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={2}>
           <Paper className={classes.filter} elevation={3}>
             <Button
               ref={anchorRef}
@@ -87,9 +98,9 @@ export default function Home() {
             </Popper>
           </Paper>
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={10}>
           <Paper elevation={3}>
-                Catalogo
+                Catalogue{/* <Catalogue/> */}
           </Paper>
         </Grid>
       </Grid>
@@ -97,3 +108,18 @@ export default function Home() {
   );
 }
 
+function mapStateToProps(state) {
+  return {
+      // products: state.products,
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+      // getAllProducts: () =>  dispatch(getAllProducts()),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);

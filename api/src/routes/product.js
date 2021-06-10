@@ -70,10 +70,17 @@ router.get('/', async (req, res) => {
         where: { 
           name: { [Op.iLike]: `%${name}%` },
         },
-        include: [{
-          model: models.Category,
-          where: { name: { [Op.iLike]: `%${category}%` } }
-        }],
+        include: [
+          {
+            model: models.Category,
+            where: { name: { [Op.iLike]: `%${category}%` } },
+            attributes: ['id', 'name'],
+            through: { attributes: []}
+          },
+          {
+            model: models.Image, attributes: ['id', 'url']
+          }
+        ],
         order: [[filter, order]],
         limit: limit,
         offset: (page * limit) - limit,
@@ -118,10 +125,17 @@ router.get('/', async (req, res) => {
         const categories = await getCategories(allProducts)
 
         const products = await models.Product.findAll({
-          include: [{
-            model: models.Category,
-            where: { name: { [Op.iLike]: `%${category}%` } }
-          }],
+          include: [
+            {
+              model: models.Category,
+              where: { name: { [Op.iLike]: `%${category}%` } },
+              attributes: ['id', 'name'],
+              through: { attributes: []}
+            },
+            {
+              model: models.Image, attributes: ['id', 'url']
+            }
+          ],
           order: [[filter, order]],
           limit: limit,
           offset: (page * limit) - limit,
@@ -163,6 +177,17 @@ router.get('/', async (req, res) => {
 
       const products = await models.Product.findAll({
         where: { name: { [Op.iLike]: `%${name}%` } },
+        include: [
+          {
+            model: models.Image,
+            attributes: ['id', 'url']
+          },
+          {
+            model: models.Category, 
+            attributes: ['id', 'name'], 
+            through: { attributes: []}
+          }
+        ],
         order: [[filter, order]],
         limit: limit,
         offset: (page * limit) - limit,
@@ -202,9 +227,10 @@ router.get('/', async (req, res) => {
           order: [[filter, order]],
           limit: limit,
           offset: (page * limit) - limit,
-          include: [{
-            model: models.Category,
-          }]
+          include: [
+            { model: models.Category, attributes: ['id', 'name'], through: { attributes: []} },
+            { model: models.Image, attributes: ['id', 'url'] }
+          ]
         });
 
         response.success(req, res, { ...data, count, pages, pageNumber, products, categories }, 200)

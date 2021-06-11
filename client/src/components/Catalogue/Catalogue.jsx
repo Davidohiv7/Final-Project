@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { getProducts, updateSearching } from '../../actions/actions';
+import { getProducts, updateSearching, updateCategory } from '../../actions/actions';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { Grid, Paper, InputBase } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
@@ -16,8 +16,9 @@ export default function Catalogue() {
     const { products, filter, order } = useSelector((state) => ({ ...state }))
 
     const handleSearchChange = event => {
-      dispatch(getProducts({name: event.target.value, category: null, filter, order}))
+      dispatch(getProducts({name: event.target.value, filter, order}))
       dispatch(updateSearching(event.target.value))
+      dispatch(updateCategory(''))
     };
 
 

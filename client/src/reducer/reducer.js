@@ -1,4 +1,4 @@
-import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_FILTER, UPDATE_SORT } from '../actions_types/actions_types'
+import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT } from '../actions_types/actions_types'
 
 const initialState = {
     products: [],
@@ -8,6 +8,8 @@ const initialState = {
     searched: '',
     order: '',
     filter: '',
+    categories: [],
+    category: ''
 };
 
 const reducer = (state = initialState, action = {}) => {
@@ -19,6 +21,7 @@ const reducer = (state = initialState, action = {}) => {
                 nextPage: action.payload.nextPage ? action.payload.nextPage : '',
                 page: action.payload.pageNumber,
                 pages: action.payload.pages,
+                categories: action.payload.categories,
             }
         }
         case GET_PRODUCTS: {
@@ -28,6 +31,7 @@ const reducer = (state = initialState, action = {}) => {
                 nextPage: action.payload.nextPage ? action.payload.nextPage : '',
                 page: action.payload.pageNumber,
                 pages: action.payload.pages,
+                categories: action.payload.categories,
             }
         }
         case UPDATE_SEARCHING: {
@@ -41,6 +45,12 @@ const reducer = (state = initialState, action = {}) => {
                 ...state,
                 order: action.payload.order,
                 filter: action.payload.filter,
+            }
+        }
+        case UPDATE_CATEOGRY: {
+            return {
+                ...state,
+                category: action.payload,
             }
         }
         default:

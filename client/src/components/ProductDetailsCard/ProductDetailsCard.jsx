@@ -33,7 +33,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                         <CardMedia
                             className={classes.image}
                             title={product.name}
-                            image={product.image}
+                            image={product.Images[0].url}
                         />
                     </Card>
                 </Box>

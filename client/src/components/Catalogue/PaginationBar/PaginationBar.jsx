@@ -4,12 +4,12 @@ import { getProducts } from '../../../actions/actions.js';
 
 export default function PaginationBar() {
 
-  const { pages, nextPage, page, searched, order, filter } = useSelector((state) => ({ ...state }))
+  const { pages, category, page, searched, order, filter } = useSelector((state) => ({ ...state }))
 
   const dispatch = useDispatch();
 
   function handelChange(e, value) {
-    dispatch(getProducts({name: searched, category: null, order, filter, page: value}))
+    dispatch(getProducts({name: searched, category, order, filter, page: value}))
   }
 
   return (

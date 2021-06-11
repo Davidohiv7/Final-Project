@@ -6,7 +6,7 @@ import { getProducts, updateSorting } from '../../../actions/actions.js';
 
 export default function SortSelect() {
 
-    const { pages, nextPage, page, searched } = useSelector((state) => ({ ...state }))
+    const { category, page, searched } = useSelector((state) => ({ ...state }))
 
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -15,7 +15,7 @@ export default function SortSelect() {
     const handleSortChange = event => {
         let filter = event.target.value.split(',')[0];
         let order = event.target.value.split(',')[1];
-        dispatch(getProducts({name: searched, category: null, filter, order, page}))
+        dispatch(getProducts({name: searched, category, filter, order, page}))
         dispatch(updateSorting(filter, order))
       };
 

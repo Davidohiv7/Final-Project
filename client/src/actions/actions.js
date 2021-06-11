@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_FILTER, UPDATE_SORT } from '../actions_types/actions_types'
+import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT } from '../actions_types/actions_types'
 
 export function getAllProducts() {
     return (dispatch) => {
@@ -13,6 +13,7 @@ export function getAllProducts() {
 }
 
 export function getProducts(obj) {
+    console.log(obj)
     return (dispatch) => {
         return Axios.get("http://localhost:3001/products", {params: obj})
                 .then(res => res.data)
@@ -32,7 +33,14 @@ export const updateSearching = searchedWord => {
 
 export const updateSorting = (filter, order) => {
     return {
-    type: UPDATE_SORT,
-    payload: {filter, order}
+        type: UPDATE_SORT,
+        payload: {filter, order}
+    }
 }
+
+export const updateCategory = (category) => {
+    return {
+        type: UPDATE_CATEOGRY,
+        payload: category
+    }
 }

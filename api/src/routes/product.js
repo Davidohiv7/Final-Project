@@ -10,7 +10,11 @@ router.get('/', async (req, res) => {
   //req will have sort, name, category, page, 
   let { name, category, filter = 'name', order = 'ASC', page = 1, limit = 8 } = req.query;
 
-  
+  if (name === '') name = null;
+  if (category === '') category = null;
+  if (filter === '') filter = 'name';
+  if (order === '') order = 'ASC';
+
   async function getCategories(allProducts) {
     const productIds = allProducts.map(product => product.id);
 

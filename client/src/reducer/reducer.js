@@ -1,10 +1,13 @@
-import { GET_ALL_PRODUCTS, GET_PRODUCTS } from '../actions_types/actions_types'
+import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_FILTER, UPDATE_SORT } from '../actions_types/actions_types'
 
 const initialState = {
     products: [],
     nextPage: '',
     pages: '',
     page: '',
+    searched: '',
+    order: '',
+    filter: '',
 };
 
 const reducer = (state = initialState, action = {}) => {
@@ -25,6 +28,19 @@ const reducer = (state = initialState, action = {}) => {
                 nextPage: action.payload.nextPage ? action.payload.nextPage : '',
                 page: action.payload.pageNumber,
                 pages: action.payload.pages,
+            }
+        }
+        case UPDATE_SEARCHING: {
+            return {
+                ...state,
+                searched: action.payload,
+            }
+        }
+        case UPDATE_SORT: {
+            return {
+                ...state,
+                order: action.payload.order,
+                filter: action.payload.filter,
             }
         }
         default:

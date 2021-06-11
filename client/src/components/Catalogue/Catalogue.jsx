@@ -1,36 +1,23 @@
 import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from "react-redux";
+import { getProducts, updateSearching } from '../../actions/actions';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { Grid, Paper, InputBase } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import { useSelector } from "react-redux";
 import ProductCards from '../ProductCards/ProductCards.jsx'
 import PaginationBar from './PaginationBar/PaginationBar.jsx'
 import SortSelect from './SortSelect/SortSelect.jsx'
 
 //Params catalogue function products, getAllProducts,
 // Catalogue
-export default function Catalogue({ sortValue, changeSort }) {
+export default function Catalogue() {
     const classes = useStyles();
-    const { products } = useSelector((state) => ({ ...state }))
+    const dispatch = useDispatch();
+    const { products, filter, order } = useSelector((state) => ({ ...state }))
 
-    // Setting the params for getAllProducts Action
-    // const [productParams, setProductParams] = useState({
-    //   name: null,
-    //   category: null,
-    //   filter: 'name',
-    //   order: 'ASC',
-    // });
-
-    //Sort products on store change
-    function sortProducts() {};
-
-    useEffect(() => {
-      sortProducts();
-    }, [sortValue])
-    
-    //Get the products from the store and charge them in the page
-    const handleSortChange = event => {
-      changeSort(event.target.value);
+    const handleSearchChange = event => {
+      dispatch(getProducts({name: event.target.value, category: null, filter, order}))
+      dispatch(updateSearching(event.target.value))
     };
 
 
@@ -48,10 +35,11 @@ export default function Catalogue({ sortValue, changeSort }) {
                         input: classes.inputInput,
                         }}
                         inputProps={{ 'aria-label': 'search' }}
+                        onChange={handleSearchChange}
                     />
 
                 </div>
-                <SortSelect value={sortValue} handleChange={handleSortChange}/>
+                <SortSelect/>
             </div>
             <Grid container spacing={1} className={classes.gridContainer}>
                 {products && products.map(product => {

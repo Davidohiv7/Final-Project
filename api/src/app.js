@@ -7,6 +7,7 @@ require('dotenv').config()
 const server = express();
 
 require('./auth/JWTAuthPassport.js')
+require('./auth/GoogleAuthPassport')
 server.use(express.urlencoded({ extended: true, limit: '50mb' }));
 server.use(express.json({ limit: '50mb' }));
 server.use(cookieParser());

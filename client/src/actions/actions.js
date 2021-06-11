@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT } from '../actions_types/actions_types'
+import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT, FAILED_SEARCH } from '../actions_types/actions_types'
 
 export function getAllProducts() {
     return (dispatch) => {
@@ -20,7 +20,7 @@ export function getProducts(obj) {
                 .then(res => {
                    dispatch({type: GET_PRODUCTS, payload: res.data})
                 })
-                .catch(e => console.log(e))
+                .catch(e => dispatch({type: FAILED_SEARCH}))
     }
 }
 
@@ -44,3 +44,4 @@ export const updateCategory = (category) => {
         payload: category
     }
 }
+

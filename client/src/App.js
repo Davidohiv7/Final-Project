@@ -2,6 +2,7 @@
 import React from 'react';
 import NavBar from './Views/NavBar/NavBar'
 import Home from './Views/Home/Home.jsx'
+import Cart from './Views/Cart/Cart.jsx'
 import { ThemeProvider } from '@material-ui/core/styles'
 import theme from './themeConfig';
 import Footer from "./Views/Footer/Footer";
@@ -23,6 +24,11 @@ export default function App() {
       />
 
       <Route
+        exact path='/cart'
+        render={() => <Cart/>}
+      />
+        
+      <Route
         exact path='/login'
         render={() => <LoginRegister/>}
       />
@@ -31,6 +37,7 @@ export default function App() {
         path='/'
         render={() => <Footer/>}
       />
+
     </ThemeProvider>
   )
 }

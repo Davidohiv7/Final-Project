@@ -13,7 +13,7 @@ import SortSelect from './SortSelect/SortSelect.jsx'
 export default function Catalogue() {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const { products, filter, order } = useSelector((state) => ({ ...state }))
+    const { searched, products, filter, order } = useSelector((state) => ({ ...state }))
 
     const handleSearchChange = event => {
       dispatch(getProducts({name: event.target.value, filter, order}))
@@ -37,6 +37,7 @@ export default function Catalogue() {
                         }}
                         inputProps={{ 'aria-label': 'search' }}
                         onChange={handleSearchChange}
+                        value={searched}
                     />
 
                 </div>

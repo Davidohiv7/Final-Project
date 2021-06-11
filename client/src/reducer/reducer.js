@@ -1,4 +1,4 @@
-import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT } from '../actions_types/actions_types'
+import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT, FAILED_SEARCH } from '../actions_types/actions_types'
 
 const initialState = {
     products: [],
@@ -51,6 +51,16 @@ const reducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 category: action.payload,
+            }
+        }
+        case FAILED_SEARCH: {
+            return {
+                ...state,
+                products: '',
+                nextPage: '',
+                page: '',
+                pages: '',
+                categories: '',
             }
         }
         default:

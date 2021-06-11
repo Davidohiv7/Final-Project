@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { getProducts, updateSearching, updateCategory } from '../../actions/actions';
 import { fade, makeStyles } from '@material-ui/core/styles';
-import { Grid, Paper, InputBase } from '@material-ui/core';
+import { Grid, Paper, InputBase, Typography } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import ProductCards from '../ProductCards/ProductCards.jsx'
 import PaginationBar from './PaginationBar/PaginationBar.jsx'
@@ -43,13 +43,19 @@ export default function Catalogue() {
                 <SortSelect/>
             </div>
             <Grid container spacing={1} className={classes.gridContainer}>
-                {products && products.map(product => {
-                    return (
-                      <Grid key={product.id} item> 
-                        <ProductCards className={classes.productCard} product={product}/>
-                      </Grid>
-                    )
-                } )}
+                {
+                  products ?
+                  products && products.map(product => {
+                      return (
+                        <Grid key={product.id} item> 
+                          <ProductCards className={classes.productCard} product={product}/>
+                        </Grid>
+                      )
+                  }) :
+                  <Grid> 
+                    <Typography variant="h5" color="primary">Sorry, we couldn't find any product. Try with a different word</Typography>
+                  </Grid>
+                }
             </Grid>
             <div className={classes.paginationContainer}>
               <PaginationBar/>

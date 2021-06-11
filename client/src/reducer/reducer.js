@@ -1,4 +1,4 @@
-import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT, FAILED_SEARCH } from '../actions_types/actions_types'
+import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT, FAILED_SEARCH, GET_PRODUCTS_BY_CATEGORY } from '../actions_types/actions_types'
 
 const initialState = {
     products: [],
@@ -32,6 +32,15 @@ const reducer = (state = initialState, action = {}) => {
                 page: action.payload.pageNumber,
                 pages: action.payload.pages,
                 categories: action.payload.categories,
+            }
+        }
+        case GET_PRODUCTS_BY_CATEGORY: {
+            return {
+                ...state,
+                products: action.payload.products,
+                nextPage: action.payload.nextPage ? action.payload.nextPage : '',
+                page: action.payload.pageNumber,
+                pages: action.payload.pages,
             }
         }
         case UPDATE_SEARCHING: {

@@ -3,7 +3,7 @@ import { Box, Button }from '@material-ui/core';
 import { Home } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles';
 
-import { getProducts, getAllProducts, updateCategory } from '../../actions/actions.js'
+import { getProductsByCategory, getAllProducts, updateCategory } from '../../actions/actions.js'
 
 export default function HomeLeftBar() {
 
@@ -18,7 +18,7 @@ export default function HomeLeftBar() {
     }
 
     function handleClick(category) {
-        dispatch(getProducts({name: searched, category, order, filter}))
+        dispatch(getProductsByCategory({name: searched, category, order, filter}))
         dispatch(updateCategory(category))
     }
 

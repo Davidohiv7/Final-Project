@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT, FAILED_SEARCH } from '../actions_types/actions_types'
+import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT, FAILED_SEARCH, GET_PRODUCTS_BY_CATEGORY } from '../actions_types/actions_types'
 
 export function getAllProducts() {
     return (dispatch) => {
@@ -9,6 +9,18 @@ export function getAllProducts() {
                    dispatch({type: GET_ALL_PRODUCTS, payload: res.data});
                 })
                 .catch(e => console.log(e))
+    }
+}
+
+export function getProductsByCategory(obj) {
+    console.log(obj)
+    return (dispatch) => {
+        return Axios.get("http://localhost:3001/products", {params: obj})
+                .then(res => res.data)
+                .then(res => {
+                   dispatch({type: GET_PRODUCTS_BY_CATEGORY, payload: res.data})
+                })
+                .catch(e => dispatch({type: FAILED_SEARCH}))
     }
 }
 

@@ -30,8 +30,6 @@ export default function ProductCards({ product }) {
     const [scoreArray, setScoreArray] = useState([]);
     const [modalState, setModalState] = useState(false);
 
-    const ImageHC = 'https://ep01.epimg.net/elpais/imagenes/2018/02/22/buenavida/1519317833_625490_1519382023_noticia_normal.jpg';
-
     useEffect(() => {
         const newScoreArray = createArrayFromNumber(product.score)
         setScoreArray(newScoreArray)
@@ -55,7 +53,7 @@ export default function ProductCards({ product }) {
                     <CardMedia
                         className={classes.image}
                         title={product.name}
-                        image={ImageHC}
+                        image={product.Images[0].url}
                     />
                     <CardContent className={classes.cardContent}>
                         <Typography align='center' variant="p" color='secondary' >{product.name}</Typography>

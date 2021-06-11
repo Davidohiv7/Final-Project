@@ -28,7 +28,7 @@ export default function SortSelect() {
                 onChange={handleSortChange}
                 label='Sort by...'
             >
-                <MenuItem value={''}>-</MenuItem>
+                <MenuItem value={'name,ASC'}>-</MenuItem>
                 <MenuItem value={'name,ASC'}>A-Z</MenuItem>
                 <MenuItem value={'name,DESC'}>Z-A</MenuItem>
                 <MenuItem value={'price,DESC'}>Highest price</MenuItem>

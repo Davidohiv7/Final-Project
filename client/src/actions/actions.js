@@ -1,22 +1,46 @@
 import Axios from 'axios';
-
-export const GET_PRODUCTS = 'GetProducts';
-export const SET_SORT = 'SetSort';
+import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT } from '../actions_types/actions_types'
 
 export function getAllProducts() {
     return (dispatch) => {
         return Axios.get("http://localhost:3001/products")
                 .then(res => res.data)
                 .then(res => {
-                    console.log(res.data)
-                   dispatch({type: GET_PRODUCTS, payload: res.data});
-                });
+                   dispatch({type: GET_ALL_PRODUCTS, payload: res.data});
+                })
+                .catch(e => console.log(e))
     }
 }
 
-export const changeSort = value => dispatch => {
-    return dispatch({
-        type: SET_SORT,
-        payload: value
-    })
+export function getProducts(obj) {
+    console.log(obj)
+    return (dispatch) => {
+        return Axios.get("http://localhost:3001/products", {params: obj})
+                .then(res => res.data)
+                .then(res => {
+                   dispatch({type: GET_PRODUCTS, payload: res.data})
+                })
+                .catch(e => console.log(e))
+    }
+}
+
+export const updateSearching = searchedWord => {
+        return {
+        type: UPDATE_SEARCHING,
+        payload: searchedWord
+    }
+}
+
+export const updateSorting = (filter, order) => {
+    return {
+        type: UPDATE_SORT,
+        payload: {filter, order}
+    }
+}
+
+export const updateCategory = (category) => {
+    return {
+        type: UPDATE_CATEOGRY,
+        payload: category
+    }
 }

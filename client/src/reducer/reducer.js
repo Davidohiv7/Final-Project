@@ -1,22 +1,66 @@
-import { GET_PRODUCTS, SET_SORT } from '../actions/actions'
+import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT, FAILED_SEARCH } from '../actions_types/actions_types'
 
 const initialState = {
-    sortValue: '',
     products: [],
+    nextPage: '',
+    pages: '',
+    page: '',
+    searched: '',
+    order: '',
+    filter: '',
+    categories: [],
+    category: ''
 };
 
 const reducer = (state = initialState, action = {}) => {
     switch (action.type) {
-        case GET_PRODUCTS: {
-            return {
-                ...initialState,
-                products: action.payload,
-            }
-        }
-        case SET_SORT: {
+        case GET_ALL_PRODUCTS: {
             return {
                 ...state,
-                sortValue: action.payload
+                products: action.payload.products,
+                nextPage: action.payload.nextPage ? action.payload.nextPage : '',
+                page: action.payload.pageNumber,
+                pages: action.payload.pages,
+                categories: action.payload.categories,
+            }
+        }
+        case GET_PRODUCTS: {
+            return {
+                ...state,
+                products: action.payload.products,
+                nextPage: action.payload.nextPage ? action.payload.nextPage : '',
+                page: action.payload.pageNumber,
+                pages: action.payload.pages,
+                categories: action.payload.categories,
+            }
+        }
+        case UPDATE_SEARCHING: {
+            return {
+                ...state,
+                searched: action.payload,
+            }
+        }
+        case UPDATE_SORT: {
+            return {
+                ...state,
+                order: action.payload.order,
+                filter: action.payload.filter,
+            }
+        }
+        case UPDATE_CATEOGRY: {
+            return {
+                ...state,
+                category: action.payload,
+            }
+        }
+        case FAILED_SEARCH: {
+            return {
+                ...state,
+                products: '',
+                nextPage: '',
+                page: '',
+                pages: '',
+                categories: '',
             }
         }
         default:

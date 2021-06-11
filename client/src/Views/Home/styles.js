@@ -11,23 +11,28 @@ const useStyles = makeStyles((theme) => ({
     },
     grid_container: {
         marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(2),
         borderRadius: 5,
         color: theme.palette.secondary.main,
         textAlign: 'center',
     },
-    filter: {
-        backgroundColor: theme.palette.primary.main,
-        paddingBottom: theme.spacing(40),
-        paddingTop: theme.spacing(3),
-    },
+    
     button: {
         background: theme.palette.primary.dark,
         variant: "contained",
         color: "white",
         borderRadius: 5,
     },
-    links: {
-        color: theme.palette.secondary.main,
+    filterGrid: {
+        backgroundColor: theme.palette.primary.main,
+        borderRadius: theme.shape.borderRadius,
+        marginTop: 11,
+        marginBottom: 11,
+        boxShadow: '1px 1px 8px -1px rgba(0,0,0,0.6)',
+    },
+    catalogueContainer: {
+        marginLeft: theme.spacing(5),
+        height: "57%",
     }
 }));
 

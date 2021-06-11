@@ -6,8 +6,8 @@ const initialState = {
     pages: '',
     page: '',
     searched: '',
-    order: '',
-    filter: '',
+    order: 'ASC',
+    filter: 'name',
     categories: [],
     category: ''
 };
@@ -22,6 +22,8 @@ const reducer = (state = initialState, action = {}) => {
                 page: action.payload.pageNumber,
                 pages: action.payload.pages,
                 categories: action.payload.categories,
+                order: 'ASC',
+                filter: 'name',
             }
         }
         case GET_PRODUCTS: {

@@ -2,11 +2,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { MenuItem, InputLabel, FormControl, Select } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { getProducts, updateSorting } from '../../../actions/actions.js';
+import { getProductsByCategory, updateSorting } from '../../../actions/actions.js';
 
 export default function SortSelect() {
 
-    const { category, page, searched } = useSelector((state) => ({ ...state }))
+    const { category, page, searched, filter, order } = useSelector((state) => ({ ...state }))
 
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -15,7 +15,7 @@ export default function SortSelect() {
     const handleSortChange = event => {
         let filter = event.target.value.split(',')[0];
         let order = event.target.value.split(',')[1];
-        dispatch(getProducts({name: searched, category, filter, order, page}))
+        dispatch(getProductsByCategory({name: searched, category, filter, order, page}))
         dispatch(updateSorting(filter, order))
       };
 
@@ -27,8 +27,8 @@ export default function SortSelect() {
                 className={classes.select}
                 onChange={handleSortChange}
                 label='Sort by...'
+                value={`${filter},${order}`}
             >
-                <MenuItem value={'name,ASC'}>-</MenuItem>
                 <MenuItem value={'name,ASC'}>A-Z</MenuItem>
                 <MenuItem value={'name,DESC'}>Z-A</MenuItem>
                 <MenuItem value={'price,DESC'}>Highest price</MenuItem>

@@ -4,7 +4,7 @@ import { autoPlay } from 'react-swipeable-views-utils';
 
 //MaterialUI
 import { useTheme } from '@material-ui/core/styles';
-import { Paper, Typography, Button, MobileStepper } from '@material-ui/core';
+import { Button, MobileStepper } from '@material-ui/core';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
 
 //Stylesheet

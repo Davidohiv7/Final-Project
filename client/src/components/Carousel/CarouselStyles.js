@@ -1,0 +1,25 @@
+import { fade, makeStyles } from '@material-ui/core/styles';
+
+export const useStyles = makeStyles((theme) => ({
+    root: {
+      width: '100%',
+      flexGrow: 1,
+      height: 150,
+      borderRadius: '2px',
+      overflow: 'hidden',
+    },
+    img: {
+      height: 150,
+      display: 'block',
+      width: '100%',
+      overflow: 'hidden',
+      width: '100%',
+    },
+    stepper: {
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        height: 20,
+        position: 'relative',
+        top: '-35px',
+    }
+  }));
+

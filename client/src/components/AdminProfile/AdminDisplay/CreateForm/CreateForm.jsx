@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux'
 
 //Imports Material UI components:
 import { Box, CardContent, Tab, Tabs, TextField, InputAdornment, Button, FormControl,InputLabel, Select, MenuItem }from '@material-ui/core'
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import useStyles from './styles';
+import { getCategories } from '../../../../actions/actions';
 
-export default function CreateForm() {
+function CreateForm({categories, getCategories}) {
+
+
+    useEffect(() => {
+        getCategories()
+    }, [])
 
     const classes = useStyles();
 
@@ -30,24 +38,14 @@ export default function CreateForm() {
                     <TextField className= {classes.input} id="outlined-number" label="Stock" type="number" InputLabelProps={{shrink: true,}} variant="outlined"/>
                     <TextField className= {classes.input} id="outlined-basic" label="Description" variant="outlined" multiline />
 
-                <FormControl className= {classes.input} variant="outlined">
-                    <InputLabel id="demo-simple-select-outlined-label">Categories</InputLabel>
-                    <Select
-                    labelId="demo-simple -select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={'categories'}
-                    label="Categories"
-                    >
-                    <MenuItem value="" >
-                        <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                </FormControl>
+                <Autocomplete
+                    className = {classes.input}
+                    options={categories}
+                    getOptionLabel={(option) => option.name}
+                    renderInput={(params) => <TextField {...params} label="Categories" variant="outlined" />}
+                />
 
-                    <Button className = {classes.button}>Create</Button>
+                    <Button onClick= {()=>console.log(categories)} className = {classes.button}>Create</Button>
                 </form>
             </CardContent>
             }
@@ -64,3 +62,23 @@ export default function CreateForm() {
         </Box>
     )
 }
+
+// MapStateToProps for access to specific items of the store-state
+function mapStateToProps(state) {
+    return {
+        categories: state.categories
+    };
+    }
+
+  // MapDispatchToProps to directly dispatch an action when called in this component
+    function mapDispatchToProps(dispatch) {
+    return {
+        getCategories: () => dispatch(getCategories()),
+    };
+    }
+
+  // Connects the Component with the store
+    export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+    )(CreateForm);

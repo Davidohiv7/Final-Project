@@ -2,6 +2,7 @@
 import React from 'react';
 import NavBar from './Views/NavBar/NavBar'
 import UserProfile from './components/UserProfile/UserProfile'
+import AdminProfile from './components/AdminProfile/AdminProfile'
 import Home from './Views/Home/Home.jsx'
 import { ThemeProvider } from '@material-ui/core/styles'
 import theme from './themeConfig';
@@ -25,6 +26,11 @@ export default function App() {
       <Route
         exact path='/user'
         render={() => <UserProfile/>}
+      />
+
+      <Route
+        exact path='/admin'
+        render={() => <AdminProfile/>}
       />
 
       <Route

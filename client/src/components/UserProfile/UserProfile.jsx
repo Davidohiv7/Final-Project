@@ -18,7 +18,7 @@ export default function Home() {
         <Grid item xs={2} className={classes.filterGrid}>
           <CardContent align= 'center'>
             <Typography  align='center' variant="h5" color="secondary" display='inline'>Username</Typography>
-            <Avatar className={classes.profilePic} alt='Remy Sharp'>U</Avatar>
+            <Avatar className={classes.profilePic}>U</Avatar>
           </CardContent>
         </Grid>
         <Grid item xs={9}>

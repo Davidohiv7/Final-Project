@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from '@material-ui/lab';
-import { getProducts } from '../../../actions/actions.js';
+import { getProducts } from '../../../actions/home/home_actions';
 
 export default function PaginationBar() {
 
-  const { pages, category, page, searched, order, filter } = useSelector((state) => ({ ...state }))
+  const { pages, category, page, searched, order, filter } = useSelector((state) => ({ ...state.homeReducer }))
 
   const dispatch = useDispatch();
 

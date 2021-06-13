@@ -26,7 +26,7 @@ export default function NavBar() {
                     <ShoppingCart/>
                 </Button>
             </Link>
-            <Link to="/login">
+            <Link to="/authentication">
               <Button className={classes.button}>Login/Register</Button>
             </Link>
           </div>

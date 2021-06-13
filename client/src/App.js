@@ -7,7 +7,7 @@ import { ThemeProvider } from '@material-ui/core/styles'
 import theme from './themeConfig';
 import Footer from "./Views/Footer/Footer";
 import { Route } from 'react-router-dom';
-import LoginRegister from './components/Login/LoginRegister'
+import Authentication from './Views/Authentication/Authentication'
 
 
 export default function App() {
@@ -29,8 +29,8 @@ export default function App() {
       />
         
       <Route
-        exact path='/login'
-        render={() => <LoginRegister/>}
+        exact path='/authentication'
+        render={() => <Authentication/>}
       />
 
       <Route

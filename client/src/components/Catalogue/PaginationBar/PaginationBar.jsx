@@ -4,7 +4,7 @@ import { getProducts } from '../../../actions/actions.js';
 
 export default function PaginationBar() {
 
-  const { pages, category, page, searched, order, filter } = useSelector((state) => ({ ...state }))
+  const { pages, category, page, searched, order, filter } = useSelector((state) => ({ ...state.homeReducer }))
 
   const dispatch = useDispatch();
 

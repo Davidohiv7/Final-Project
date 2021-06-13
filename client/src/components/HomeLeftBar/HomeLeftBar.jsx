@@ -7,7 +7,7 @@ import { getProductsByCategory, getAllProducts, updateCategory, updateSearching 
 
 export default function HomeLeftBar() {
 
-    const { searched, order, filter, categories } = useSelector((state) => ({ ...state }))
+    const { searched, order, filter, categories } = useSelector((state) => ({ ...state.homeReducer }))
 
     const classes = useStyles();  
     const dispatch = useDispatch();

@@ -6,7 +6,7 @@ import { getProductsByCategory, updateSorting } from '../../../actions/actions.j
 
 export default function SortSelect() {
 
-    const { category, page, searched, filter, order } = useSelector((state) => ({ ...state }))
+    const { category, page, searched, filter, order } = useSelector((state) => ({ ...state.homeReducer }))
 
     const classes = useStyles();
     const dispatch = useDispatch();

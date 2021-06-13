@@ -8,7 +8,7 @@ import SignUp from '../../components/Sign up/SignUp'
 
 export default function Authentication() {
     let classes = useStyles();
-    const [switchState, setSwitchState] = useState(true);
+    const [switchState, setSwitchState] = useState(false);
 
 
     return (

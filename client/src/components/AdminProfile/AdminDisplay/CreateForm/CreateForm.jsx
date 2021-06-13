@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux'
 
 //Imports Material UI components:
-import { Box, CardContent, Tab, Tabs, TextField, InputAdornment, Button, FormControl,InputLabel, Select, MenuItem }from '@material-ui/core'
+import { Box, CardContent, Tab, Tabs, TextField, InputAdornment, Button, Paper, Typography }from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import useStyles from './styles';
 import { getCategories } from '../../../../actions/actions';
 
 function CreateForm({categories, getCategories}) {
-
+    
+    const [selectedTab, setSelectedTab] = useState(0);
+    const [selectedCategories, setSelectedCategories] = useState([]);
 
     useEffect(() => {
         getCategories()
@@ -16,7 +18,6 @@ function CreateForm({categories, getCategories}) {
 
     const classes = useStyles();
 
-    const [selectedTab, setSelectedTab] = useState(0);
 
     const handleChange = (event, newValue) => {
         setSelectedTab(newValue);
@@ -39,13 +40,28 @@ function CreateForm({categories, getCategories}) {
                     <TextField className= {classes.input} id="outlined-basic" label="Description" variant="outlined" multiline />
 
                 <Autocomplete
+                    id= 'categorySelector'
                     className = {classes.input}
                     options={categories}
                     getOptionLabel={(option) => option.name}
                     renderInput={(params) => <TextField {...params} label="Categories" variant="outlined" />}
+                    onChange={(e,v) => {
+                        if(!selectedCategories.includes(v.name)) {
+                            if(selectedCategories.length >= 10) alert('You can set up to 10 categories to a single product.')
+                            else setSelectedCategories([...selectedCategories, v.name])
+                        }
+                    }}
                 />
+                <Paper elevation={5} className = {classes.selectedCategories}>
+                    {selectedCategories.map((category)=> (
+                        <Paper key= {category} className= {classes.selectedCategory}>
+                            <Typography>{category}</Typography>
+                            <Button onClick= {() =>setSelectedCategories(selectedCategories.filter(c => c !== category))} value={category}  className= {classes.removeCategory}>X</Button>
+                        </Paper>
+                    ))}
+                </Paper>
 
-                    <Button onClick= {()=>console.log(categories)} className = {classes.button}>Create</Button>
+                    <Button className = {classes.button}>Create</Button>
                 </form>
             </CardContent>
             }

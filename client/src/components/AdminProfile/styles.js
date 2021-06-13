@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     slide: {
-        height: '100vh',
+        height: 'fit-content',
         marginLeft: '5%',
     },
 
@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
     
     button: {
         background: theme.palette.primary.dark,
+        '&:hover': {
+            background: '#4d0f00',
+          },
         color: "white",
         borderRadius: 5,
         margin: '4%',

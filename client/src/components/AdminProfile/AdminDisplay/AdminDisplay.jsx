@@ -5,7 +5,9 @@ import React from 'react';
 import {Container, Box, CardContent} from '@material-ui/core';
 import useStyles from './styles';
 
-import CreateForm from './CreateForm/CreateForm'
+import CreateForm from './CreateForm/CreateForm';
+import ManageProducts from './ManageProducts/ManageProducts'
+import ManageUsers from './ManageUsers/ManageUsers';
 
 
 export default function AdminDisplay({displayStatus}) {
@@ -21,7 +23,23 @@ export default function AdminDisplay({displayStatus}) {
   }
 
   if(displayStatus === 1) {
-    return (<h1>Manage Products</h1>)
+    return (
+      <CardContent className= {classes.formContainer}>
+        <ManageProducts/>
+      </CardContent>
+    )
+  }
+
+  if(displayStatus === 2) {
+    return (
+      <CardContent className= {classes.formContainer}>
+        <ManageUsers/>
+      </CardContent>
+    )
+  }
+
+  if(displayStatus === 3) {
+    return (<h1>Manage notifications</h1>)
   }
 
 

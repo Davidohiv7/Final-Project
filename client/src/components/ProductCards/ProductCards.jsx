@@ -77,7 +77,6 @@ export default function ProductCards({ product }) {
                             add to cart
                         </Button>
                     </Box>
-
                 </CardActionArea>
                 
             </Card>

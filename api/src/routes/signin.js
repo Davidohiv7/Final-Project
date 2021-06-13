@@ -20,13 +20,13 @@ signInRouter.post('/', async (req, res, next) => {
 
     const userExistCheck = await models.User.findOne({ where: { email }})
     if(!userExistCheck) {
-        return response.success(req, res, { message: 'The email or the password does not match' })
+        return response.error(req, res, { message: 'The email or the password does not match' })
     }
 
     const match = await bcrypt.compare(password, userExistCheck.password);
 
     if(!match) {
-        return response.success(req, res, { message: 'The email or the password does not match' })
+        return response.error(req, res, { message: 'The email or the password does not match' })
     }
 
     const jasonWebToken = jwt.sign({id: userExistCheck.id, username: userExistCheck.username}, SECRET_KEY_JWT)

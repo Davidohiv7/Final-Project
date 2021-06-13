@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { MenuItem, InputLabel, FormControl, Select } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { getProductsByCategory, updateSorting } from '../../../actions/actions.js';
+import { getProductsByCategory, updateSorting } from '../../../actions/home/home_actions';
 
 export default function SortSelect() {
 

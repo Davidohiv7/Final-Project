@@ -1,9 +1,9 @@
-import Axios from 'axios';
-import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT, FAILED_SEARCH, GET_PRODUCTS_BY_CATEGORY } from '../actions_types/actions_types'
+import axios from 'axios';
+import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT, FAILED_SEARCH, GET_PRODUCTS_BY_CATEGORY } from '../../actions_types/home/home_actions_types'
 
 export function getAllProducts() {
     return (dispatch) => {
-        return Axios.get("http://localhost:3001/products")
+        return axios.get("http://localhost:3001/products")
                 .then(res => res.data)
                 .then(res => {
                    dispatch({type: GET_ALL_PRODUCTS, payload: res.data});
@@ -13,9 +13,8 @@ export function getAllProducts() {
 }
 
 export function getProductsByCategory(obj) {
-    console.log(obj)
     return (dispatch) => {
-        return Axios.get("http://localhost:3001/products", {params: obj})
+        return axios.get("http://localhost:3001/products", {params: obj})
                 .then(res => res.data)
                 .then(res => {
                    dispatch({type: GET_PRODUCTS_BY_CATEGORY, payload: res.data})
@@ -25,9 +24,8 @@ export function getProductsByCategory(obj) {
 }
 
 export function getProducts(obj) {
-    console.log(obj)
     return (dispatch) => {
-        return Axios.get("http://localhost:3001/products", {params: obj})
+        return axios.get("http://localhost:3001/products", {params: obj})
                 .then(res => res.data)
                 .then(res => {
                    dispatch({type: GET_PRODUCTS, payload: res.data})

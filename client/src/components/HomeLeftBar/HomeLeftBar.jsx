@@ -3,7 +3,7 @@ import { Box, Button }from '@material-ui/core';
 import { Home } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles';
 
-import { getProductsByCategory, getAllProducts, updateCategory, updateSearching } from '../../actions/actions.js'
+import { getProductsByCategory, getAllProducts, updateCategory, updateSearching } from '../../actions/home/home_actions'
 
 export default function HomeLeftBar() {
 

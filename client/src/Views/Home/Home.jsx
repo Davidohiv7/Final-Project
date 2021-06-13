@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from "react-redux";
-import { getAllProducts } from './../../actions/actions';
+import { getAllProducts } from './../../actions/home/home_actions';
 
 // Material UI imports
 import { Grid, Paper, Container  } from '@material-ui/core';

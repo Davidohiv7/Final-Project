@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from '@material-ui/lab';
-import { getProducts } from '../../../actions/actions.js';
+import { getProducts } from '../../../actions/home/home_actions';
 
 export default function PaginationBar() {
 

@@ -22,7 +22,7 @@ signUpRouter.post('/', async (req, res, next) => {
             }
         })
         if(checkedUser) {
-            return res.send({message: 'This email is already taken'})
+            return response.error(req, res, {message: 'This email is already taken'})
         }
 
         const hashedPassword = bcrypt.hashSync(newUserData.password, saltRounds);

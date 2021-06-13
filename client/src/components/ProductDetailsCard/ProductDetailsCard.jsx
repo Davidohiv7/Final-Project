@@ -4,26 +4,31 @@ import { makeStyles } from '@material-ui/core/styles';
 //Import components
 import ProductDetailsTab from './ProductDetailsTab/ProductDetailsTab.jsx'
 //Imports Material UI components:
-import Paper from '@material-ui/core/Paper'
-import Card from '@material-ui/core/Card'
-import CardMedia from '@material-ui/core/CardMedia'
-import CardContent from '@material-ui/core/CardContent'
-import Box from '@material-ui/core/Box'
-import Typography from '@material-ui/core/Typography'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
-import Divider from '@material-ui/core/Divider'
+import {Paper, Card, CardMedia, CardContent, Box, Typography, TextField, Button, IconButton, Divider, Snackbar} from '@material-ui/core'
+import { Alert } from '@material-ui/lab';
 //Imports Material UI icons:
 import { Star, ShoppingCartOutlined, FavoriteBorder, Close } from '@material-ui/icons';
 //Custom functions
 import { addToCart, addToFavorites } from '../../assets/utils/productCardFunctions'
-
 export default function ProductDetailsCard({ product, scoreArray, setModalState }) {
 
     const classes = useStyles();
 
     const [quantity, setQuantity] = useState(1);
+    const [cartSnackbar, setCartSnackbar] = useState(false);
+    const [favSnackbar, setFavSnackbar] = useState(false);
+    const [alreadyFavSnackbar, setAlreadyFavSnackbar] = useState(false);
+
+    function handleAddToCart(product, quantity, setQuantity) {
+        addToCart(product, quantity, setQuantity)
+        setCartSnackbar(true)
+    }
+
+    async function handleAddToFavs(product) {
+        const addedToFav = addToFavorites(product)
+        if(addedToFav) return setFavSnackbar(true)
+        return setAlreadyFavSnackbar(true)
+    }
 
     return (
         <Paper className={classes.root} elevation={24} variant='elevation' >
@@ -64,7 +69,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                                         variant="outlined"
                                         color="initial"
                                         startIcon={<FavoriteBorder/>}
-                                        onClick={() => addToFavorites(product)}
+                                        onClick={() => handleAddToFavs(product)}
                                     >
                                         favourites
                                     </Button>
@@ -73,7 +78,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                                         variant="outlined"
                                         color="initial"
                                         startIcon={<ShoppingCartOutlined/>}
-                                        onClick={() => addToCart(product, quantity, setQuantity)}
+                                        onClick={() => handleAddToCart(product, quantity, setQuantity)}
                                     >
                                         add to cart
                                     </Button>
@@ -112,6 +117,24 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                     </Card>
                 </Box>
             </Box>
+            
+            <Snackbar open={cartSnackbar} autoHideDuration={3000} onClose={() => setCartSnackbar(false)} variant="filled">
+                <Alert onClose={() => setCartSnackbar(false)} severity="success">
+                    The product was successfully added to the cart!
+                </Alert>
+            </Snackbar>
+
+            <Snackbar open={favSnackbar} autoHideDuration={3000} onClose={() => setFavSnackbar(false)} variant="filled">
+                <Alert onClose={() => setFavSnackbar(false)} severity="success">
+                    The product was successfully added to favourites!
+                </Alert>
+            </Snackbar>
+
+            <Snackbar open={alreadyFavSnackbar} autoHideDuration={3000} onClose={() => setAlreadyFavSnackbar(false)} variant="filled">
+                <Alert onClose={() => setAlreadyFavSnackbar(false)} severity="info">
+                    The product is already in favourites!
+                </Alert>
+            </Snackbar>
 
         </Paper>             
     )
@@ -162,5 +185,5 @@ const useStyles = makeStyles((theme) => ({
       },
     favButton: {
         width: 155,
-      }
+      },
     }));

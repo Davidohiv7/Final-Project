@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SIGN_UP, SIGN_IN } from '../../actions_types/authentication/authentication_actions_types'
+import { SIGN_UP, SIGN_IN, AUTH_ERROR } from '../../actions_types/authentication/authentication_actions_types'
 
 
 export function signIn(obj) {
@@ -7,11 +7,11 @@ export function signIn(obj) {
         try {
             const response = await axios.post("http://localhost:3001/signin", obj)
             if(response.data.data.token) {
-                console.log(response.data.data.token)
                 dispatch({type: SIGN_IN});
             }
         } catch (error) {
-            console.log(error.response.data.data.message)
+            dispatch({type: AUTH_ERROR, payload: error.response.data.data.message});
+            setTimeout(() => dispatch({type: AUTH_ERROR, payload: ''}), 5000)
         }
     }
 }
@@ -20,12 +20,13 @@ export function signUp(obj) {
     return async (dispatch) => {
         try {
             const response = await axios.post("http://localhost:3001/signup", obj)
+            console.log(response)
             if(response.data.data.token) {
-                console.log(response.data.data.token)
                 dispatch({type: SIGN_UP});
             }
         } catch (error) {
-            console.log(error.response.data.data.message)
+            dispatch({type: AUTH_ERROR, payload: error.response.data.data.message});
+            setTimeout(() => dispatch({type: AUTH_ERROR, payload: ''}), 5000)
         }
     }
 }

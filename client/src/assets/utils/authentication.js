@@ -4,7 +4,7 @@ function validateName(name) {
     const nameErrors = []
     if(!name) nameErrors.push('A name is required')
     if(name && !(/^[A-Za-z]+$/.test(name))) nameErrors.push('First name must contain only letters')
-    if(name && !(/^.{6,}$/.test(name))) nameErrors.push('First name must be 6 characters long minimum')
+    if(name && !(/^.{3,}$/.test(name))) nameErrors.push('First name must be 3 characters long minimum')
     if(nameErrors.length > 0) return nameErrors
 }
 
@@ -12,7 +12,7 @@ function validateLastName(lastName) {
     const lastNameErrors = []
     if(!lastName) lastNameErrors.push('A last name is required')
     if(lastName && !(/^[A-Za-z]+$/.test(lastName))) lastNameErrors.push('Last name must contain only letters')
-    if(lastName && !(/^.{6,}$/.test(lastName))) lastNameErrors.push('Last name must be 6 characters long minimum')
+    if(lastName && !(/^.{3,}$/.test(lastName))) lastNameErrors.push('Last name must be 3 characters long minimum')
     if(lastNameErrors.length > 0) return lastNameErrors
 }
 

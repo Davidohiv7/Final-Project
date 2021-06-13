@@ -1,7 +1,8 @@
-import { SIGN_UP, SIGN_IN } from '../../actions_types/authentication/authentication_actions_types'
+import { SIGN_UP, SIGN_IN, AUTH_ERROR } from '../../actions_types/authentication/authentication_actions_types'
 
 const initialState = {
     logged: false,
+    authMessage: '',
 };
 
 const authenticationReducer = (state = initialState, action = {}) => {
@@ -16,6 +17,12 @@ const authenticationReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 logged: true,
+            }
+        }
+        case AUTH_ERROR: {
+            return {
+                ...state,
+                authMessage: action.payload,
             }
         }
         default:

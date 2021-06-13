@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState  } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import useStyles from './styles';
-import { Box, Typography, TextField, Button } from '@material-ui/core';
+import { Box, Typography, TextField, Button, Snackbar, Popover  } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import { Add } from '@material-ui/icons';
 
-import { signUpValidation } from '../../assets/utils/authentication'
+import { signUp } from '../../actions/authentication/authentication_actions'
+
+import { signUpValidation, resetSignUpInput } from '../../assets/utils/authentication'
 
 
 export default function SignUp() {
@@ -13,7 +16,9 @@ export default function SignUp() {
 
     let history = useHistory();
 
-    const { logged } = useSelector((state) => ({ ...state.authenticationReducer }))
+    const dispatch = useDispatch();
+
+    const { logged, authMessage } = useSelector((state) => ({ ...state.authenticationReducer }))
 
     const [formInputs, setFormInputs] = React.useState({
         name: '',
@@ -22,11 +27,23 @@ export default function SignUp() {
         password: '',
     });
 
+    const [errorsArray, setErrorsArray] = useState([]);
+    const [succesSignInSnackbar, setSuccesSignInSnackbar] = useState(false);
+    const [errorSignInSnackbar, setErrorSignInSnackbar] = useState(false);
+    const [errorsPopover, setSuccesErrorsPopover] = useState(true);
+    const [errorsPopoverAnchor, setSuccesErrorsPopoverAnchor] = useState(null);
+
     useEffect(() => {
         if(logged) {
             history.push("/");
         }
     }, [logged])
+
+    useEffect(() => {
+        if(authMessage) {
+            return setErrorSignInSnackbar(true);
+        }
+    }, [authMessage])
 
     const handleInputChange = function(e) {
         setFormInputs({
@@ -35,19 +52,24 @@ export default function SignUp() {
             });
     }
 
-    function handleSubmit() {
+    function handleSubmit(e) {
+        e.preventDefault()
         const inputErrors = signUpValidation(formInputs)
         if(Object.keys(inputErrors).length === 0) {
-            return console.log('No errors')
+            dispatch(signUp(formInputs))
+            return setFormInputs(resetSignUpInput)
         }
-        return console.log(inputErrors)
+        setErrorsArray(Object.values(inputErrors).reduce((acc, v) => [...acc, ...v], []))
+        setSuccesErrorsPopover(true)
+        return setSuccesErrorsPopoverAnchor(e.currentTarget)
     }
 
 
     return (
         <Box display='flex' flexDirection='column' alignItems='center' className={classes.root}>
             <Typography variant="h4" color="initial">Sign up</Typography>
-                <Box display='flex' flexDirection='column' alignItems='center' className={classes.inputsContainer}>
+            <form onSubmit={e => handleSubmit(e)}>
+            <Box display='flex' flexDirection='column' alignItems='center' className={classes.inputsContainer}>
                     <TextField
                         className={classes.input}
                         name="name"
@@ -87,15 +109,52 @@ export default function SignUp() {
                         type='password'
                     />
                     <Button
+                        type="submit"
                         className={classes.button}
                         variant="contained"
                         color="primary"
                         startIcon={<Add />}
-                        onClick={handleSubmit}
                     >
                         sign up
                     </Button>
                 </Box>
+            </form>
+
+                <Snackbar open={succesSignInSnackbar} autoHideDuration={3000} onClose={() => setSuccesSignInSnackbar(false)} variant="filled">
+                    <Alert onClose={() => setSuccesSignInSnackbar(false)} severity="success">
+                        Success sign up
+                    </Alert>
+                </Snackbar>
+
+                <Snackbar open={errorSignInSnackbar} autoHideDuration={3000} onClose={() => setErrorSignInSnackbar(false)} variant="filled">
+                    <Alert onClose={() => setErrorSignInSnackbar(false)} severity="error">
+                        {authMessage}
+                    </Alert>
+                </Snackbar>
+
+                <Popover
+                    open={errorsPopover}
+                    anchorEl={errorsPopoverAnchor}
+                    onClose={() => setSuccesErrorsPopover(false)}
+                    anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                    }}
+                    transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                    }}
+                >
+
+                    <Box p={2}>
+                        {
+                            errorsArray && errorsArray.map(e => {
+                                return <Typography>- {e}</Typography>
+                            })
+                        }
+                    </Box>
+                    
+                </Popover>
         </Box>
     )
 }

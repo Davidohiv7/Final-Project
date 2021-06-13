@@ -26,7 +26,7 @@ export default function SignIn() {
     const [errorsArray, setErrorsArray] = useState([]);
     const [succesSignInSnackbar, setSuccesSignInSnackbar] = useState(false);
     const [errorSignInSnackbar, setErrorSignInSnackbar] = useState(false);
-    const [errorsPopover, setSuccesErrorsPopover] = useState(true);
+    const [errorsPopover, setSuccesErrorsPopover] = useState(false);
     const [errorsPopoverAnchor, setSuccesErrorsPopoverAnchor] = useState(null);
 
     useEffect(() => {

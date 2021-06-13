@@ -4,6 +4,7 @@ const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: "3%",
     marginBottom: "3%",
+    height: theme.spacing(100),
   },
 
   slide: {
@@ -33,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 11,
     marginBottom: 11,
     boxShadow: "1px 1px 8px -1px rgba(0,0,0,0.6)",
+    maxWidth: "70%",
   },
   catalogueContainer: {
     marginLeft: theme.spacing(5),
@@ -45,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
   BoxLogOut: {
     position: "absolute",
-    marginTop: "28%",
+    marginTop: "26%",
     marginLeft: 28,
   },
   tableContainer: {
@@ -65,6 +67,10 @@ const useStyles = makeStyles((theme) => ({
   },
   head: {
     backgroundColor: theme.palette.primary.main,
+  },
+  screen: {
+    marginLeft: theme.spacing(5),
+    height: "57%",
   },
 }));
 

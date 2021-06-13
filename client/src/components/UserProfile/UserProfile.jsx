@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 // Material UI imports
 import {
@@ -19,6 +19,7 @@ import {
   TextField,
   IconButton,
 } from "@material-ui/core";
+
 import useStyles from "./styles";
 import { Delete } from "@material-ui/icons";
 export default function Home() {
@@ -43,10 +44,10 @@ export default function Home() {
       quantity: "30",
     },
   ];
-
+  const [screenDisplay, setScreenDisplay] = useState("orderHistory");
   return (
     <Container maxWidth="lg">
-      <Grid container spacing={3} className={classes.container}>
+      <Grid container spacing={10} className={classes.container}>
         <Grid item xs={2} className={classes.filterGrid}>
           <CardContent align="center">
             <Typography
@@ -65,6 +66,7 @@ export default function Home() {
             </Box>
           </CardContent>
         </Grid>
+
         <Grid className={classes.Screen} item xs={9}>
           <Box>
             <TableContainer

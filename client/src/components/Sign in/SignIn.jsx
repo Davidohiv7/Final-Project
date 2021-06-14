@@ -5,6 +5,7 @@ import useStyles from './styles';
 import { Box, Typography, TextField, Button, Snackbar, Popover } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { VpnKey } from '@material-ui/icons';
+import GoogleAuth from '../GoogleAuth/GoogleAuth'
 
 import { signIn } from '../../actions/authentication/authentication_actions'
 
@@ -96,6 +97,10 @@ export default function SignIn() {
                         sign in
                     </Button>
                     
+                    <Typography variant="body1" > or </Typography>
+
+                    <GoogleAuth/>
+
                 </Box>
             </form>
                 

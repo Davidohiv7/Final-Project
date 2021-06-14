@@ -30,7 +30,7 @@ signUpRouter.post('/', async (req, res, next) => {
         const newUser = await models.User.create({
             ...newUserData,
             password: hashedPassword,
-            role: "staff",
+            role: "customer",
             createdAt: new Date(),
             updatedAt: new Date() 
         })

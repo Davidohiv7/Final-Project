@@ -10,6 +10,8 @@ import theme from './themeConfig';
 import Footer from "./Views/Footer/Footer";
 import { Route } from 'react-router-dom';
 import Authentication from './Views/Authentication/Authentication'
+import GoogleAuthSuccess from '../src/components/GoogleAuth/GoogleAuthSuccess/GoogleAuthSuccess'
+import GoogleAuthError from '../src/components/GoogleAuth/GoogleAuthError/GoogleAuthError'
 
 
 export default function App() {
@@ -48,6 +50,16 @@ export default function App() {
       <Route
         path='/'
         render={() => <Footer/>}
+      />
+
+      <Route
+        path='/authentication/google/success'
+        render={() => <GoogleAuthSuccess/>}
+      />
+
+      <Route
+        path='/authentication/google/error'
+        render={() => <GoogleAuthError/>}
       />
 
     </ThemeProvider>

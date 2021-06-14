@@ -8,6 +8,7 @@ export function signIn(obj) {
             const response = await axios.post("http://localhost:3001/signin", obj)
             if(response.data.data.token) {
                 dispatch({type: SIGN_IN});
+                localStorage.setItem('jwt', `Bearer ${response.data.data.token}`)
             }
         } catch (error) {
             dispatch({type: AUTH_ERROR, payload: error.response.data.data.message});
@@ -23,6 +24,7 @@ export function signUp(obj) {
             console.log(response)
             if(response.data.data.token) {
                 dispatch({type: SIGN_UP});
+                localStorage.setItem('jwt', `Bearer ${response.data.data.token}`)
             }
         } catch (error) {
             dispatch({type: AUTH_ERROR, payload: error.response.data.data.message});

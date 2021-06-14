@@ -8,11 +8,11 @@ const useStyles = makeStyles((theme) => ({
         height: '100%',
     },
     input: {
-        marginTop: 25,
+        marginTop: 18,
         width: 250,
     },
     button: {
-        marginTop: 25,
+        marginTop: 20,
         width: 120,
     },
 }));

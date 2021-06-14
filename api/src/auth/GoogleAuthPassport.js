@@ -20,7 +20,7 @@ passport.use(new GoogleStrategy({
         name: profile.name.givenName,
         lastName: profile.name.familyName,
         password: '1234',
-        role: "staff",
+        role: "customer",
         createdAt: new Date(),
         updatedAt: new Date(),
     }

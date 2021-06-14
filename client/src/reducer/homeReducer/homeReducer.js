@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-import { GET_CATEGORIES, GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT, FAILED_SEARCH, GET_PRODUCTS_BY_CATEGORY, CREATE_CATEGORY } from '../actions_types/actions_types'
+import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT, FAILED_SEARCH, GET_PRODUCTS_BY_CATEGORY } from '../../actions_types/home/home_actions_types'
 
 const initialState = {
     products: [],
@@ -7,13 +6,13 @@ const initialState = {
     pages: '',
     page: '',
     searched: '',
-    order: '',
-    filter: '',
+    order: 'ASC',
+    filter: 'name',
     categories: [],
     category: ''
 };
 
-const reducer = (state = initialState, action = {}) => {
+const homeReducer = (state = initialState, action = {}) => {
     switch (action.type) {
         case GET_ALL_PRODUCTS: {
             return {
@@ -23,6 +22,8 @@ const reducer = (state = initialState, action = {}) => {
                 page: action.payload.pageNumber,
                 pages: action.payload.pages,
                 categories: action.payload.categories,
+                order: 'ASC',
+                filter: 'name',
             }
         }
         case GET_PRODUCTS: {
@@ -73,28 +74,9 @@ const reducer = (state = initialState, action = {}) => {
                 categories: '',
             }
         }
-        case GET_CATEGORIES: {
-            return {
-            ...state,
-            categories: action.payload
-            }
-        }
-        case CREATE_CATEGORY: {
-            return {
-            ...state,
-            categories: [...state.categories, action.payload]
-            }
-        }
         default:
             return {...state}
     }
 } 
-=======
-import { combineReducers } from 'redux'
-import homeReducer from './homeReducer/homeReducer'
-import authenticationReducer from './authenticationReducer/authenticationReducer'
 
-const reducer = combineReducers({ homeReducer, authenticationReducer })
->>>>>>> f9756a75e636b14fdc1b01769386c1a3b06a0f7c
-
-export default reducer
+export default homeReducer

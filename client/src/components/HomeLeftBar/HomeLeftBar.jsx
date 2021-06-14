@@ -3,11 +3,11 @@ import { Box, Button }from '@material-ui/core';
 import { Home } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles';
 
-import { getProductsByCategory, getAllProducts, updateCategory } from '../../actions/actions.js'
+import { getProductsByCategory, getAllProducts, updateCategory, updateSearching } from '../../actions/home/home_actions'
 
 export default function HomeLeftBar() {
 
-    const { searched, order, filter, categories } = useSelector((state) => ({ ...state }))
+    const { searched, order, filter, categories } = useSelector((state) => ({ ...state.homeReducer }))
 
     const classes = useStyles();  
     const dispatch = useDispatch();
@@ -15,6 +15,7 @@ export default function HomeLeftBar() {
     function handleGetAllClick() {
         dispatch(getAllProducts())
         dispatch(updateCategory(''))
+        dispatch(updateSearching(''))
     }
 
     function handleClick(category) {

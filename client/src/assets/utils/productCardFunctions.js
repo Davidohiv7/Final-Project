@@ -38,8 +38,11 @@ export function addToFavorites(product) {
         const validateIfProductExists = newFavourites.filter(p => p.id === product.id)
         if(validateIfProductExists.length === 0) {
             newFavourites.push(product)
+        }else {
+            return false
         }
     }
     const favouritesData = JSON.stringify(newFavourites)
     localStorage.setItem('favourites', favouritesData)
+    return true
 }

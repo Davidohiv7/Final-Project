@@ -15,7 +15,7 @@ export default function ProductDetailsTab({ product }) {
     const [selectedTab, setSelectedTab] = useState(0);
 
     const handleChange = (event, newValue) => {
-      setSelectedTab(newValue);
+        setSelectedTab(newValue);
     };
 
     return (
@@ -43,7 +43,7 @@ export default function ProductDetailsTab({ product }) {
 //Custom styles
 const useStyles = makeStyles((theme) => ({
     root: {
-      },
+    },
     tabContainer: {
         height: 180,
     },

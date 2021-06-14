@@ -2,9 +2,12 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const routes = require('./routes/index.js');
-
+const passport = require('passport');
+require('dotenv').config()
 const server = express();
 
+require('./auth/JWTAuthPassport.js')
+require('./auth/GoogleAuthPassport')
 server.use(express.urlencoded({ extended: true, limit: '50mb' }));
 server.use(express.json({ limit: '50mb' }));
 server.use(cookieParser());
@@ -17,6 +20,8 @@ server.use((req, res, next) => {
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
     next();
   });
+
+server.use(passport.initialize())
 
 server.use('/', routes);
 

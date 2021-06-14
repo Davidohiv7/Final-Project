@@ -1,12 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from "react-redux";
 import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
 import { Eco, ShoppingCart } from '@material-ui/icons';
 import useStyles from './NavBarStyles';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { SIGN_IN } from '../../actions_types/authentication/authentication_actions_types';
 
 export default function NavBar() {
   let classes = useStyles();
 
+  const { logged } = useSelector((state) => ({ ...state.authenticationReducer }))
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const jwt = localStorage.getItem('jwt')
+    if(jwt && !logged) {
+      console.log('entro')
+      dispatch({ type: SIGN_IN })
+    }
+  }, [])
+  
   return (
     <div className={classes.root}>
       <AppBar position="static" color="primary">
@@ -26,7 +39,7 @@ export default function NavBar() {
                     <ShoppingCart/>
                 </Button>
             </Link>
-            <Link to="/login">
+            <Link to="/authentication">
               <Button className={classes.button}>Login/Register</Button>
             </Link>
           </div>

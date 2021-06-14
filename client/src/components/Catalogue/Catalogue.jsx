@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { getProducts, updateSearching, updateCategory } from '../../actions/actions';
+import { getProducts, updateSearching, updateCategory } from '../../actions/home/home_actions';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { Grid, Paper, InputBase, Typography } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
@@ -13,7 +13,7 @@ import SortSelect from './SortSelect/SortSelect.jsx'
 export default function Catalogue() {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const { products, filter, order } = useSelector((state) => ({ ...state }))
+    const { searched, products, filter, order } = useSelector((state) => ({ ...state.homeReducer }))
 
     const handleSearchChange = event => {
       dispatch(getProducts({name: event.target.value, filter, order}))
@@ -37,6 +37,7 @@ export default function Catalogue() {
                         }}
                         inputProps={{ 'aria-label': 'search' }}
                         onChange={handleSearchChange}
+                        value={searched}
                     />
 
                 </div>

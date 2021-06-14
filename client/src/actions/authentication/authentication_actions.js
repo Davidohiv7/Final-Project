@@ -36,7 +36,6 @@ export function signUp(obj) {
 export function getUserData(jwt) {
     return async (dispatch) => {
         try {
-            console.log(jwt)
             const response = await axios.get("http://localhost:3001/user/data", { headers: { 'Authorization': jwt } })
             console.log(response)
         } catch (error) {

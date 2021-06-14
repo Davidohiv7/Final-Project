@@ -6,7 +6,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "3%",
     height: theme.spacing(100),
   },
-
   slide: {
     padding: theme.spacing(50),
     marginLeft: "5%",
@@ -43,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(15),
     height: theme.spacing(15),
     margin: 10,
+    boxShadow: "1px 9px 18px -1px rgba(0,0,0,1)",
   },
   BoxLogOut: {
     position: "absolute",
@@ -71,6 +71,18 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(3),
     position: 'relative',
     marginTop: theme.spacing(10),
+  },
+  profile: {
+    border: 'solid',
+    borderRadius: theme.spacing(5),
+    borderColor: theme.palette.primary.main,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  section: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 }));
 

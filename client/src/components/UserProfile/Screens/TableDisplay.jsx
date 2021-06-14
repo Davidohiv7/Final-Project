@@ -13,11 +13,8 @@ import {
     TableRow,
     TableCell,
     TableBody,
-    TextField,
-    IconButton,
 } from "@material-ui/core";
 import useStyles from "./../styles";
-import { Delete } from "@material-ui/icons";
 
 export default function TableDisplay() {
     const classes = useStyles();
@@ -28,19 +25,22 @@ export default function TableDisplay() {
             name: "order024",
             Images:
                 "http://1.bp.blogspot.com/_TkpyopjpTII/TE-HiYKSpaI/AAAAAAAAAA8/DHEzm31ueFo/s1600/verduras1.jpg",
-            quantity: "20",
+            status: "On route",
+            total: '320',
         },
         {
             name: "order025",
             Images:
                 "http://1.bp.blogspot.com/_TkpyopjpTII/TE-HiYKSpaI/AAAAAAAAAA8/DHEzm31ueFo/s1600/verduras1.jpg",
-            quantity: "30",
+            status: "Delivered",
+            total: '340',
         },
         {
             name: "order026",
             Images:
                 "http://1.bp.blogspot.com/_TkpyopjpTII/TE-HiYKSpaI/AAAAAAAAAA8/DHEzm31ueFo/s1600/verduras1.jpg",
-            quantity: "30",
+            status: "Delivered",
+            total: '200',
         },
     ];
 
@@ -54,16 +54,10 @@ export default function TableDisplay() {
                 <TableRow>
                     <TableCell className={classes.title}>Product</TableCell>
                     <TableCell align="center" className={classes.title}>
-                        Quantity
+                        Status
                     </TableCell>
                     <TableCell align="center" className={classes.title}>
-                        Unit price
-                    </TableCell>
-                    <TableCell align="center" className={classes.title}>
-                        Total price
-                    </TableCell>
-                    <TableCell align="center" className={classes.title}>
-                        Delete
+                        Total spend
                     </TableCell>
                 </TableRow>
             </TableHead>
@@ -89,37 +83,11 @@ export default function TableDisplay() {
                                 </Box>
                             </TableCell>
                             <TableCell align="center">
-                                <TextField
-                                    size="small"
-                                    value={order.quantity}
-                                    className={classes.quantityInput}
-                                    type="number"
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    InputProps={{
-                                        inputProps: {
-                                            max: 99,
-                                            min: 1,
-                                        },
-                                    }}
-                                    variant="outlined"
-                                />
+                                <Typography>
+                                    {order.status}
+                                </Typography>
                             </TableCell>
-                            <TableCell align="center">${order.price} EA</TableCell>
-                            <TableCell align="center">
-                                ${(order.price * order.quantity).toFixed(2)}
-                            </TableCell>
-                            <TableCell align="center">
-                                <IconButton
-                                    variant="contained"
-                                    color="primary"
-                                    aria-label="delete"
-                                    onClick={(e) => console.log("hola")}
-                                >
-                                    <Delete />
-                                </IconButton>
-                            </TableCell>
+                            <TableCell align="center">${order.total} EA</TableCell>
                         </TableRow>
                     ))}
             </TableBody>

@@ -15,13 +15,20 @@ import useStyles from "./styles";
 
 //child components imports
 import TableDisplay from "./Screens/TableDisplay";
+import UserInfo from "./Screens/UserInfo";
 
 export default function Home() {
   const classes = useStyles();
   
   //local state used for the different screen displays
   const [screenDisplay, setScreenDisplay] = useState("orderHistory");
-  
+
+  //function to display the different screens
+  function displayScreens() {
+    if(screenDisplay==='orderHistory') return (<TableDisplay/>)
+    if(screenDisplay==='accountConfig') return (<UserInfo />)
+  }
+
   return (
     <Container maxWidth="lg">
       <Grid container spacing={5} className={classes.container}>
@@ -36,15 +43,15 @@ export default function Home() {
               Username
             </Typography>
             <Avatar className={classes.profilePic}></Avatar>
-            <Button className={classes.button}> Order History </Button>
-            <Button className={classes.button}> Account Configuration</Button>
+            <Button className={classes.button} onClick={() => setScreenDisplay('orderHistory')}> Order History </Button>
+            <Button className={classes.button} onClick={() => setScreenDisplay('accountConfig')}> Account Configuration</Button>
             <Box className={classes.BoxLogOut}>
               <Button className={classes.button}> Log Out </Button>
             </Box>
           </CardContent>
         </Grid>
         <Grid className={classes.screen} item xs={9}>
-            <TableDisplay/>
+            {displayScreens()}
         </Grid>
       </Grid>
     </Container>

@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { Box, CardContent, Tab, Tabs, TextField, InputAdornment, Button, Paper, Typography }from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import useStyles from './styles';
-import { getCategories, createCategory } from '../../../../actions/actions';
+import { getCategories, createCategory } from '../../../../actions/home/home_actions';
 
 function CreateForm({categories, getCategories, createCategory}) {
     

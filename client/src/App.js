@@ -50,10 +50,6 @@ export default function App() {
         render={() => <Footer/>}
       />
 
-<<<<<<< HEAD
-
-=======
->>>>>>> f9756a75e636b14fdc1b01769386c1a3b06a0f7c
     </ThemeProvider>
   )
 }

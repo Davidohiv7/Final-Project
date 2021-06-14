@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 //Imports Material UI components:
 import { TableContainer, Table, TableBody, TableCell, TableHead, TableRow, Paper, Button, Modal, Box, Backdrop, Fade}from '@material-ui/core'
 import useStyles from './styles';
-import { getAllProducts } from '../../../../actions/actions';
+import { getAllProducts } from '../../../../actions/home/home_actions';
 
 function ManageProducts({products, getAllProducts}) {
     const classes = useStyles();

@@ -64,7 +64,7 @@ export default function Home() {
               color="secondary"
               display="inline"
             >
-              {`${user.name} ${user.lastName}`}
+              {`${user && user.name} ${user && user.lastName}`}
             </Typography>
             <Avatar className={classes.profilePic}></Avatar>
             <Button className={classes.button} onClick={() => setScreenDisplay('orderHistory')}> Order History </Button>

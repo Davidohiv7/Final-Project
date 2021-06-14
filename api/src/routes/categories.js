@@ -8,5 +8,10 @@ router.get('/', async (req, res) => {
   return response.success(req, res, categories, 200)
 })
 
+router.post('/', async (req, res) => {
+  models.Category.create({name:req.body.name})
+  return response.success(req, res, null, 200)
+})
+
 module.exports = router;
 

@@ -1,4 +1,4 @@
-import { GET_CATEGORIES, GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT, FAILED_SEARCH, GET_PRODUCTS_BY_CATEGORY } from '../actions_types/actions_types'
+import { GET_CATEGORIES, GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT, FAILED_SEARCH, GET_PRODUCTS_BY_CATEGORY, CREATE_CATEGORY } from '../actions_types/actions_types'
 
 const initialState = {
     products: [],
@@ -76,6 +76,12 @@ const reducer = (state = initialState, action = {}) => {
             return {
             ...state,
             categories: action.payload
+            }
+        }
+        case CREATE_CATEGORY: {
+            return {
+            ...state,
+            categories: [...state.categories, action.payload]
             }
         }
         default:

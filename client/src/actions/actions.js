@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import {GET_CATEGORIES, GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT, FAILED_SEARCH, GET_PRODUCTS_BY_CATEGORY } from '../actions_types/actions_types'
+import {CREATE_CATEGORY, GET_CATEGORIES, GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT, FAILED_SEARCH, GET_PRODUCTS_BY_CATEGORY } from '../actions_types/actions_types'
 
 export function getAllProducts() {
     return (dispatch) => {
@@ -63,6 +63,16 @@ export function getCategories() {
                     dispatch({type: GET_CATEGORIES, payload: res.data})
                 })
                 .catch(e => dispatch({type: FAILED_SEARCH}))
+    }
+}
+
+export function createCategory(name) {
+    return (dispatch) => {
+        return Axios.post("http://localhost:3001/categories", {name: name})
+                    .then(res => {
+                        dispatch({type: CREATE_CATEGORY, payload: {name: name} })
+                    })
+                    .catch(e => console.error(e))
     }
 }
 

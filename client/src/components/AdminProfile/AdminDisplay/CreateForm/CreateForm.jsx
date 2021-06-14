@@ -5,16 +5,16 @@ import { connect } from 'react-redux'
 import { Box, CardContent, Tab, Tabs, TextField, InputAdornment, Button, Paper, Typography }from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import useStyles from './styles';
-import { getCategories } from '../../../../actions/actions';
+import { getCategories, createCategory } from '../../../../actions/actions';
 
-function CreateForm({categories, getCategories}) {
+function CreateForm({categories, getCategories, createCategory}) {
     
     const [selectedTab, setSelectedTab] = useState(0);
     const [selectedCategories, setSelectedCategories] = useState([]);
 
     useEffect(() => {
         getCategories()
-    }, [])
+    },[])
 
     const classes = useStyles();
 
@@ -69,8 +69,21 @@ function CreateForm({categories, getCategories}) {
             {selectedTab === 1 && 
             <CardContent className={classes.tabContainer}>
                 <form className= {classes.form}>
-                    <TextField className= {classes.input} id="outlined-basic" label="Name" variant="outlined" />
-                    <Button className = {classes.button}>Create</Button>
+                    <TextField className= {classes.input} id="nameOfCategory" label="Name" variant="outlined" />
+                    <Button 
+                    onClick= {async() => {
+                        await getCategories()
+                        for(let category of categories) {
+                            if(category.name === document.getElementById('nameOfCategory').value) {
+                                return alert(`${document.getElementById('nameOfCategory').value} category already exists.`)
+                            }
+                        }
+                        createCategory(document.getElementById('nameOfCategory').value)
+                        alert(`${document.getElementById('nameOfCategory').value} category has been created`)
+                        }
+                    } 
+                    className = {classes.button}>Create
+                    </Button>
                 </form>
             </CardContent>
             }
@@ -90,6 +103,7 @@ function mapStateToProps(state) {
     function mapDispatchToProps(dispatch) {
     return {
         getCategories: () => dispatch(getCategories()),
+        createCategory: (name) => dispatch(createCategory(name))
     };
     }
 

@@ -29,7 +29,7 @@ export default function Home() {
   let history = useHistory();
   const dispatch = useDispatch();
 
-  const { logged } = useSelector((state) => ({ ...state.authenticationReducer }))
+  const { logged, user } = useSelector((state) => ({ ...state.authenticationReducer }))
   
   //local state used for the different screen displays
   const [screenDisplay, setScreenDisplay] = useState("orderHistory");
@@ -44,7 +44,7 @@ export default function Home() {
   //function to display the different screens
   function displayScreens() {
     if(screenDisplay==='orderHistory') return (<TableDisplay/>)
-    if(screenDisplay==='accountConfig') return (<UserInfo />)
+    if(screenDisplay==='accountConfig') return (<UserInfo user={user} />)
   }
 
   function handleLogOut() {
@@ -64,7 +64,7 @@ export default function Home() {
               color="secondary"
               display="inline"
             >
-              Username
+              {`${user.name} ${user.lastName}`}
             </Typography>
             <Avatar className={classes.profilePic}></Avatar>
             <Button className={classes.button} onClick={() => setScreenDisplay('orderHistory')}> Order History </Button>

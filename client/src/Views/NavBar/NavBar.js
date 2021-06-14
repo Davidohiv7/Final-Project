@@ -19,6 +19,13 @@ export default function NavBar() {
       dispatch(getUserData(jwt))
     }
   }, [])
+
+  useEffect(() => {
+    const jwt = localStorage.getItem('jwt')
+    if(jwt && logged) {
+      dispatch(getUserData(jwt))
+    }
+  }, [logged])
   
   return (
     <div className={classes.root}>

@@ -37,7 +37,8 @@ export function getUserData(jwt) {
     return async (dispatch) => {
         try {
             const response = await axios.get("http://localhost:3001/user/data", { headers: { 'Authorization': jwt } })
-            console.log(response)
+            const userData = response.data.data
+            dispatch({type: GET_USER_DATA, payload: userData});
         } catch (error) {
             console.log(error)
         }

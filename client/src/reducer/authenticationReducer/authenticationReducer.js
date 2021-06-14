@@ -1,4 +1,4 @@
-import { SIGN_UP, SIGN_IN, GOOGLE_AUTH, AUTH_ERROR } from '../../actions_types/authentication/authentication_actions_types'
+import { SIGN_UP, SIGN_IN, GOOGLE_AUTH, AUTH_ERROR, LOG_OUT } from '../../actions_types/authentication/authentication_actions_types'
 
 const initialState = {
     logged: false,
@@ -23,6 +23,12 @@ const authenticationReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 logged: true,
+            }
+        }
+        case LOG_OUT: {
+            return {
+                ...state,
+                logged: false,
             }
         }
         case AUTH_ERROR: {

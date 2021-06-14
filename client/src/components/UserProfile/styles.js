@@ -45,9 +45,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "1px 9px 18px -1px rgba(0,0,0,1)",
   },
   BoxLogOut: {
-    position: "absolute",
-    marginTop: "26%",
-    marginLeft: 28,
+    marginTop: 100,
   },
   tableContainer: {
     marginBottom: 15,

@@ -246,4 +246,18 @@ router.get('/', async (req, res) => {
 
 })
 
+router.post('/stockbyid', async (req, res) => {
+  console.log(req.body)
+  const { idArray } = req.body 
+  try {
+    const productList = await models.Product.findAll({ 
+      where: { id: idArray }, 
+      attributes: ['stock', 'id', 'name'],
+    })
+    response.success(req, res, {productList}, 200)
+  } catch (error) {
+    response.error(req, res, error, 500);
+  }
+})
+
 module.exports = router;

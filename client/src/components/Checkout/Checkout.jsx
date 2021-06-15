@@ -11,7 +11,7 @@ import CustomerInformation from './CustomerInformation/CustomerInformation'
 import ConfirmOrder from './ConfirmOrder/ConfirmOrder'
 import Payment from './Payment/Payment'
 
-export default function Checkout() {
+export default function Checkout({ cart, subtotal }) {
 
     const classes = useStyles();
 
@@ -34,7 +34,13 @@ export default function Checkout() {
             customerInformation={customerInformation}
             setCustomerInformation={setCustomerInformation} 
         />
-        if(activeStep === 1) return <Payment activeStep={activeStep} setActiveStep={setActiveStep}/>
+        if(activeStep === 1) return <Payment 
+            activeStep={activeStep} 
+            setActiveStep={setActiveStep}
+            customerInformation={customerInformation}
+            cart={cart}
+            subtotal={subtotal}
+        />
         if(activeStep === 2) return <ConfirmOrder activeStep={activeStep} setActiveStep={setActiveStep}/>
     }
 

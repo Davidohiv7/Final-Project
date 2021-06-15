@@ -36,7 +36,7 @@ export default function  CustomerInformation({activeStep, setActiveStep, custome
         <form onSubmit={e => handleSubmit(e)}>
                 <Box display="flex" justifyContent="center" alignItems="center" flexDirection='column' m={2}>
                     <Box mb={4}>
-                        <Typography variant="h4" color="initial">Customer Information</Typography>
+                        <Typography variant="h3" color="primary">Customer Information</Typography>
                     </Box>
                     <Box display='flex' width="100%" justifyContent='flex-start' ml={3}>
                         <Typography variant="h5" color="initial">Personal Information: </Typography>
@@ -126,9 +126,11 @@ export default function  CustomerInformation({activeStep, setActiveStep, custome
                         </Box>
 
                     </Box>
-                    <Button variant="contained" color="primary" type="submit">
-                        Confirm Information
-                    </Button>
+                    <Box mt={3}>
+                        <Button variant="contained" color="primary" type="submit">
+                            Confirm Information
+                        </Button>
+                    </Box>
                     <Popover
                         open={inputErrorsPopover}
                         anchorEl={inputErrorsPopoverAnchor}

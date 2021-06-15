@@ -178,7 +178,7 @@ export default function Cart() {
                 }}
             >
                 <Fade in={modalState}>
-                    <Checkout/>
+                    <Checkout cart={cartProducts} subtotal={subtotal}/>
                 </Fade>
             </Modal>
             

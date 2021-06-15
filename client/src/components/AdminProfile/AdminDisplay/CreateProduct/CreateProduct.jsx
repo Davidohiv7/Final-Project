@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { connect, useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 //Imports Material UI components:
 import { Box, CardContent, Tab, Tabs, TextField, InputAdornment, Button, Paper, Typography, useRadioGroup }from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import useStyles from './styles';
 
-import { getCategories, createCategory } from '../../../../actions/admin/admin_actions';
+import { getCategories } from '../../../../actions/admin/admin_actions';
 
 
 export default function CreateForm() {
-    
-    const [selectedTab, setSelectedTab] = useState(0);
     const [selectedCategories, setSelectedCategories] = useState([]);
 
     const categories = useSelector((state) => state.adminReducer.categories)
@@ -24,18 +22,8 @@ export default function CreateForm() {
     const classes = useStyles();
 
 
-    const handleChange = (event, newValue) => {
-        setSelectedTab(newValue);
-    };
-
     return (
         <Box className={classes.root}>
-
-            <Tabs className= {classes.tabs} value={selectedTab} onChange={handleChange} >
-                <Tab label="Create Product"  />
-                <Tab label="Create Category"  />
-            </Tabs>
-            {selectedTab === 0 && 
             <CardContent className={classes.tabContainer}>
                 <form className= {classes.form}>
                     <TextField className= {classes.input} id="outlined-basic" label="Name" variant="outlined" />
@@ -69,30 +57,6 @@ export default function CreateForm() {
                     <Button className = {classes.button}>Create</Button>
                 </form>
             </CardContent>
-            }
-
-            {selectedTab === 1 && 
-            <CardContent className={classes.tabContainer}>
-                <form className= {classes.form}>
-                    <TextField className= {classes.input} id="nameOfCategory" label="Name" variant="outlined" />
-                    <Button 
-                    onClick= {async() => {
-                        await getCategories()
-                        for(let category of categories) {
-                            if(category.name === document.getElementById('nameOfCategory').value) {
-                                return alert(`${document.getElementById('nameOfCategory').value} category already exists.`)
-                            }
-                        }
-                        dispatch(createCategory(document.getElementById('nameOfCategory').value))
-                        alert(`${document.getElementById('nameOfCategory').value} category has been created`)
-                        }
-                    } 
-                    className = {classes.button}>Create
-                    </Button>
-                </form>
-            </CardContent>
-            }
-    
-        </Box>
+    </Box>
     )
 }

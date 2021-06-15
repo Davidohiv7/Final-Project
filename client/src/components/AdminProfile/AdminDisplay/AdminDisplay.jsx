@@ -2,45 +2,47 @@ import React from 'react';
 
 
 // Material UI imports
-import {Container, Box, CardContent} from '@material-ui/core';
+import {Container, CardContent, Button} from '@material-ui/core';
 import useStyles from './styles';
 
-import CreateForm from './CreateForm/CreateForm';
-import ManageProducts from './ManageProducts/ManageProducts'
+import CreateProduct from './CreateProduct/CreateProduct';
+import Products from './Products/Products'
 import ManageUsers from './ManageUsers/ManageUsers';
 
 
-export default function AdminDisplay({displayStatus}) {
+export default function AdminDisplay({displayStatus, setDisplayStatus}) {
 
   const classes = useStyles();
   
-  if(displayStatus === 0) {
+  
+  if(displayStatus === 'create_product') {
+    return (
+        <CardContent className= {classes.formContainer}>
+          <CreateProduct/>
+        </CardContent>
+    )
+  }
+  
+  if(displayStatus === 'products') {
     return (
       <CardContent className= {classes.formContainer}>
-        <CreateForm/>
+        <Button onClick={()=>setDisplayStatus('create_product')}>ADD PRODUCT</Button>
+        <Products/>
       </CardContent>
     )
   }
 
-  if(displayStatus === 1) {
-    return (
-      <CardContent className= {classes.formContainer}>
-        <ManageProducts/>
-      </CardContent>
-    )
-  }
+  // if(displayStatus === 2) {
+  //   return (
+  //     <CardContent className= {classes.formContainer}>
 
-  if(displayStatus === 2) {
-    return (
-      <CardContent className= {classes.formContainer}>
-        <ManageUsers/>
-      </CardContent>
-    )
-  }
+  //     </CardContent>
+  //   )
+  // }
 
-  if(displayStatus === 3) {
-    return (<h1>Manage notifications</h1>)
-  }
+  // if(displayStatus === 3) {
+  //   return (<h1>Manage notifications</h1>)
+  // }
 
 
   return (

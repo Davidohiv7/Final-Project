@@ -41,7 +41,7 @@ export default function Checkout({ cart, subtotal }) {
             cart={cart}
             subtotal={subtotal}
         />
-        if(activeStep === 2) return <ConfirmOrder activeStep={activeStep} setActiveStep={setActiveStep}/>
+        if(activeStep === 2) return <ConfirmOrder subtotal={subtotal} activeStep={activeStep} setActiveStep={setActiveStep}/>
     }
 
     return (

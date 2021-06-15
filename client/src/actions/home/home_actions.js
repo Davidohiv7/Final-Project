@@ -1,10 +1,5 @@
-<<<<<<< HEAD:client/src/actions/actions.js
-import Axios from 'axios';
-import {CREATE_CATEGORY, GET_CATEGORIES, GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT, FAILED_SEARCH, GET_PRODUCTS_BY_CATEGORY } from '../actions_types/actions_types'
-=======
 import axios from 'axios';
 import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT, FAILED_SEARCH, GET_PRODUCTS_BY_CATEGORY } from '../../actions_types/home/home_actions_types'
->>>>>>> f9756a75e636b14fdc1b01769386c1a3b06a0f7c:client/src/actions/home/home_actions.js
 
 export function getAllProducts() {
     return (dispatch) => {
@@ -57,27 +52,6 @@ export const updateCategory = (category) => {
     return {
         type: UPDATE_CATEOGRY,
         payload: category
-    }
-}
-
-export function getCategories() {
-    return (dispatch) => {
-        return Axios.get("http://localhost:3001/categories")
-                .then(res => res.data)
-                .then(res => {
-                    dispatch({type: GET_CATEGORIES, payload: res.data})
-                })
-                .catch(e => dispatch({type: FAILED_SEARCH}))
-    }
-}
-
-export function createCategory(name) {
-    return (dispatch) => {
-        return Axios.post("http://localhost:3001/categories", {name: name})
-                    .then(res => {
-                        dispatch({type: CREATE_CATEGORY, payload: {name: name} })
-                    })
-                    .catch(e => console.error(e))
     }
 }
 

@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 
 //Imports Material UI components:
 import { TableContainer, Table, TableBody, TableCell, TableHead, TableRow, Paper, Button, Modal, Box, Backdrop, Fade}from '@material-ui/core'
 import useStyles from './styles';
-import { getAllProducts } from '../../../../actions/actions';
+import { getAllProducts } from '../../../../actions/home/home_actions';
 
-function ManageProducts({products, getAllProducts}) {
+export default function ManageProducts() {
     const classes = useStyles();
     
+    const dispatch = useDispatch();
+    const products = useSelector((state)=> state.homeReducer.products)
 
     useEffect(() => {
-      getAllProducts()
+      dispatch(getAllProducts())
     }, [])
 
     function createData(name, createdAt, updatedAt, edit) {
@@ -51,22 +53,4 @@ function ManageProducts({products, getAllProducts}) {
   )
 }
 
-// MapStateToProps for access to specific items of the store-state
-function mapStateToProps(state) {
-    return {
-        products: state.products
-    };
-    }
 
-  // MapDispatchToProps to directly dispatch an action when called in this component
-    function mapDispatchToProps(dispatch) {
-    return {
-        getAllProducts: () => dispatch(getAllProducts()),
-    };
-    }
-
-  // Connects the Component with the store
-    export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-    )(ManageProducts);

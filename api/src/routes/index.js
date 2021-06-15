@@ -1,13 +1,12 @@
 const { Router } = require('express');
 const router = Router();
 const product = require('./product')
-const categories = require('./categories')
-
 const signup = require('./signup')
 const signin = require('./signin')
 const googleauth = require('./googleauth')
 const user = require('./user')
 const test = require('./test')
+const categories = require('./categories')
 
 
 router.use('/categories', categories);

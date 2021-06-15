@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 
 //Imports Material UI components:
-import { Box, CardContent, Tab, Tabs, TextField, InputAdornment, Button, Paper, Typography }from '@material-ui/core'
+import { Box, CardContent, Tab, Tabs, TextField, InputAdornment, Button, Paper, Typography, useRadioGroup }from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import useStyles from './styles';
-import { getCategories, createCategory } from '../../../../actions/home/home_actions';
 
-function CreateForm({categories, getCategories, createCategory}) {
+import { getCategories, createCategory } from '../../../../actions/admin/admin_actions';
+
+
+export default function CreateForm() {
     
     const [selectedTab, setSelectedTab] = useState(0);
     const [selectedCategories, setSelectedCategories] = useState([]);
 
+    const categories = useSelector((state) => state.adminReducer.categories)
+    const dispatch = useDispatch()
+
     useEffect(() => {
-        getCategories()
+        dispatch(getCategories())
     },[])
 
     const classes = useStyles();
@@ -78,7 +83,7 @@ function CreateForm({categories, getCategories, createCategory}) {
                                 return alert(`${document.getElementById('nameOfCategory').value} category already exists.`)
                             }
                         }
-                        createCategory(document.getElementById('nameOfCategory').value)
+                        dispatch(createCategory(document.getElementById('nameOfCategory').value))
                         alert(`${document.getElementById('nameOfCategory').value} category has been created`)
                         }
                     } 
@@ -91,24 +96,3 @@ function CreateForm({categories, getCategories, createCategory}) {
         </Box>
     )
 }
-
-// MapStateToProps for access to specific items of the store-state
-function mapStateToProps(state) {
-    return {
-        categories: state.categories
-    };
-    }
-
-  // MapDispatchToProps to directly dispatch an action when called in this component
-    function mapDispatchToProps(dispatch) {
-    return {
-        getCategories: () => dispatch(getCategories()),
-        createCategory: (name) => dispatch(createCategory(name))
-    };
-    }
-
-  // Connects the Component with the store
-    export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-    )(CreateForm);

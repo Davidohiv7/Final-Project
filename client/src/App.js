@@ -1,4 +1,3 @@
-
 import React from 'react';
 import NavBar from './Views/NavBar/NavBar'
 import UserProfile from './components/UserProfile/UserProfile'
@@ -9,12 +8,15 @@ import { ThemeProvider } from '@material-ui/core/styles'
 import theme from './themeConfig';
 import Footer from "./Views/Footer/Footer";
 import { Route } from 'react-router-dom';
-import Authentication from './Views/Authentication/Authentication'
+import Authentication from './Views/Authentication/Authentication';
+import GoogleAuthSuccess from '../src/components/GoogleAuth/GoogleAuthSuccess/GoogleAuthSuccess';
+import GoogleAuthError from '../src/components/GoogleAuth/GoogleAuthError/GoogleAuthError';
 
 
 export default function App() {
   return (
     <ThemeProvider theme = {theme}>
+  
       <Route
         path='/'
         render={() => <NavBar/>}
@@ -22,7 +24,7 @@ export default function App() {
 
       <Route
         exact path='/'
-        render={() => <Home/>}
+        render={() => <Home/>}   
       />
       
       <Route
@@ -50,7 +52,16 @@ export default function App() {
         render={() => <Footer/>}
       />
 
+      <Route
+        path='/authentication/google/success'
+        render={() => <GoogleAuthSuccess/>}
+      />
+
+      <Route
+        path='/authentication/google/error'
+        render={() => <GoogleAuthError/>}
+      />
+
     </ThemeProvider>
   )
 }
-

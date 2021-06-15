@@ -10,13 +10,13 @@ googleAuthRouter.get('/signin', passport.authenticate('google', { session: false
 
 googleAuthRouter.get('/callback', passport.authenticate('google', { 
     session: false, 
-    failureRedirect: 'http://localhost:3000/',
+    failureRedirect: 'http://localhost:3000/authentication/google/error',
     // successRedirect: 
    }),
     
   (req, res) => {
     const jasonWebToken = jwt.sign({id: req.user.id, email: req.user.email}, SECRET_KEY_JWT)
-    res.cookie('jwt', jasonWebToken).redirect('http://localhost:3000/')
+    res.cookie('jwt', jasonWebToken).redirect('http://localhost:3000/authentication/google/success')
   }
 );
 

@@ -5,4 +5,5 @@ import adminReducer from './adminReducer/adminReducer'
 
 const reducer = combineReducers({ adminReducer, homeReducer, authenticationReducer,  })
 
+
 export default reducer

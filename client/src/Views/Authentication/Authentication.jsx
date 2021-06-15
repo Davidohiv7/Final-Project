@@ -10,7 +10,6 @@ export default function Authentication() {
     let classes = useStyles();
     const [switchState, setSwitchState] = useState(false);
 
-
     return (
         <Box bgcolor='secondary.main' mt={6} m={5} p={5} className={classes.root} display='flex' justifyContent='center' alignItems='center'>
             <Paper className={classes.container} elevation={24} variant='elevation' >

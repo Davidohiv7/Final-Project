@@ -19,7 +19,7 @@ signInRouter.post('/', async (req, res, next) => {
     const { email, password} = req.body
 
     const userExistCheck = await models.User.findOne({ where: { email }})
-    if(!userExistCheck) {
+    if(!userExistCheck || !userExistCheck.password) {
         return response.error(req, res, { message: 'The email or the password does not match' })
     }
 

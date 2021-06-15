@@ -5,7 +5,9 @@ import { connect, useDispatch, useSelector } from 'react-redux'
 import { Box, CardContent, Tab, Tabs, TextField, InputAdornment, Button, Paper, Typography, useRadioGroup }from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import useStyles from './styles';
+
 import { getCategories, createCategory } from '../../../../actions/admin/admin_actions';
+
 
 export default function CreateForm() {
     
@@ -94,24 +96,3 @@ export default function CreateForm() {
         </Box>
     )
 }
-
-// // MapStateToProps for access to specific items of the store-state
-// function mapStateToProps(state) {
-//     return {
-//         categories: state.categories
-//     };
-//     }
-
-//   // MapDispatchToProps to directly dispatch an action when called in this component
-//     function mapDispatchToProps(dispatch) {
-//     return {
-//         getCategories: () => dispatch(getCategories()),
-//         createCategory: (name) => dispatch(createCategory(name))
-//     };
-//     }
-
-//   // Connects the Component with the store
-//     export default connect(
-//     mapStateToProps,
-//     mapDispatchToProps
-//     )(CreateForm);

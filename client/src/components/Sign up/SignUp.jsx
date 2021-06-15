@@ -5,6 +5,7 @@ import useStyles from './styles';
 import { Box, Typography, TextField, Button, Snackbar, Popover  } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { Add } from '@material-ui/icons';
+import GoogleAuth from '../GoogleAuth/GoogleAuth'
 
 import { signUp } from '../../actions/authentication/authentication_actions'
 
@@ -117,6 +118,11 @@ export default function SignUp() {
                     >
                         sign up
                     </Button>
+
+                    <Typography variant="body1" > or </Typography>
+
+                    <GoogleAuth/>
+                    
                 </Box>
             </form>
 

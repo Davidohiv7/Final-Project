@@ -53,6 +53,23 @@ selectedCategories: {
     display: 'flex',
     flexWrap: 'wrap',
     width: '90%'
+},
+
+dropzone: {
+    height: "8rem",
+    margin: "1rem",
+    padding: "1rem",
+    border: "2px dashed salmon",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: "2rem",
+    fontWeight: "bold",
+    cursor: "pointer",
+},
+  
+active: {
+    border: "2px solid rebeccapurple",
 }
 
 

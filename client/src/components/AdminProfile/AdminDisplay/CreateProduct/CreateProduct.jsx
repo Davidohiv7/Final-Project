@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallBack } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
+import { useDropzone } from "react-dropzone";
 
 //Imports Material UI components:
 import { Box, CardContent, Tab, Tabs, TextField, InputAdornment, Button, Paper, Typography, useRadioGroup }from '@material-ui/core'
@@ -11,6 +12,7 @@ import { getCategories } from '../../../../actions/admin/admin_actions';
 
 export default function CreateForm() {
     const [selectedCategories, setSelectedCategories] = useState([]);
+    const [uploadedFiles, setUploadedFiles] = useState([]);
 
     const categories = useSelector((state) => state.adminReducer.categories)
     const dispatch = useDispatch()
@@ -20,6 +22,48 @@ export default function CreateForm() {
     },[])
 
     const classes = useStyles();
+
+    const onDrop = (acceptedFiles) => {
+        setUploadedFiles([...acceptedFiles.map(file => Object.assign(file, {
+          preview: URL.createObjectURL(file)
+        })), ...uploadedFiles]);
+      }
+
+    useEffect(() => () => {
+        // Make sure to revoke the data uris to avoid memory leaks
+        uploadedFiles.forEach(file => URL.revokeObjectURL(file.preview));
+    }, [uploadedFiles]);
+
+    // const onDrop = useCallback((acceptedFiles) => {
+    //     const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`;
+
+    //     acceptedFiles.forEach(async (acceptedFile) => {
+    //         // TODO: get signature and timestamp
+
+    //         const formData = new FormData();
+    //         formData.append('file', acceptedFile);
+    //         formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET);
+
+    //         // formData.append("signature", signature);
+    //         // formData.append("timestamp", timestamp);
+    //         formData.append("api_key", process.env.NEXT_PUBLIC_CLOUDINARY_KEY);
+
+    //         const response = await fetch(url, {
+    //             method: "post",
+    //             body: formData,
+    //         });
+    //         const data = await response.json();
+    //         setUploadedFiles((old) => [...old, data]);
+    //     })
+    // }, []);
+
+    // Use Dropzone
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        onDrop,
+        accepts: "image/*",
+        multiple: true,
+        maxFiles: 4
+    });
 
 
     return (
@@ -53,6 +97,31 @@ export default function CreateForm() {
                         </Paper>
                     ))}
                 </Paper>
+                
+                <div
+                    {...getRootProps()}
+                    className={`${classes.dropzone} ${isDragActive ? classes.active : null}`}
+                >
+                    <input {...getInputProps()} />
+                    Drop Zone
+                </div>
+
+                <ul>
+                    {uploadedFiles.map((file) => (
+                    <li key={file.name}>
+                        <img
+                            src={file.preview}
+                        />
+                        {/* <Image
+                        cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}
+                        publicId={file.public_id}
+                        width="100"
+                        crop="scale"
+                        /> */}
+                    </li>
+                    ))}
+                </ul>
+                
 
                     <Button className = {classes.button}>Create</Button>
                 </form>

@@ -6,18 +6,20 @@ const mercadopago = require ('mercadopago');
 const {PROD_MP_ACCESS_TOKEN } = process.env;
 
 mercadopago.configure({
-  access_token: PROD_MP_ACCESS_TOKEN
-});
+     access_token: PROD_MP_ACCESS_TOKEN
+    });
 
 router.post("/", (req, res) => {
-    const { order } = req.body;
+    const { params } = req.body;
   
   let preference = {
-    items: [{
-                title: order.name,
-                unit_price: order.price,
-                quantity: 1,
-            }],
+    items: params.map( product => {
+      return {
+                title: product.name,
+                unit_price: (product.price * 1),
+                quantity: (product.quantity * 1),
+      }
+    }),
     back_urls: {
       "success": "http://localhost:3000/",
       "failure": "http://localhost:3000/",
@@ -28,7 +30,7 @@ router.post("/", (req, res) => {
   
   mercadopago.preferences.create(preference)
     .then(function (response) {
-      res.json({id :response.body.id})
+      res.json(response)
     }).catch(function (error) {
       console.log(error);
     });

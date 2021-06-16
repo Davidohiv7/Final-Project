@@ -9,9 +9,11 @@ const test = require('./test')
 const categories = require('./categories');
 const mercadopago = require('./mercadopago');
 const orders = require('./orders')
+const sendmail = require('./sendmail')
 
 
 router.use('/create_preference', mercadopago);
+router.use('/sendmail', sendmail);
 router.use('/categories', categories);
 router.use('/products', product);
 router.use('/signup', signup);

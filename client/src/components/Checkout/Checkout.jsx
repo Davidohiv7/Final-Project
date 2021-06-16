@@ -27,7 +27,7 @@ export default function Checkout() {
             activeStep={activeStep} 
             setActiveStep={setActiveStep}
         />
-        if(activeStep === 2) return <ConfirmOrder activeStep={activeStep} setActiveStep={setActiveStep}/>
+        if(activeStep === 2) return <ConfirmOrder subtotal={subtotal} activeStep={activeStep} setActiveStep={setActiveStep}/>
     }
 
     return (

@@ -1,10 +1,12 @@
-import { SET_CHECKOUT_CART, SET_CHECKOUT_SUBTOTAL, SET_CHECKOUT_CUSTOMER_INFORMATION } from '../../actions_types/checkout/checkout_actions_types'
+import { SET_CHECKOUT_CART, SET_CHECKOUT_SUBTOTAL, SET_CHECKOUT_CUSTOMER_INFORMATION, SET_MERCADOPAGO_ORDER } from '../../actions_types/checkout/checkout_actions_types'
 
 const initialState = {
     cart: [],
     subtotal: 0,
     customerInformation: null,
     paymentState: false,
+    url: '',
+    id: ''
 };
 
 const checkoutReducer = (state = initialState, action = {}) => {
@@ -25,6 +27,13 @@ const checkoutReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 customerInformation: action.payload
+            }
+        }
+        case SET_MERCADOPAGO_ORDER: {
+            return {
+                ...state,
+                url: action.payload.url,
+                id: action.payload.id
             }
         }
         default:

@@ -6,7 +6,7 @@ import {Box, Typography, Button, Tab, Tabs, Divider} from '@material-ui/core'
 import useStyles from './styles';
 //Components
 import Stripe from './Stripe/Stripe';
-import MercadoPago from './MercadoPago/MercadoPago';
+import MercadoPagoIntegration from './MercadoPago/MercadoPagoIntegration';
 
 export default function  Payment({activeStep, setActiveStep }) {
 
@@ -27,7 +27,7 @@ export default function  Payment({activeStep, setActiveStep }) {
 
     function renderTap(selectedTab) {
         if(selectedTab === 0) return <Stripe/>
-        if(selectedTab === 1) return <MercadoPago/>
+        if(selectedTab === 1) return <MercadoPagoIntegration/>
     }
     
 

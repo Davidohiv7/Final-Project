@@ -10,7 +10,7 @@ import ConfirmOrder from './ConfirmOrder/ConfirmOrder'
 import Payment from './Payment/Payment'
 
 
-export default function Checkout() {
+export default function Checkout({subtotal}) {
 
     const classes = useStyles();
 

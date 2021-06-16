@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
     button: {
       margin: 16,
     },
+    confirmOrderSuccess: {
+        color: theme.palette.success.main,
+    },
 }));
 
 export default useStyles;

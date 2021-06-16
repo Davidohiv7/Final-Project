@@ -1,4 +1,5 @@
-import { SET_CHECKOUT_CART, SET_CHECKOUT_SUBTOTAL, SET_CHECKOUT_CUSTOMER_INFORMATION, CONFIRM_STRIPE_PAYMENT, SET_LOADING_TRUE, SET_LOADING_FALSE, SET_CHECKOUT_ERROR_MESSAGE } from '../../actions_types/checkout/checkout_actions_types'
+import { SET_CHECKOUT_CART, SET_CHECKOUT_SUBTOTAL, SET_CHECKOUT_CUSTOMER_INFORMATION, CONFIRM_STRIPE_PAYMENT, SET_LOADING_TRUE, SET_LOADING_FALSE, 
+    SET_CHECKOUT_ERROR_MESSAGE, SET_CONFIRM_ORDER_SUCCESS_MESSAGE, SET_CONFIRM_ORDER_ERROR_MESSAGE } from '../../actions_types/checkout/checkout_actions_types'
 
 const initialState = {
     cart: [],
@@ -10,6 +11,10 @@ const initialState = {
         errorMessage: '',
         loading: false,
     },
+    confirmOrder: {
+        success: '',
+        error: '',
+    }
 };
 
 const checkoutReducer = (state = initialState, action = {}) => {
@@ -68,6 +73,24 @@ const checkoutReducer = (state = initialState, action = {}) => {
                     ...state.payment,
                     errorMessage: action.payload
                 },
+            }
+        }
+        case SET_CONFIRM_ORDER_SUCCESS_MESSAGE: {
+            return {
+                ...initialState,
+                confirmOrder: {
+                    ...initialState.confirmOrder,
+                    success: action.payload
+                }
+            }
+        }
+        case SET_CONFIRM_ORDER_ERROR_MESSAGE: {
+            return {
+                ...state,
+                confirmOrder: {
+                    ...state.confirmOrder,
+                    error: action.payload
+                }
             }
         }
         default:

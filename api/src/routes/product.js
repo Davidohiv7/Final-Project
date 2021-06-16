@@ -247,7 +247,6 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/stockbyid', async (req, res) => {
-  console.log(req.body)
   const { idArray } = req.body 
   try {
     const productList = await models.Product.findAll({ 

@@ -11,6 +11,11 @@ const useStyles = makeStyles((theme) => ({
         margin: 4,
         color: theme.palette.primary.main,
     },
+    list: {
+        maxHeight: 200, 
+        overflow: 'auto'
+    }
+    ,
     button: {
       margin: 16,
     },

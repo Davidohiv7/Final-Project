@@ -1,25 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 //Imports Material UI components:
-import {Box, Typography, Button, List, ListItem, ListItemAvatar, Avatar, ListItemText } from '@material-ui/core'
+import {Box, Typography, Button, List, ListItem, ListItemAvatar, Avatar, ListItemText, Snackbar } from '@material-ui/core'
+import { Alert } from '@material-ui/lab';
 //Styles
 import useStyles from './styles';
-//Custom functions
-import { readLocalStorageCart } from '../../../assets/utils/cartFunctions'
+//Action
+import { confirmOrderAction } from '../../../actions/checkout/checkout_actions'
 
 export default function  ConfirmOrder( { activeStep, setActiveStep }) {
     
     const classes = useStyles();
 
-    const { subtotal, cart } = useSelector((state) => ({ ...state.checkoutReducer }))
+    const dispatch = useDispatch();
+
+    let history = useHistory();
+
+    const { subtotal, cart, payment, customerInformation, confirmOrder } = useSelector((state) => ({ ...state.checkoutReducer }))
+
+    const [confirmOrderSuccessSnackbar, setConfirmOrderSuccessSnackbar] = useState(false);
+    const [confirmOrderErrorSnackbar, setConfirmOrderErrorSnackbar] = useState(false);
+
 
     function handleConfirmOrder(e) {
-        console.log('Aqui terminaria el checkout')
+        dispatch(confirmOrderAction({ subtotal, cart, customerInformation }))
     }
+
+    useEffect(() => {
+        if(confirmOrder.success) {
+            setConfirmOrderSuccessSnackbar(true);
+            return setTimeout(() => history.push('/'), 4000)
+        }
+    }, [confirmOrder.success])
+
+    useEffect(() => {
+        if(confirmOrder.error) {
+            return setConfirmOrderErrorSnackbar(true);
+        }
+    }, [confirmOrder.error])
 
     return (
         <Box display="flex" justifyContent="center" alignItems="center" flexDirection='column' m={2}>
-            <Box mb={4}>
+            <Box mb={1}>
                 <Typography variant="h3" color="primary">Confirm Order</Typography>
             </Box>
             <Box width="100%" justifyContent='center' ml={3}>
@@ -27,27 +50,28 @@ export default function  ConfirmOrder( { activeStep, setActiveStep }) {
                     Order Detail
                 </Typography>
                 <Box className={classes.demo}>
-                    <List>
+                    <List className={classes.list}>
                         {cart.map(ele =>
-                            <ListItem>
+                            <ListItem divider>
                                 <ListItemAvatar>
                                     <Avatar src={ele.Images[0].url} />
                                 </ListItemAvatar>
-                                <ListItemText
-                                    primary={`${ele.name} x ${ele.quantity}`}
-                                    divider
-                                />
+                                <ListItemText primary={`${ele.name}`} secondary={`Quantity x ${ele.quantity}`}/>
                             </ListItem>,
                         )}
                     </List>
                 </Box>
 
             </Box>
-            <Typography variant="h5" color="primary">
-                {`Total: $${subtotal.toFixed(2)}`}
-            </Typography>
 
-            <Box display="flex" justifyContent="center" alignItems="center">
+            <Box display="flex" justifyContent="center" alignItems="center" flexDirection='column'>
+                <Typography variant="h5" color="default">
+                        {`Payment status: ${payment.state ? 'Paid' : 'Pending'} - Method: ${payment.method}`}
+                    </Typography>
+                <Typography variant="h5" color="default">{`Total: $${subtotal.toFixed(2)}`}</Typography>
+            </Box>
+        
+            <Box display="flex" justifyContent="center" alignItems="center" >
                 <Button variant="contained" color="primary" onClick={() => setActiveStep(activeStep - 1)} className={classes.button}>
                     Back
                 </Button>
@@ -56,6 +80,18 @@ export default function  ConfirmOrder( { activeStep, setActiveStep }) {
                     Confirm Order
                 </Button>
             </Box>
+
+            <Snackbar open={confirmOrderSuccessSnackbar} autoHideDuration={3000} onClose={() => setConfirmOrderSuccessSnackbar(false)} variant="filled">
+                <Alert onClose={() => setConfirmOrderSuccessSnackbar(false)} severity="success">
+                    {confirmOrder.success}
+                </Alert>
+            </Snackbar>
+
+            <Snackbar open={confirmOrderErrorSnackbar} autoHideDuration={3000} onClose={() => setConfirmOrderErrorSnackbar(false)} variant="filled">
+                <Alert onClose={() => setConfirmOrderErrorSnackbar(false)} severity="error">
+                    {confirmOrder.error}
+                </Alert>
+            </Snackbar>
             
         </Box>  
     )

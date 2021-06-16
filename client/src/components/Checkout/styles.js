@@ -9,6 +9,8 @@ const useStyles = makeStyles((theme) => ({
       },
     container: {
           height: '100%',
+          backgroundColor: theme.palette.common.white,
+          borderRadius: theme.shape.borderRadius,
     },
     components: {
         width: '100%',

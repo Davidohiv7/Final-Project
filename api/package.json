@@ -32,7 +32,8 @@
     "pg-hstore": "^2.3.3",
     "react-cookie": "^4.0.3",
     "sequelize": "^6.6.2",
-    "sequelize-replace-enum-postgres": "^1.6.0"
+    "sequelize-replace-enum-postgres": "^1.6.0",
+    "stripe": "^8.154.0"
   },
   "devDependencies": {
     "sequelize-cli": "^6.2.0"

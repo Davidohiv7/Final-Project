@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 //Imports Material UI components:
 import {Box, Typography, Button, List, ListItem, ListItemAvatar, Avatar, ListItemText } from '@material-ui/core'
 //Styles
@@ -6,15 +7,11 @@ import useStyles from './styles';
 //Custom functions
 import { readLocalStorageCart } from '../../../assets/utils/cartFunctions'
 
-export default function  ConfirmOrder(props) {
+export default function  ConfirmOrder( { activeStep, setActiveStep }) {
     
     const classes = useStyles();
 
-    const [cartProducts, setCartProducts] = useState([]);
-
-    useEffect(() => {
-        setCartProducts(readLocalStorageCart())
-    }, [])
+    const { subtotal, cart } = useSelector((state) => ({ ...state.checkoutReducer }))
 
     function handleConfirmOrder(e) {
         console.log('Aqui terminaria el checkout')
@@ -29,28 +26,37 @@ export default function  ConfirmOrder(props) {
                 <Typography variant="h6" className={classes.title} >
                     Order Detail
                 </Typography>
-                <div className={classes.demo}>
+                <Box className={classes.demo}>
                     <List>
-                        {cartProducts.map(ele =>
+                        {cart.map(ele =>
                             <ListItem>
                                 <ListItemAvatar>
                                     <Avatar src={ele.Images[0].url} />
                                 </ListItemAvatar>
                                 <ListItemText
-                                    primary={ele.name}
+                                    primary={`${ele.name} x ${ele.quantity}`}
+                                    divider
                                 />
                             </ListItem>,
                         )}
                     </List>
-                </div>
+                </Box>
 
             </Box>
             <Typography variant="h5" color="primary">
-                {`Total: $${props.subtotal.toFixed(2)}`}
+                {`Total: $${subtotal.toFixed(2)}`}
             </Typography>
-            <Button variant="contained" color="primary" onClick={(e) => handleConfirmOrder(e)}>
-              Confirm Order
-            </Button>
+
+            <Box display="flex" justifyContent="center" alignItems="center">
+                <Button variant="contained" color="primary" onClick={() => setActiveStep(activeStep - 1)} className={classes.button}>
+                    Back
+                </Button>
+
+                <Button variant="contained" color="primary" onClick={(e) => handleConfirmOrder(e)}>
+                    Confirm Order
+                </Button>
+            </Box>
+            
         </Box>  
     )
 }

@@ -1,4 +1,4 @@
-import React, { useState }  from 'react';
+import React, { useState, useEffect }  from 'react';
 import { useSelector, useDispatch } from "react-redux";
 //Imports Material UI components:
 import {Box, Typography, Button, TextField, Popover} from '@material-ui/core'
@@ -13,19 +13,26 @@ export default function  CustomerInformation({activeStep, setActiveStep }) {
 
     const classes = useStyles();
     const dispatch = useDispatch();
+    const { payment } = useSelector((state) => ({ ...state.checkoutReducer }))
 
     const [customerInformation, setCustomerInformation] = useState({
             name: 'David',
             lastName: 'Vivas',
             email: 'david@mail.com',
             street: 'Calle 123',
-            neighborhood: 'The Guetto',
+            neighborhood: 'El Guetto',
             city: 'Bogota',
-            zip: '26468',
+            zip: '12345',
     });
-    const [errors, setErrors] = React.useState([]);
+    const [errors, setErrors] = React.useState(['initial']);
     const [inputErrorsPopover, setInputErrorsPopover] = useState(false);
     const [inputErrorsPopoverAnchor, setInputErrorsPopoverAnchor] = useState(null);
+
+    useEffect(() => {
+        if(payment.state) {
+            setActiveStep(activeStep + 1)
+        }
+      }, [])
 
     const handleInputChange = function(e) {
         setCustomerInformation({

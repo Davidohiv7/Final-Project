@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 //Imports Material UI components:
 import {Paper, Box, Divider} from '@material-ui/core'
 //Styles
@@ -27,7 +28,7 @@ export default function Checkout() {
             activeStep={activeStep} 
             setActiveStep={setActiveStep}
         />
-        if(activeStep === 2) return <ConfirmOrder subtotal={subtotal} activeStep={activeStep} setActiveStep={setActiveStep}/>
+        if(activeStep === 2) return <ConfirmOrder activeStep={activeStep} setActiveStep={setActiveStep}/>
     }
 
     return (

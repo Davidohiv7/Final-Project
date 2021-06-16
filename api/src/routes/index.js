@@ -6,9 +6,11 @@ const signin = require('./signin')
 const googleauth = require('./googleauth')
 const user = require('./user')
 const test = require('./test')
-const categories = require('./categories')
+const categories = require('./categories');
+const mercadopago = require('./mercadopago');
 
 
+router.use('/create_preference', mercadopago);
 router.use('/categories', categories);
 router.use('/products', product);
 router.use('/signup', signup);

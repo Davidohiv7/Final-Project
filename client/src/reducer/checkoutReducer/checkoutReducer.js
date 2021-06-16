@@ -1,4 +1,4 @@
-import { SET_CHECKOUT_CART, SET_CHECKOUT_SUBTOTAL, SET_CHECKOUT_CUSTOMER_INFORMATION, CONFIRM_STRIPE_PAYMENT, SET_LOADING } from '../../actions_types/checkout/checkout_actions_types'
+import { SET_CHECKOUT_CART, SET_CHECKOUT_SUBTOTAL, SET_CHECKOUT_CUSTOMER_INFORMATION, CONFIRM_STRIPE_PAYMENT, SET_LOADING_TRUE, SET_LOADING_FALSE, SET_CHECKOUT_ERROR_MESSAGE } from '../../actions_types/checkout/checkout_actions_types'
 
 const initialState = {
     cart: [],
@@ -43,12 +43,30 @@ const checkoutReducer = (state = initialState, action = {}) => {
                 },
             }
         }
-        case SET_LOADING: {
+        case SET_LOADING_TRUE: {
             return {
                 ...state,
                 payment: {
                     ...state.payment,
                     loading: true
+                },
+            }
+        }
+        case SET_LOADING_FALSE: {
+            return {
+                ...state,
+                payment: {
+                    ...state.payment,
+                    loading: false
+                },
+            }
+        }
+        case SET_CHECKOUT_ERROR_MESSAGE: {
+            return {
+                ...state,
+                payment: {
+                    ...state.payment,
+                    errorMessage: action.payload
                 },
             }
         }

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 //Imports Material UI components:
-import {Box, Typography, Button, Avatar} from '@material-ui/core'
+import {Box, Typography, Button, Avatar, Snackbar} from '@material-ui/core'
+import { Alert } from '@material-ui/lab';
 //Styles
 import useStyles from './styles';
 //Stripe
@@ -43,7 +44,7 @@ function StripeElements() {
         })
 
         if(!error) {
-            return dispatch(confirmStripePayment({subtotal: (subtotal * 100), paymentId: paymentMethod.id}))
+            return dispatch(confirmStripePayment({subtotal: (subtotal * 100).toFixed(0), paymentId: paymentMethod.id}))
         }
         if(error) return alert('Please check the card details')
 
@@ -79,7 +80,19 @@ export default function  Stripe() {
 
     const { payment } = useSelector((state) => ({ ...state.checkoutReducer }))
 
+    const [paymentErrorSnackbar, setPaymentErrorSnackbar] = useState(false);
+
     const classes = useStyles();
+
+    useEffect(() => {
+        if(payment.errorMessage) {
+            return setPaymentErrorSnackbar(true);
+        }
+        if(!payment.errorMessage) {
+            return setPaymentErrorSnackbar(false);
+        }
+    }, [payment.errorMessage])
+
 
     return (
         <Box display="flex" flexDirection='column' justifyContent="center" alignItems="center" width='100%'>
@@ -108,6 +121,12 @@ export default function  Stripe() {
                     </Box>
                 </Box>
             }
+
+            <Snackbar open={paymentErrorSnackbar} autoHideDuration={3000} onClose={() => setPaymentErrorSnackbar(false)} variant="filled">
+                <Alert onClose={() => setPaymentErrorSnackbar(false)} severity="error">
+                    {payment.errorMessage}
+                </Alert>
+            </Snackbar>
             
             
         </Box>  

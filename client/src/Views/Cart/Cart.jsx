@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 //Imports Material UI components:
-import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Avatar, TextField, IconButton, Divider, Button, Popover, Modal, Fade, Backdrop} from '@material-ui/core/'
+import { Snackbar, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Avatar, TextField, IconButton, Divider, Button, Popover, Modal, Fade, Backdrop} from '@material-ui/core/'
+import { Alert } from '@material-ui/lab';
 //Material UI icons
 import { Delete, LocalMall } from '@material-ui/icons/';
 //Custom functions
@@ -24,9 +25,14 @@ export default function Cart() {
 
     const dispatch = useDispatch();
 
+    const { payment } = useSelector((state) => ({ ...state.checkoutReducer }))
+
     const [cartProducts, setCartProducts] = useState([]);
     const [subtotal, setSubtotal] = useState(0);
     const [stockProblemProducts, setStockProblemProducts] = useState([]);
+
+    const [cartDisabledSnackbar, setDisabledCartSnackbar] = useState(false);
+    const [noProductsSnackbar, setNoProductsSnackbar] = useState(false);
 
     const [stockPopover, setStockPopover] = useState(false);
     const [stockPopoverAnchor, setStockPopoverAnchor] = useState(null);
@@ -45,40 +51,61 @@ export default function Cart() {
     }, [cartProducts])
 
     function handleQuantityChange(product, e) {
+        if(payment.state) {
+            return setDisabledCartSnackbar(true)
+        }
         modifyQuantity(product, Number(e.target.value))
         setCartProducts(readLocalStorageCart())
     }
 
     function handleDelete(product) {
+        if(payment.state) {
+            return setDisabledCartSnackbar(true)
+        }
         deleteProductFromCart(product)
         setCartProducts(readLocalStorageCart())
     }
+
+    function handleClearCart(e) {
+        if(payment.state) {
+            return setDisabledCartSnackbar(true)
+        }
+        const cart = localStorage.getItem('cart')
+        if(cart) {
+            setCartProducts([])
+            localStorage.removeItem('cart')
+        }
+    }
     
     async function handleCheckoutClick(e, cartProducts) {
-        const idArray = cartProducts.map(p => p.id);
-        try {
-            const response = await axios.post("http://localhost:3001/products/stockbyid", { idArray });
-            const updateProductListStock = response.data.data.productList;
-            const lessStockProducts = []
-            cartProducts.forEach(p => {
-                const updateProduct = updateProductListStock.find(pu => pu.id === p.id);
-                if(updateProduct.stock < p.quantity) {
-                    lessStockProducts.push(updateProduct)
+        if(cartProducts && cartProducts.length > 0) {
+            const idArray = cartProducts.map(p => p.id);
+            try {
+                const response = await axios.post("http://localhost:3001/products/stockbyid", { idArray });
+                const updateProductListStock = response.data.data.productList;
+                const lessStockProducts = []
+                cartProducts.forEach(p => {
+                    const updateProduct = updateProductListStock.find(pu => pu.id === p.id);
+                    if(updateProduct.stock < p.quantity) {
+                        lessStockProducts.push(updateProduct)
+                    }
+                })
+                if(lessStockProducts.length > 0) {
+                    setStockProblemProducts(lessStockProducts)
+                    setStockPopover(true)
+                    console.log(e)
+                    return setStockPopoverAnchor(e.target)
                 }
-            })
-            if(lessStockProducts.length > 0) {
-                setStockProblemProducts(lessStockProducts)
-                setStockPopover(true)
-                console.log(e)
-                return setStockPopoverAnchor(e.target)
+                dispatch(setCheckoutCart(cartProducts))
+                dispatch(setCheckoutSubtotal(subtotal))
+                setModalState(true)
             }
-            dispatch(setCheckoutCart(cartProducts))
-            dispatch(setCheckoutSubtotal(subtotal))
-            setModalState(true)
-        }
-        catch(error) {
-            console.log(error)
-        }
+            catch(error) {
+                console.log(error)
+            }
+        }else {
+            setNoProductsSnackbar(true)
+        } 
         
     }
 
@@ -140,15 +167,27 @@ export default function Cart() {
 
             <Box display='flex' flexDirection='column' justifyContent="space-around" alignItems="center" >
                 <Typography variant="h3" color="secondary.dark" className={classes.subtotal}> {`Subtotal: $${subtotal.toFixed(2)}`}</Typography>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<LocalMall />}
-                    className={classes.checkout}
-                    onClick={e => handleCheckoutClick(e, cartProducts)}
-                >
-                    checkout
-                </Button>
+                <Box display='flex' justifyContent="center" alignItems="center" >
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<LocalMall />}
+                        className={classes.checkout}
+                        onClick={e => handleCheckoutClick(e, cartProducts)}
+                    >
+                        checkout
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<Delete />}
+                        className={classes.checkout}
+                        onClick={e => handleClearCart(e)}
+                    >
+                        clear cart
+                    </Button>
+                </Box>
+                
                 <Popover
                     open={stockPopover}
                     anchorEl={stockPopoverAnchor}
@@ -172,6 +211,18 @@ export default function Cart() {
                     </Box>
                 </Popover>
             </Box>
+
+            <Snackbar open={cartDisabledSnackbar} autoHideDuration={3000} onClose={() => setDisabledCartSnackbar(false)} variant="filled">
+                <Alert onClose={() => setDisabledCartSnackbar(false)} severity="error">
+                    Please confirm yor active paid order, before modify the cart
+                </Alert>
+            </Snackbar>
+
+            <Snackbar open={noProductsSnackbar} autoHideDuration={3000} onClose={() => setNoProductsSnackbar(false)} variant="filled">
+                <Alert onClose={() => setNoProductsSnackbar(false)} severity="error">
+                    Please add products before the checkout
+                </Alert>
+            </Snackbar>
             
             <Modal
                 aria-labelledby="Product details"

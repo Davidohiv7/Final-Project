@@ -1,8 +1,12 @@
 import axios from 'axios';
+<<<<<<< HEAD
+import { SET_CHECKOUT_CART, SET_CHECKOUT_SUBTOTAL, SET_CHECKOUT_CUSTOMER_INFORMATION, SET_MERCADOPAGO_ORDER } from '../../actions_types/checkout/checkout_actions_types'
+=======
 import { SET_CHECKOUT_CART, SET_CHECKOUT_SUBTOTAL, SET_CHECKOUT_CUSTOMER_INFORMATION, CONFIRM_STRIPE_PAYMENT, SET_LOADING_TRUE, 
     SET_LOADING_FALSE, SET_CHECKOUT_ERROR_MESSAGE, SET_CONFIRM_ORDER_SUCCESS_MESSAGE, SET_CONFIRM_ORDER_ERROR_MESSAGE} from '../../actions_types/checkout/checkout_actions_types'
 //Custom functios
 import { clearCheckoutData } from '../../assets/utils/confirmOrder'
+>>>>>>> 772c413c3b8e0d161dc5a0a258d4a17602dbcc87
 
 export function confirmStripePayment(paymentData) {
     return async (dispatch) => {
@@ -67,5 +71,20 @@ export const setCheckoutCustomerInformation = (payload) => {
     return {
         type: SET_CHECKOUT_CUSTOMER_INFORMATION,
         payload
+    }
+}
+
+export const setMercadoPagoOrder = (order) => {
+    return async (dispatch) => {
+        try{
+            axios.post("http://localhost:3001/create_preference", {params: order})
+                .then(res => res.data)
+                .then(res => {
+                    console.log(res);
+                    dispatch({type: SET_MERCADOPAGO_ORDER, payload: { id: res.response.id, url: res.response.init_point}})
+                })
+        } catch(err) {
+            dispatch(err);
+        }
     }
 }

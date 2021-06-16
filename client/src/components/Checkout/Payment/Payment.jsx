@@ -6,7 +6,7 @@ import {Box, Typography, Button, Tab, Tabs, Divider, CircularProgress} from '@ma
 import useStyles from './styles';
 //Components
 import Stripe from './Stripe/Stripe';
-import MercadoPago from './MercadoPago/MercadoPago';
+import MercadoPagoIntegration from './MercadoPago/MercadoPagoIntegration';
 
 export default function  Payment({activeStep, setActiveStep }) {
 
@@ -32,7 +32,7 @@ export default function  Payment({activeStep, setActiveStep }) {
                 </Box>
         )}
         if(selectedTab === 0) return <Stripe/>
-        if(selectedTab === 1) return <MercadoPago/>
+        if(selectedTab === 1) return <MercadoPagoIntegration/>
     }
     
 

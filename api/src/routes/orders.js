@@ -61,6 +61,19 @@ ordersRouter.post('/confirm_order', async (req, res) => {
             }
         })
         const newOrderItems = await models.OrderItem.bulkCreate(orderItemArrayData);
+        //Update stocks
+        const oldProductsArray = await models.Product.findAll({ 
+            where: { id: cartProductsIdArray }, 
+          })
+
+        oldProductsArray.forEach(op => {
+            const cartProduct = cart.find(p => p.id === op.id)
+            op.stock = op.stock - cartProduct.quantity
+        })
+
+        const saveNewStockPromiseArray = oldProductsArray.map(op => op.save())
+
+        await Promise.all(saveNewStockPromiseArray)
 
         //Update new order status to create, this is for security
 
@@ -69,10 +82,15 @@ ordersRouter.post('/confirm_order', async (req, res) => {
 
         const verifyOrder = await models.Order.findOne({where: {id: order.id}})
 
+        // const verifyStock = await models.Product.findAll({ 
+        //     where: { id: cartProductsIdArray }, 
+        // })
+
         if(verifyOrder.status === 'created') {
             return response.success(req, res, { 
                 message: `The order ${order.id} was successfully created for customer ${customer[0].name} ${customer[0].lastName}`, 
                 result: true,
+                // verifyStock
             })
         }
         response.error(req, res, {

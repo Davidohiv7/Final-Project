@@ -30,6 +30,7 @@ export function confirmOrderAction(checkoutData) {
         dispatch({ type: SET_LOADING_TRUE})
         try {
             const response = await axios.post("http://localhost:3001/orders/confirm_order", checkoutData)
+            console.log(response.data.data)
             if(response.data.data.result) {
                 clearCheckoutData()
                 dispatch({type: SET_CONFIRM_ORDER_SUCCESS_MESSAGE, payload: response.data.data.message})

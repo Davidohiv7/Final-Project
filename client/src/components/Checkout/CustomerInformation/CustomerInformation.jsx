@@ -1,4 +1,4 @@
-import React, { useState }  from 'react';
+import React, { useState, useEffect }  from 'react';
 import { useSelector, useDispatch } from "react-redux";
 //Imports Material UI components:
 import {Box, Typography, Button, TextField, Popover} from '@material-ui/core'
@@ -13,19 +13,34 @@ export default function  CustomerInformation({activeStep, setActiveStep }) {
 
     const classes = useStyles();
     const dispatch = useDispatch();
+    const { payment } = useSelector((state) => ({ ...state.checkoutReducer }))
+    const storeCustomerInformation = useSelector(state => state.checkoutReducer.customerInformation)
 
     const [customerInformation, setCustomerInformation] = useState({
-            name: 'David',
-            lastName: 'Vivas',
-            email: 'david@mail.com',
-            street: 'Calle 123',
-            neighborhood: 'The Guetto',
-            city: 'Bogota',
-            zip: '26468',
+            name: '',
+            lastName: '',
+            email: '',
+            street: '',
+            neighborhood: '',
+            city: '',
+            zip: '',
     });
-    const [errors, setErrors] = React.useState([]);
+    const [errors, setErrors] = React.useState(['initial']);
     const [inputErrorsPopover, setInputErrorsPopover] = useState(false);
     const [inputErrorsPopoverAnchor, setInputErrorsPopoverAnchor] = useState(null);
+
+    useEffect(() => {
+        if(storeCustomerInformation && storeCustomerInformation.name) {
+            console.log('entro')
+            setCustomerInformation(storeCustomerInformation)
+        }
+      }, [])
+
+    useEffect(() => {
+        if(payment.state) {
+            setActiveStep(activeStep + 1)
+        }
+      }, [])
 
     const handleInputChange = function(e) {
         setCustomerInformation({
@@ -38,6 +53,7 @@ export default function  CustomerInformation({activeStep, setActiveStep }) {
         e.preventDefault()
         const inputErrors = customerInformationValidation(customerInformation)
         if(Object.keys(inputErrors).length === 0) {
+            localStorage.setItem('customerInformation', JSON.stringify(customerInformation))
             dispatch(setCheckoutCustomerInformation(customerInformation))
             return setActiveStep(activeStep + 1)
         }

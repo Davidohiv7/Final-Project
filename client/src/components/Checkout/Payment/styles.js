@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme) => ({
         
     },
     tabContainer: {
-      height: 300,
+      height: 280,
     },
     button: {
       margin: 16,

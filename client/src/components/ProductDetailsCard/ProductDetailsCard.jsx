@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { useSelector } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 //Import components
 import ProductDetailsTab from './ProductDetailsTab/ProductDetailsTab.jsx'
@@ -14,12 +14,18 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
 
     const classes = useStyles();
 
+    const { payment } = useSelector((state) => ({ ...state.checkoutReducer }))
+
     const [quantity, setQuantity] = useState(1);
     const [cartSnackbar, setCartSnackbar] = useState(false);
+    const [cartDisabledSnackbar, setDisabledCartSnackbar] = useState(false);
     const [favSnackbar, setFavSnackbar] = useState(false);
     const [alreadyFavSnackbar, setAlreadyFavSnackbar] = useState(false);
 
     function handleAddToCart(product, quantity, setQuantity) {
+        if(payment.state) {
+            return setDisabledCartSnackbar(true)
+        }
         addToCart(product, quantity, setQuantity)
         setCartSnackbar(true)
     }
@@ -121,6 +127,12 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
             <Snackbar open={cartSnackbar} autoHideDuration={3000} onClose={() => setCartSnackbar(false)} variant="filled">
                 <Alert onClose={() => setCartSnackbar(false)} severity="success">
                     The product was successfully added to the cart!
+                </Alert>
+            </Snackbar>
+
+            <Snackbar open={cartDisabledSnackbar} autoHideDuration={3000} onClose={() => setDisabledCartSnackbar(false)} variant="filled">
+                <Alert onClose={() => setDisabledCartSnackbar(false)} severity="error">
+                    Please confirm yor active paid order, before add a new product to the cart
                 </Alert>
             </Snackbar>
 

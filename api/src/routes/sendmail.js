@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
         secure: true, //with SSL
         auth: {
             type: 'OAuth2',
-            user: 'user@example.com',
+            user: email,
             serviceClient: '113600000000000000000',
             privateKey: GOOGLE_CLIENT_ID,
             accessToken: GOOGLE_CLIENT_SECRET,

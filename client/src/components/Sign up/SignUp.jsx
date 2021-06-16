@@ -7,7 +7,7 @@ import { Alert } from '@material-ui/lab';
 import { Add } from '@material-ui/icons';
 import GoogleAuth from '../GoogleAuth/GoogleAuth'
 
-import { signUp } from '../../actions/authentication/authentication_actions'
+import { signUp, emailconfirm } from '../../actions/authentication/authentication_actions'
 
 import { signUpValidation, resetSignUpInput } from '../../assets/utils/authentication'
 
@@ -58,6 +58,7 @@ export default function SignUp() {
         const inputErrors = signUpValidation(formInputs)
         if(Object.keys(inputErrors).length === 0) {
             dispatch(signUp(formInputs))
+            dispatch(emailconfirm(formInputs))
             return setFormInputs(resetSignUpInput)
         }
         setErrorsArray(Object.values(inputErrors).reduce((acc, v) => [...acc, ...v], []))

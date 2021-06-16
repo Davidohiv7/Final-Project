@@ -50,3 +50,27 @@ export const logOut = () => {
         type: LOG_OUT,
     }
 }
+
+export function emailconfirm(obj) {
+    return async (dispatch) => {
+        try {
+            const response = await axios.post("http://localhost:3001/sendmail", obj)
+            console.log(response)
+            if (response.data.data.token) {
+                dispatch({
+                    type: SIGN_UP
+                });
+                localStorage.setItem('jwt', `Bearer ${response.data.data.token}`)
+            }
+        } catch (error) {
+            dispatch({
+                type: AUTH_ERROR,
+                payload: error.response.data.data.message
+            });
+            setTimeout(() => dispatch({
+                type: AUTH_ERROR,
+                payload: ''
+            }), 5000)
+        }
+    }
+}

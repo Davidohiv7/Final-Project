@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { useDropzone } from "react-dropzone";
 import ImageWrapper from './ImageWrapper/ImageWrapper';
+import axios from 'axios';
 
 //Imports Material UI components:
 import { Box, CardContent, TextField, InputAdornment, Button, Paper, Typography }from '@material-ui/core'
@@ -23,9 +24,15 @@ export default function CreateForm() {
 
     const classes = useStyles();
 
-    const onDelete = (file) => {
-        setUploadedFiles((curr) => curr.filter((item) => item.name !== file.name));
-      }
+    const onDelete = async (file) => {
+        try {
+            const res = await axios.delete(`${process.env.REACT_APP_BACKEND_HOST}/image/cloudinary/${file.public_id}`)
+            console.log("/////// CLOUDINARY DELETE RESPONSE: ", res);
+            setUploadedFiles((curr) => curr.filter((item) => item.name !== file.name));
+        } catch (error) {
+            console.log("Couldn't delete the selected image.", error)
+        }
+    }
 
     const onDrop = (acceptedFiles) => {
         

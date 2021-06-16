@@ -4,6 +4,7 @@ import { useDropzone } from "react-dropzone";
 import ImageWrapper from './ImageWrapper/ImageWrapper';
 import axios from 'axios';
 
+
 //Imports Material UI components:
 import { Box, CardContent, TextField, InputAdornment, Button, Paper, Typography }from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -11,10 +12,30 @@ import useStyles from './styles';
 
 import { getCategories } from '../../../../actions/admin/admin_actions';
 
+
 export default function CreateForm() {
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [uploadedFiles, setUploadedFiles] = useState([]);
+    const [product, setProduct] = useState({
+        name: '',
+        price: undefined,
+        stock: 0,
+        description: '',
+        categories: [],
+        images: []
+    })
 
+    useEffect(() => {
+        setProduct({
+            ...product,
+            categories: selectedCategories
+        })
+    }, [selectedCategories])
+    
+    const handleSubmit= () => {
+        console.log(product)
+    }
+    
     const categories = useSelector((state) => state.adminReducer.categories)
     const dispatch = useDispatch()
 
@@ -25,14 +46,14 @@ export default function CreateForm() {
     const classes = useStyles();
 
     const onDelete = async (file) => {
-        try {
+        try {   
             const res = await axios.delete(`${process.env.REACT_APP_BACKEND_HOST}/image/cloudinary/${file.public_id}`)
             console.log("/////// CLOUDINARY DELETE RESPONSE: ", res);
             setUploadedFiles((curr) => curr.filter((item) => item.name !== file.name));
         } catch (error) {
             console.log("Couldn't delete the selected image.", error)
         }
-    }
+    }   
 
     const onDrop = (acceptedFiles) => {
         
@@ -67,11 +88,11 @@ export default function CreateForm() {
         <Box className={classes.root}>
             <CardContent className={classes.tabContainer}>
                 <form className= {classes.form}>
-                    <TextField className= {classes.input} id="outlined-basic" label="Name" variant="outlined" />
-                    <TextField className= {classes.input} id="outlined-number" label="Price" type="number" InputLabelProps={{shrink: true,}} variant="outlined" InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>,}}/>
+                    <TextField onChange= {(e)=> setProduct({...product, name: e.target.value})} className= {classes.input} id="outlined-basic" label="Name" variant="outlined" />
+                    <TextField onChange= {(e)=> setProduct({...product, price: e.target.value})} className= {classes.input} id="outlined-number" label="Price" type="number" InputLabelProps={{shrink: true,}} variant="outlined" InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>,}}/>
 
-                    <TextField className= {classes.input} id="outlined-number" label="Stock" type="number" InputLabelProps={{shrink: true,}} variant="outlined"/>
-                    <TextField className= {classes.input} id="outlined-basic" label="Description" variant="outlined" multiline />
+                    <TextField onChange= {(e)=> setProduct({...product, stock: e.target.value})} className= {classes.input} id="outlined-number" label="Stock" type="number" InputLabelProps={{shrink: true,}} variant="outlined"/>
+                    <TextField onChange= {(e)=> setProduct({...product, description: e.target.value})} className= {classes.input} id="outlined-basic" label="Description" variant="outlined" multiline />
 
                 <Autocomplete
                     id= 'categorySelector'
@@ -80,9 +101,11 @@ export default function CreateForm() {
                     getOptionLabel={(option) => option.name}
                     renderInput={(params) => <TextField {...params} label="Categories" variant="outlined" />}
                     onChange={(e, v) => {
-                        if(!selectedCategories.includes(v.name)) {
-                            if(selectedCategories.length >= 10) alert('You can set up to 10 categories to a single product.')
-                            else setSelectedCategories([...selectedCategories, v.name])
+                        if(v){
+                            if(!selectedCategories.includes(v.name)) {
+                                if(selectedCategories.length >= 10) alert('You can set up to 10 categories to a single product.')
+                                else setSelectedCategories([...selectedCategories, v.name])
+                            }
                         }
                     }}
                 />
@@ -115,7 +138,7 @@ export default function CreateForm() {
                 </ul>
                 
 
-                    <Button className = {classes.button}>Create</Button>
+                    <Button onClick={handleSubmit} className = {classes.button}>Create</Button>
                 </form>
             </CardContent>
     </Box>

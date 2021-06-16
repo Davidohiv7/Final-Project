@@ -1,15 +1,28 @@
 import React, { useState }  from 'react';
+import { useSelector, useDispatch } from "react-redux";
 //Imports Material UI components:
 import {Box, Typography, Button, TextField, Popover} from '@material-ui/core'
 //Styles
 import useStyles from './styles';
 //Custom functions
 import { customerInformationValidation } from '../../../assets/utils/ordersInformationValidation'
+//Actions
+import { setCheckoutCustomerInformation } from '../../../actions/checkout/checkout_actions'
 
-export default function  CustomerInformation({activeStep, setActiveStep, customerInformation, setCustomerInformation}) {
+export default function  CustomerInformation({activeStep, setActiveStep }) {
 
     const classes = useStyles();
+    const dispatch = useDispatch();
 
+    const [customerInformation, setCustomerInformation] = useState({
+            name: 'David',
+            lastName: 'Vivas',
+            email: 'david@mail.com',
+            street: 'Calle 123',
+            neighborhood: 'The Guetto',
+            city: 'Bogota',
+            zip: '26468',
+    });
     const [errors, setErrors] = React.useState([]);
     const [inputErrorsPopover, setInputErrorsPopover] = useState(false);
     const [inputErrorsPopoverAnchor, setInputErrorsPopoverAnchor] = useState(null);
@@ -25,6 +38,7 @@ export default function  CustomerInformation({activeStep, setActiveStep, custome
         e.preventDefault()
         const inputErrors = customerInformationValidation(customerInformation)
         if(Object.keys(inputErrors).length === 0) {
+            dispatch(setCheckoutCustomerInformation(customerInformation))
             return setActiveStep(activeStep + 1)
         }
         setErrors(Object.values(inputErrors).reduce((acc, v) => [...acc, ...v], []))

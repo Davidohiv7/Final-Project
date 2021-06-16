@@ -1,28 +1,64 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 //Imports Material UI components:
-import {Box, Typography, Button} from '@material-ui/core'
+import {Box, Typography, Button, Tab, Tabs, Divider} from '@material-ui/core'
 //Styles
 import useStyles from './styles';
+//Components
+import Stripe from './Stripe/Stripe';
+import MercadoPago from './MercadoPago/MercadoPago';
 
-export default function  Payment({activeStep, setActiveStep, customerInformation, cart, subtotal}) {
+export default function  Payment({activeStep, setActiveStep }) {
 
     const classes = useStyles();
 
+    const { paymentState } = useSelector((state) => ({ ...state.checkoutReducer }))
+
+    const [selectedTab, setSelectedTab] = useState(0);
+
+    const handleTabChange = (event, newValue) => {
+        setSelectedTab(newValue);
+    };
+
     function handleConfirmClick() {
-        setActiveStep(activeStep + 1)
-        console.log(customerInformation, cart, subtotal) 
+        if(paymentState) return setActiveStep(activeStep + 1)
+        alert('You haven`t pay this order')
     }
 
+    function renderTap(selectedTab) {
+        if(selectedTab === 0) return <Stripe/>
+        if(selectedTab === 1) return <MercadoPago/>
+    }
+    
+
     return (
-        <Box display="flex" flexDirection='column' justifyContent="center" alignItems="center">
+        <Box display="flex" flexDirection='column' justifyContent="center" alignItems="center" width='100%'>
             <Typography variant="h3" color="primary">Payment</Typography>
+
+            <Box width='100%' height='370px'>
+
+                <Tabs value={selectedTab} onChange={handleTabChange} width='100%' centered>
+                    <Tab label="Stripe" />
+                    <Tab label="MercadoPago" />
+                </Tabs>
+
+                {
+                    renderTap(selectedTab)
+                }
+        
+            </Box>  
+
+            <Box width='100%'>
+                <Divider/>
+            </Box>
+
             <Box display="flex" justifyContent="center" alignItems="center">
                 <Button variant="contained" color="primary" onClick={() => setActiveStep(activeStep - 1)} className={classes.button}>
                     Back
                 </Button>
 
                 <Button variant="contained" color="primary" onClick={() => handleConfirmClick()} className={classes.button}>
-                    Confirm Payment
+                    Next
                 </Button>
             </Box>
         </Box>  

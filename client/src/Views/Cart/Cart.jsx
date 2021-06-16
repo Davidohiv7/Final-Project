@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 //Imports Material UI components:
 import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Avatar, TextField, IconButton, Divider, Button, Popover, Modal, Fade, Backdrop} from '@material-ui/core/'
@@ -10,6 +11,8 @@ import { readLocalStorageCart, modifyQuantity, deleteProductFromCart } from '../
 import axios from 'axios';
 //Components
 import Checkout from '../../components/Checkout/Checkout';
+//actions
+import {setCheckoutCart, setCheckoutSubtotal} from '../../actions/checkout/checkout_actions' 
 
 
 
@@ -18,6 +21,9 @@ import Checkout from '../../components/Checkout/Checkout';
 export default function Cart() {
 
     const classes = useStyles();
+
+    const dispatch = useDispatch();
+
     const [cartProducts, setCartProducts] = useState([]);
     const [subtotal, setSubtotal] = useState(0);
     const [stockProblemProducts, setStockProblemProducts] = useState([]);
@@ -66,6 +72,8 @@ export default function Cart() {
                 console.log(e)
                 return setStockPopoverAnchor(e.target)
             }
+            dispatch(setCheckoutCart(cartProducts))
+            dispatch(setCheckoutSubtotal(subtotal))
             setModalState(true)
         }
         catch(error) {
@@ -178,7 +186,7 @@ export default function Cart() {
                 }}
             >
                 <Fade in={modalState}>
-                    <Checkout cart={cartProducts} subtotal={subtotal}/>
+                    <Checkout/>
                 </Fade>
             </Modal>
             

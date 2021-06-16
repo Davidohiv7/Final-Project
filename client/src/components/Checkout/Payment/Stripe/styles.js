@@ -4,11 +4,10 @@ const useStyles = makeStyles((theme) => ({
     root: {
         
     },
-    tabContainer: {
-      height: 300,
-    },
-    button: {
-      margin: 16,
+    cardInput: {
+      base: {
+        fontSize: '16px',
+      },
     },
 }));
 

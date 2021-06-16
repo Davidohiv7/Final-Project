@@ -246,4 +246,49 @@ router.get('/', async (req, res) => {
 
 })
 
+router.post('/', async (req, res) => {
+
+  const { name, price, description = "", stock, score = 5, categories, images } = req.body;
+  if (!name || !price || !stock) return response.success(req, res, { message: "Required fields are missing." });
+  
+  try {
+
+    await models.sequelize.transaction(async (t) => {
+      
+      const product = await models.Product.create({
+        name,
+        price,
+        description,
+        stock,
+        score,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }, { transaction: t });
+
+      const productCategories = [];
+      for (let category of categories) {
+        let record = await models.Category.findOne({
+          where: { name: category } // Assumes "categories" is an array of category names
+        }, { transaction: t });
+        productCategories.push(record);
+      }
+      await product.addCategories(productCategories);
+
+      const productImages = [];
+      for (let image of images) {
+        let record = {
+          url: image, // Assumes "images" is an array of URLs
+          productId: product.id
+        }
+        productImages.push(record);
+      }
+      await models.Image.bulkCreate(productImages, { transaction: t });
+
+      response.success(req, res, product);
+    })
+  } catch (error) {
+    response.error(req, res, error);
+  }
+})
+
 module.exports = router;

@@ -11,6 +11,8 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import useStyles from './styles';
 
 import { getCategories } from '../../../../actions/admin/admin_actions';
+import { deleteProductImage } from '../../../../actions/admin/admin_actions';
+import { createProduct } from '../../../../actions/admin/admin_actions';
 
 
 export default function CreateForm() {
@@ -31,9 +33,16 @@ export default function CreateForm() {
             categories: selectedCategories
         })
     }, [selectedCategories])
+
+    useEffect(() => {
+        setProduct({
+            ...product,
+            images: uploadedFiles.map((img) => img.secure_url)
+        })
+    }, [uploadedFiles])
     
     const handleSubmit= () => {
-        console.log(product)
+        dispatch(createProduct(product))
     }
     
     const categories = useSelector((state) => state.adminReducer.categories)
@@ -46,14 +55,9 @@ export default function CreateForm() {
     const classes = useStyles();
 
     const onDelete = async (file) => {
-        try {   
-            const res = await axios.delete(`${process.env.REACT_APP_BACKEND_HOST}/image/cloudinary/${file.public_id}`)
-            console.log("/////// CLOUDINARY DELETE RESPONSE: ", res);
-            setUploadedFiles((curr) => curr.filter((item) => item.name !== file.name));
-        } catch (error) {
-            console.log("Couldn't delete the selected image.", error)
-        }
-    }   
+        dispatch(deleteProductImage(file))
+        setUploadedFiles((curr) => curr.filter((item) => item.name !== file.name));
+    }
 
     const onDrop = (acceptedFiles) => {
         

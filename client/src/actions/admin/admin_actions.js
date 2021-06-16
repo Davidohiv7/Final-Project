@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_CATEGORIES, CREATE_CATEGORY } from '../../actions_types/admin/admin_action_types'
+import { GET_CATEGORIES, CREATE_CATEGORY, CREATE_PRODUCT } from '../../actions_types/admin/admin_action_types'
 
 
 export function getCategories() {
@@ -23,3 +23,16 @@ export function createCategory(name) {
   }
 }
 
+export function deleteProductImage(file) {
+  return (dispatch) => {
+        axios.delete(`http://localhost:3001/image/cloudinary/${file.public_id}`)
+        .catch(e => console.error(e))
+  }
+}
+
+export function createProduct(product) {
+  return (dispatch) => {
+      return axios.post("http://localhost:3001/products", {...product})
+                  .catch(e => console.error(e))
+  }
+}

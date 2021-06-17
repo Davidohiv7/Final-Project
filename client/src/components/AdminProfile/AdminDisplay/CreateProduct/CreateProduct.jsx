@@ -135,7 +135,7 @@ export default function CreateForm() {
 
     const onDelete = async (file) => {
         dispatch(deleteProductImage(file))
-        setUploadedFiles((curr) => curr.filter((item) => item.name !== file.name));
+        setUploadedFiles(uploadedFiles.filter((item) => item.secure_url !== file.secure_url));
     }
 
     const onDrop = (acceptedFiles) => {

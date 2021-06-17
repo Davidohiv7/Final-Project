@@ -122,6 +122,16 @@ export default function CreateForm() {
             if(errors[error]) return alert('Make sure all inputs are okay.')
         }
         dispatch(createProduct(product))
+        setProduct({
+            name: '',
+        price: '',
+        stock: 1,
+        description: '',
+        categories: [],
+        images: []
+        })
+        setSelectedCategories([])
+        setUploadedFiles([])
     }
     
     const categories = useSelector((state) => state.adminReducer.categories)
@@ -171,7 +181,7 @@ export default function CreateForm() {
         <Box className={classes.root}>
             <CardContent className={classes.tabContainer}>
                 <form className= {classes.form}>
-                    <TextField value= {product.name} onChange= {(e)=> setProduct({...product, name: e.target.value})} className= {classes.input} id="outlined-basic" label="Name" variant="outlined" />
+                    <TextField border= 'none' value= {product.name} onChange= {(e)=> setProduct({...product, name: e.target.value})} className= {classes.input} id="outlined-basic" label="Name" variant="outlined" />
                     <Box className= {classes.errors}>{errors.name}</Box>
                     
                     <TextField value= {product.price} onChange= {(e)=> setProduct({...product, price: e.target.value})} className= {classes.input} id="outlined-number" label="Price" type="number" InputLabelProps={{shrink: true,}} variant="outlined" InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>,}}/>
@@ -180,7 +190,7 @@ export default function CreateForm() {
                     <TextField value= {product.stock} onChange= {(e)=> setProduct({...product, stock: e.target.value})} className= {classes.input} id="outlined-number" label="Stock" type="number" InputLabelProps={{shrink: true,}} variant="outlined"/>
                     <Box className= {classes.errors}>{errors.stock}</Box>
                     
-                    <TextField onChange= {(e)=> setProduct({...product, description: e.target.value})} className= {classes.input} id="outlined-basic" label="Description" variant="outlined" multiline />
+                    <TextField value= {product.description} onChange= {(e)=> setProduct({...product, description: e.target.value})} className= {classes.input} id="outlined-basic" label="Description" variant="outlined" multiline />
 
                 <Autocomplete
                     id= 'categorySelector'

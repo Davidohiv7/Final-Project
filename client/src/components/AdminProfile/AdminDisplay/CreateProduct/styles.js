@@ -46,7 +46,7 @@ form: {
 
 input: {
     margin: '2%',
-    width: '90%'
+    width: '90%',
 },
 
 selectedCategories: {

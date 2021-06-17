@@ -70,6 +70,19 @@ dropzone: {
   
 active: {
     border: "2px solid rebeccapurple",
+},
+
+errors: {
+    color: 'red'
+},
+
+images: {
+    display: 'flex',
+    listStyle: 'none'
+},
+
+image: {
+    margin:10
 }
 
 

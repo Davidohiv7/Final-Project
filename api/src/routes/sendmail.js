@@ -2,10 +2,17 @@ const {
     Router
 } = require('express');
 const nodemailer = require('nodemailer')
-//const { response } = require('../app');
 const router = Router();
-//const models = require('../database/models/');
+
+//util imports
+const {
+    mailSignUp,
+    mailBuy,
+    orderStatus,
+} = require('../utils/mailtemplates')
 const response = require('../utils/response');
+
+//Bring all the IDs, tokens and passwords from the .env
 const {
     GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET,
@@ -14,34 +21,30 @@ const {
     GOOGLE_MAIL,
 } = process.env
 
+const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+        type: 'OAuth2',
+        clientId: GOOGLE_CLIENT_ID,
+        clientSecret: GOOGLE_CLIENT_SECRET
+    }
+});
+
+
 router.get('/', (req, res, next) => {
     res.send('this is the email sender route')
-})
+});
 
 router.post('/signup', async (req, res) => {
-    const { email, name, lastName } = req.body;
-
-    contentHTML = `
-    <h1>Welcome ${name} ${lastName}</h1>
-    <h5>Your account ${email} has been created</h5>
-    `
-    //console.log(contentHTML);
-    let transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-        auth: {
-            type: 'OAuth2',
-            clientId:  GOOGLE_CLIENT_ID,
-            clientSecret: GOOGLE_CLIENT_SECRET
-        }
-    });
+    const { email, name, lastName, subject } = req.body;
 
     transporter.sendMail({
-        from: GOOGLE_MAIL,
+        from: `Onion Food Sup. <${GOOGLE_MAIL}>`,
         to: email,
         subject: 'Welcome to Onion Food Sup.',
-        text: 'I hope this message gets through!',
+        html: mailSignUp(name, lastName, email),
         auth: {
             user: GOOGLE_MAIL,
             refreshToken: GOOGLE_REFRESH_TOKEN,
@@ -52,15 +55,31 @@ router.post('/signup', async (req, res) => {
 
     return response.success(req, res, "email sent", 200)
     //let categories = await models.Category.findAll()
-    //return response.success(req, res, categories, 200)
-})
+});
 
-/*
-router.post('/', async (req, res) => {
-    models.Category.create({
-        name: req.body.name
-    })
-    return response.success(req, res, null, 200)
-})*/
+router.post('/buy', async (req, res) => {
+    const {
+        email,
+        name,
+        lastName,
+        subject
+    } = req.body;
+
+    transporter.sendMail({
+        from: `Onion Food Sup. <${GOOGLE_MAIL}>`,
+        to: email,
+        subject: subject,
+        html: mailBuy(name, lastName, email),
+        auth: {
+            user: GOOGLE_MAIL,
+            refreshToken: GOOGLE_REFRESH_TOKEN,
+            accessToken: GOOGLE_ACCES_TOKEN,
+            expires: 3599
+        }
+    });
+
+    return response.success(req, res, "email sent", 200)
+    //let categories = await models.Category.findAll()
+});
 
 module.exports = router;

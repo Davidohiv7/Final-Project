@@ -57,7 +57,8 @@ export default function SignUp() {
         e.preventDefault()
         const inputErrors = signUpValidation(formInputs)
         if(Object.keys(inputErrors).length === 0) {
-            dispatch(signUp(formInputs))
+            dispatch(signUp(formInputs));
+            formInputs.subject = 'Welcome to Onion Food Sup.'
             dispatch(emailconfirm(formInputs))
             return setFormInputs(resetSignUpInput)
         }

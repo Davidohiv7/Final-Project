@@ -24,7 +24,7 @@ export default function  ConfirmOrder( { activeStep, setActiveStep }) {
 
 
     function handleConfirmOrder(e) {
-        dispatch(confirmOrderAction({ subtotal, cart, customerInformation }))
+        dispatch(confirmOrderAction({ subtotal, cart, customerInformation }));
     }
 
     useEffect(() => {

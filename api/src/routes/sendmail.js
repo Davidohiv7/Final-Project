@@ -8,14 +8,17 @@ const router = Router();
 const response = require('../utils/response');
 const {
     GOOGLE_CLIENT_ID,
-    GOOGLE_CLIENT_SECRET
+    GOOGLE_CLIENT_SECRET,
+    GOOGLE_REFRESH_TOKEN,
+    GOOGLE_ACCES_TOKEN,
+    GOOGLE_MAIL,
 } = process.env
 
 router.get('/', (req, res, next) => {
     res.send('this is the email sender route')
 })
 
-router.post('/', async (req, res) => {
+router.post('/signup', async (req, res) => {
     const { email, name, lastName } = req.body;
 
     contentHTML = `
@@ -23,21 +26,31 @@ router.post('/', async (req, res) => {
     <h5>Your account ${email} has been created</h5>
     `
     //console.log(contentHTML);
-    const transporter = nodemailer.createTransport({
+    let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 465,
-        secure: true, //with SSL
+        secure: true,
         auth: {
             type: 'OAuth2',
-            user: email,
-            serviceClient: '113600000000000000000',
-            privateKey: GOOGLE_CLIENT_ID,
-            accessToken: GOOGLE_CLIENT_SECRET,
-            expires: 1484314697598
+            clientId:  GOOGLE_CLIENT_ID,
+            clientSecret: GOOGLE_CLIENT_SECRET
         }
     });
 
-    return response.success(req, res, "somos nosotros", 200)
+    transporter.sendMail({
+        from: GOOGLE_MAIL,
+        to: email,
+        subject: 'Welcome to Onion Food Sup.',
+        text: 'I hope this message gets through!',
+        auth: {
+            user: GOOGLE_MAIL,
+            refreshToken: GOOGLE_REFRESH_TOKEN,
+            accessToken: GOOGLE_ACCES_TOKEN,
+            expires: 3599
+        }
+    });
+
+    return response.success(req, res, "email sent", 200)
     //let categories = await models.Category.findAll()
     //return response.success(req, res, categories, 200)
 })

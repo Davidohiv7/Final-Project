@@ -26,13 +26,14 @@ const useStyles = makeStyles((theme) => ({
         background: theme.palette.primary.dark,
         '&:hover': {
             background: '#4d0f00',
-          },
+        },
         color: "white",
         borderRadius: 5,
         margin: '4%',
         width: '90%'
     },
     filterGrid: {
+        marginLeft: 20,
         backgroundColor: theme.palette.primary.main,
         borderRadius: theme.shape.borderRadius,
         marginTop: 11,

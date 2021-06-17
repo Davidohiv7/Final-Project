@@ -23,10 +23,10 @@ export default function AdminProfile() {
       <Grid container spacing={3} className={classes.container} align= 'center'>
         <Grid item xs={2} className={classes.filterGrid} >
           <CardContent className= {classes.profileContainer}>
-            <Typography variant="h5" color="secondary" display='inline'>Username</Typography>
+            <Typography variant="h5" color="secondary" display='inline'>Admin Name</Typography>
             <Avatar className={classes.profilePic}>U</Avatar>
 
-            <Button onClick={() => {displayHandler('products')}} size= 'small' className={classes.button}><Typography variant= 'button'>Product</Typography></Button>
+            <Button onClick={() => {displayHandler('products')}} size= 'small' className={classes.button}><Typography variant= 'button'>Products</Typography></Button>
             <Button onClick={(e) => {displayHandler(1)}} size= 'small' className={classes.button}><Typography variant= 'button'>Categories</Typography></Button>
             <Button onClick={(e) => {displayHandler(2)}} size= 'small' className={classes.button}><Typography variant= 'button'>Orders</Typography></Button>
             <Button onClick={(e) => {displayHandler(3)}} size= 'small' className={classes.button}><Typography variant= 'button'>Users</Typography></Button>

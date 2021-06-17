@@ -67,7 +67,7 @@ dropzone: {
     fontWeight: "bold",
     cursor: "pointer",
 },
-  
+
 active: {
     border: "2px solid rebeccapurple",
 },

@@ -118,6 +118,7 @@ export default function CreateForm() {
 
 
     const handleSubmit= () => {
+        console.log(product.name, errors.name)
         for(let error in errors) {
             if(errors[error]) return alert('Make sure all inputs are okay.')
         }
@@ -181,7 +182,7 @@ export default function CreateForm() {
         <Box className={classes.root}>
             <CardContent className={classes.tabContainer}>
                 <form className= {classes.form}>
-                    <TextField border= 'none' value= {product.name} onChange= {(e)=> setProduct({...product, name: e.target.value})} className= {classes.input} id="outlined-basic" label="Name" variant="outlined" />
+                    <TextField value= {product.name} onChange= {(e)=> setProduct({...product, name: e.target.value})} className= {classes.input} id="outlined-basic" label="Name" variant="outlined" />
                     <Box className= {classes.errors}>{errors.name}</Box>
                     
                     <TextField value= {product.price} onChange= {(e)=> setProduct({...product, price: e.target.value})} className= {classes.input} id="outlined-number" label="Price" type="number" InputLabelProps={{shrink: true,}} variant="outlined" InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>,}}/>

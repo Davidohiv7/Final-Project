@@ -9,6 +9,8 @@ const test = require('./test')
 const categories = require('./categories');
 const mercadopago = require('./mercadopago');
 const orders = require('./orders')
+const cart = require('./cart')
+const checkout = require('./checkout')
 
 
 router.use('/create_preference', mercadopago);
@@ -19,6 +21,8 @@ router.use('/signin', signin);
 router.use('/googleauth', googleauth);
 router.use('/user', user);
 router.use('/orders', orders);
+router.use('/cart', cart);
+router.use('/checkout', checkout);
 router.use('/test', test);
 
 module.exports = router;

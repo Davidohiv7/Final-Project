@@ -13,7 +13,8 @@ import axios from 'axios';
 //Components
 import Checkout from '../../components/Checkout/Checkout';
 //actions
-import {setCheckoutCart, setCheckoutSubtotal} from '../../actions/checkout/checkout_actions' 
+import {getCheckoutTotal, setCheckoutSubtotal} from '../../actions/checkout/checkout_actions' 
+import { changeCartQuantity, deleteCartProduct, clearCart} from '../../actions/cart/cart_actions' 
 
 
 
@@ -26,6 +27,8 @@ export default function Cart() {
     const dispatch = useDispatch();
 
     const { payment } = useSelector((state) => ({ ...state.checkoutReducer }))
+    const { logged } = useSelector((state) => ({ ...state.authenticationReducer }))
+    const { cart } = useSelector((state) => ({ ...state.cartReducer }))
 
     const [cartProducts, setCartProducts] = useState([]);
     const [subtotal, setSubtotal] = useState(0);
@@ -33,6 +36,7 @@ export default function Cart() {
 
     const [cartDisabledSnackbar, setDisabledCartSnackbar] = useState(false);
     const [noProductsSnackbar, setNoProductsSnackbar] = useState(false);
+    const [noLoggedSnackbar, setNoLoggedSnackbar] = useState(false);
 
     const [stockPopover, setStockPopover] = useState(false);
     const [stockPopoverAnchor, setStockPopoverAnchor] = useState(null);
@@ -40,72 +44,108 @@ export default function Cart() {
     const [modalState, setModalState] = useState(false);
 
     useEffect(() => {
-        setCartProducts(readLocalStorageCart())
+        if(!logged) {
+            return setCartProducts(readLocalStorageCart())
+        }
+        setCartProducts(cart)
     }, [])
 
     useEffect(() => {
-        if(cartProducts && cartProducts.length > 0) {
-            return setSubtotal(cartProducts.map(p => p.price * p.quantity).reduce((acc, v) => acc + v))
+        if(logged) {
+            setCartProducts(cart)
         }
-        setSubtotal(0)
+
+    }, [cart])
+
+    useEffect(() => {
+        if(!logged) {
+            if(cartProducts && cartProducts.length > 0) {
+                return setSubtotal(cartProducts.map(p => p.price * p.quantity).reduce((acc, v) => acc + v))
+            }
+            setSubtotal(0)
+        }
     }, [cartProducts])
+
+    useEffect(() => {
+        if(logged) {
+            if(cart && cart.length > 0) {
+                //Este se puede romper en funcion de como llegue la info del back
+                return setSubtotal(cart.map(p => p.price * p.quantity).reduce((acc, v) => acc + v))
+            }
+            setSubtotal(0)
+        }
+    }, [cart])
 
     function handleQuantityChange(product, e) {
         if(payment.state) {
             return setDisabledCartSnackbar(true)
         }
-        modifyQuantity(product, Number(e.target.value))
-        setCartProducts(readLocalStorageCart())
+        if(!logged) {
+            modifyQuantity(product, Number(e.target.value))
+            return setCartProducts(readLocalStorageCart())
+        }
+        //AQUI VA LA PARTE DE CUANDO ESTE LOGGEADO DEBE SER UNA ACTION, CREAR LA ACTION
+        dispatch(changeCartQuantity(product, Number(e.target.value)))
     }
 
     function handleDelete(product) {
         if(payment.state) {
             return setDisabledCartSnackbar(true)
         }
-        deleteProductFromCart(product)
-        setCartProducts(readLocalStorageCart())
+        if (!logged) {
+            deleteProductFromCart(product)
+            return setCartProducts(readLocalStorageCart())
+        }
+        dispatch(deleteCartProduct(product))
     }
 
     function handleClearCart(e) {
         if(payment.state) {
             return setDisabledCartSnackbar(true)
         }
-        const cart = localStorage.getItem('cart')
-        if(cart) {
-            setCartProducts([])
-            localStorage.removeItem('cart')
+        if(!logged) {
+            const cart = localStorage.getItem('cart')
+            if(cart) {
+                setCartProducts([])
+                return localStorage.removeItem('cart')
+            } 
         }
+        //AQUI VA LA PARTE DE CUANDO ESTE LOGGEADO DEBE SER UNA ACTION, CREAR LA ACTION
+        dispatch(clearCart())
     }
     
     async function handleCheckoutClick(e, cartProducts) {
-        if(cartProducts && cartProducts.length > 0) {
-            const idArray = cartProducts.map(p => p.id);
-            try {
-                const response = await axios.post("http://localhost:3001/products/stockbyid", { idArray });
-                const updateProductListStock = response.data.data.productList;
-                const lessStockProducts = []
-                cartProducts.forEach(p => {
-                    const updateProduct = updateProductListStock.find(pu => pu.id === p.id);
-                    if(updateProduct.stock < p.quantity) {
-                        lessStockProducts.push(updateProduct)
+        if(logged) {
+            if(cartProducts && cartProducts.length > 0) {
+                const idArray = cartProducts.map(p => p.id);
+                try {
+                    const response = await axios.post("http://localhost:3001/products/stockbyid", { idArray });
+                    const updateProductListStock = response.data.data.productList;
+                    const lessStockProducts = []
+                    cartProducts.forEach(p => {
+                        const updateProduct = updateProductListStock.find(pu => pu.id === p.id);
+                        if(updateProduct.stock < p.quantity) {
+                            lessStockProducts.push(updateProduct)
+                        }
+                    })
+                    if(lessStockProducts.length > 0) {
+                        setStockProblemProducts(lessStockProducts)
+                        setStockPopover(true)
+                        console.log(e)
+                        return setStockPopoverAnchor(e.target)
                     }
-                })
-                if(lessStockProducts.length > 0) {
-                    setStockProblemProducts(lessStockProducts)
-                    setStockPopover(true)
-                    console.log(e)
-                    return setStockPopoverAnchor(e.target)
+                    dispatch(getCheckoutTotal())
+                    setModalState(true)
                 }
-                dispatch(setCheckoutCart(cartProducts))
-                dispatch(setCheckoutSubtotal(subtotal))
-                setModalState(true)
-            }
-            catch(error) {
-                console.log(error)
-            }
-        }else {
-            setNoProductsSnackbar(true)
-        } 
+                catch(error) {
+                    console.log(error)
+                }
+            }else {
+                setNoProductsSnackbar(true)
+            } 
+        }else{
+            setNoLoggedSnackbar(true)
+        }
         
     }
 
@@ -221,6 +261,12 @@ export default function Cart() {
             <Snackbar open={noProductsSnackbar} autoHideDuration={3000} onClose={() => setNoProductsSnackbar(false)} variant="filled">
                 <Alert onClose={() => setNoProductsSnackbar(false)} severity="error">
                     Please add products before the checkout
+                </Alert>
+            </Snackbar>
+
+            <Snackbar open={noLoggedSnackbar} autoHideDuration={3000} onClose={() => setNoLoggedSnackbar(false)} variant="filled">
+                <Alert onClose={() => setNoLoggedSnackbar(false)} severity="error">
+                    Please log in to your account or create a new one to continue to the checkout
                 </Alert>
             </Snackbar>
             

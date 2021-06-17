@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SET_CHECKOUT_CART, SET_CHECKOUT_SUBTOTAL, SET_CHECKOUT_CUSTOMER_INFORMATION, CONFIRM_STRIPE_PAYMENT, SET_LOADING_TRUE, 
+import { SET_CHECKOUT_SUBTOTAL, SET_CHECKOUT_CUSTOMER_INFORMATION, CONFIRM_STRIPE_PAYMENT, SET_LOADING_TRUE, 
     SET_LOADING_FALSE, SET_CHECKOUT_ERROR_MESSAGE, SET_CONFIRM_ORDER_SUCCESS_MESSAGE, SET_CONFIRM_ORDER_ERROR_MESSAGE, SET_MERCADOPAGO_ORDER} from '../../actions_types/checkout/checkout_actions_types'
 //Custom functios
 import { clearCheckoutData } from '../../assets/utils/confirmOrder'
@@ -50,24 +50,29 @@ export function confirmOrderAction(checkoutData) {
 }
 
 
-export const setCheckoutCart = (payload) => {
-    return {
-        type: SET_CHECKOUT_CART,
-        payload
+export const getCheckoutTotal = () => {
+    const jwt = localStorage.getItem('jwt')
+    return async (dispatch) => {
+        try {
+            const response = await axios.get("http://localhost:3001/checkout/gettotal", { headers: { 'Authorization': jwt } })
+            console.log(response.data)
+            dispatch({type: SET_CHECKOUT_SUBTOTAL, payload: response.data.data.total});
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
 
-export const setCheckoutSubtotal = (payload) => {
-    return {
-        type: SET_CHECKOUT_SUBTOTAL,
-        payload
-    }
-}
-
-export const setCheckoutCustomerInformation = (payload) => {
-    return {
-        type: SET_CHECKOUT_CUSTOMER_INFORMATION,
-        payload
+export const setShippingAdress = (data) => {
+    const jwt = localStorage.getItem('jwt')
+    return async (dispatch) => {
+        try {
+            const response = await axios.post("http://localhost:3001/checkout/setshippingaddress", data, { headers: { 'Authorization': jwt } })
+            console.log(response.data)
+            // dispatch({type: SET_CHECKOUT_CUSTOMER_INFORMATION, payload: response.data.data.shippingAddress});
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
 

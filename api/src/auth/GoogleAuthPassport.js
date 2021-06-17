@@ -28,7 +28,7 @@ passport.use(new GoogleStrategy({
     try {
         const user = await models.User.findOrCreate({where: { email: profile.emails[0].value}, defaults: googleUser})
         if(user && user[0]) {
-            return cb(null, user[0])
+            return cb(null, user)
         }
     } catch (error) {
         console.log('Error signing Up')

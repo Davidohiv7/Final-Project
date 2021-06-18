@@ -75,7 +75,7 @@ router.post('/add', passport.authenticate('jwt', {session: false}), async (req, 
             where: {id: cartProductsIdArray},
             include: [{
                 model: models.Order,
-                where: { id: orderValidation.id  }
+                where: { id: cart.id  }
               },
               {
                 model: models.Image,

@@ -6,6 +6,7 @@ export const addProductToCart = (product, quantity) => {
     return async (dispatch) => {
         try {
             const response = await axios.post("http://localhost:3001/cart/add", { product, quantity}, { headers: { 'Authorization': jwt }} )
+            console.log(response.data)
             dispatch({type: SET_CART, payload: response.data.data.cart});
         } catch (error) {
             console.log(error)

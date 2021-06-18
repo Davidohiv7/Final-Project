@@ -13,7 +13,7 @@ import axios from 'axios';
 //Components
 import Checkout from '../../components/Checkout/Checkout';
 //actions
-import {getCheckoutTotal, setCheckoutSubtotal} from '../../actions/checkout/checkout_actions' 
+import { getCheckoutTotal } from '../../actions/checkout/checkout_actions' 
 import { changeCartQuantity, deleteCartProduct, clearCart} from '../../actions/cart/cart_actions' 
 
 
@@ -134,7 +134,9 @@ export default function Cart() {
                         console.log(e)
                         return setStockPopoverAnchor(e.target)
                     }
-                    dispatch(getCheckoutTotal())
+                    if(!payment.state) {
+                        dispatch(getCheckoutTotal())
+                    }
                     setModalState(true)
                 }
                 catch(error) {

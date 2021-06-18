@@ -17,8 +17,8 @@ export default function  ConfirmOrder( { activeStep, setActiveStep }) {
 
     let history = useHistory();
 
-    const { subtotal, cart, payment, customerInformation, confirmOrder } = useSelector((state) => ({ ...state.checkoutReducer }))
-
+    const { subtotal, payment, customerInformation, confirmOrder } = useSelector((state) => ({ ...state.checkoutReducer }))
+    const { cart } = useSelector((state) => ({ ...state.cartReducer }))
     const [confirmOrderSuccessSnackbar, setConfirmOrderSuccessSnackbar] = useState(false);
     const [confirmOrderErrorSnackbar, setConfirmOrderErrorSnackbar] = useState(false);
 
@@ -76,7 +76,7 @@ export default function  ConfirmOrder( { activeStep, setActiveStep }) {
                         <Typography variant="h5" color="default">
                                 {`Payment status: ${payment.state ? 'Paid' : 'Pending'} - Method: ${payment.method}`}
                             </Typography>
-                        <Typography variant="h5" color="default">{`Total: $${subtotal.toFixed(2)}`}</Typography>
+                        <Typography variant="h5" color="default">{`Total: $${subtotal}`}</Typography>
                     </Box>
                 
                     <Box display="flex" justifyContent="center" alignItems="center" >

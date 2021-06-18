@@ -34,13 +34,6 @@ export default function NavBar() {
       dispatch({type: CONFIRM_STRIPE_PAYMENT})
     }
   }, [])
-
-  useEffect(() => {
-    const customerInformation = JSON.parse(localStorage.getItem('customerInformation'))
-    if(customerInformation) {
-      dispatch({type: SET_CHECKOUT_CUSTOMER_INFORMATION, payload: customerInformation})
-    }
-  }, [])
   
   return (
     <div className={classes.root}>

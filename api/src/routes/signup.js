@@ -2,12 +2,19 @@ const express = require('express')
 const jwt = require('jsonwebtoken')
 const response = require('../utils/response')
 const signUpRouter = express.Router();
-const bcrypt = require('bcrypt')
-
-const { SECRET_KEY_JWT, SALT_ROUNDS } = process.env
-
-
+const bcrypt = require('bcrypt');
+const {
+    transporter,
+    authMailing
+} = require('../mailingMid/NodemailerGoogleMid')
+const { mailSignUp } = require('../utils/mailtemplates');
 const models = require('../database/models/');
+
+const {
+    SECRET_KEY_JWT,
+    SALT_ROUNDS,
+    GOOGLE_MAIL,
+} = process.env
 
 signUpRouter.get('/', (req, res, next) => {
     res.send('Esta es la ruta de sign up')
@@ -45,7 +52,7 @@ signUpRouter.post('/', async (req, res, next) => {
 
         let newCart = false
 
-        if(newUserData.cart.length > 0) {
+        if(newUserData.cart) {
             const cartProductsIdArray = newUserData.cart.map(p => p.id)
             const orderItemsArrayData = newUserData.cart.map(p => {
                 return {
@@ -84,9 +91,26 @@ signUpRouter.post('/', async (req, res, next) => {
             await firstUserOrder.save()
         }
 
-        const jasonWebToken = jwt.sign({id: newUser.id, email: newUser.email}, SECRET_KEY_JWT)
+        const jasonWebToken = jwt.sign({id: newUser.id, email: newUser.email}, SECRET_KEY_JWT);
 
-        response.success(req, res, {message: `User was successfully created`, token: jasonWebToken, cart: newCart})
+        //send email confirmation
+
+        const {
+            email,
+            name,
+            lastName,
+        } = newUser;
+
+        transporter.sendMail({
+            from: `Onion Food Sup. <${GOOGLE_MAIL}>`,
+            to: email,
+            subject: 'Welcome to Onion Food Sup.',
+            html: mailSignUp(name, lastName, email),
+            auth: authMailing,
+        });
+
+
+        response.success(req, res, {message: `User was successfully created. Check your email`, token: jasonWebToken, cart: newCart})
 
     } catch (error) {
         console.log(error)

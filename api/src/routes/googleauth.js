@@ -4,11 +4,17 @@ const jwt = require('jsonwebtoken')
 const googleAuthRouter = express.Router();
 const models = require('../database/models/');
 const response = require('../utils/response')
+const transporter = require('../mailingMid/NodemailerGoogleMid')
+const authMailing = require('../mailingMid/NodemailerGoogleMid')
+const { mailSignUp } = require('../utils/mailtemplates');
 
-const { SECRET_KEY_JWT } = process.env
+const {
+  SALT_ROUNDS,
+  GOOGLE_MAIL,
+  SECRET_KEY_JWT,
+} = process.env
 
 googleAuthRouter.get('/signin', passport.authenticate('google', { session: false, scope: ['profile', 'email'] }))
-
 
 googleAuthRouter.get('/callback', passport.authenticate('google', { 
     session: false, 
@@ -19,7 +25,23 @@ googleAuthRouter.get('/callback', passport.authenticate('google', {
   (req, res) => {
 
     if(req.user[1]) {
-      const jasonWebToken = jwt.sign({id: req.user[0].id, email: req.user[0].email}, SECRET_KEY_JWT)
+      const jasonWebToken = jwt.sign({id: req.user[0].id, email: req.user[0].email}, SECRET_KEY_JWT);
+      //send email confirmation
+
+      const {
+        email,
+        name,
+        lastName,
+      } = req.user[0];
+
+      transporter.sendMail({
+        from: `Onion Food Sup. <${GOOGLE_MAIL}>`,
+        to: email,
+        subject: 'Welcome to Onion Food Sup.',
+        html: mailSignUp(name, lastName, email),
+        auth: authMailing,
+      });
+
       res.cookie('jwt', jasonWebToken).cookie('newUser', 'true').redirect('http://localhost:3000/authentication/google/success')
     }
     const jasonWebToken = jwt.sign({id: req.user[0].id, email: req.user[0].email}, SECRET_KEY_JWT)

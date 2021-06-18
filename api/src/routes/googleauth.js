@@ -4,8 +4,10 @@ const jwt = require('jsonwebtoken')
 const googleAuthRouter = express.Router();
 const models = require('../database/models/');
 const response = require('../utils/response')
-const transporter = require('../mailingMid/NodemailerGoogleMid')
-const authMailing = require('../mailingMid/NodemailerGoogleMid')
+const {
+  transporter,
+  authMailing
+} = require('../mailingMid/NodemailerGoogleMid')
 const { mailSignUp } = require('../utils/mailtemplates');
 
 const {

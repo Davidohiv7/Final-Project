@@ -8,6 +8,17 @@ const { STRIPE_SECRET_KEY } = process.env
 
 const stripe = new Stripe(STRIPE_SECRET_KEY)
 
+const {
+    transporter,
+    authMailing
+} = require('../mailingMid/NodemailerGoogleMid')
+const {
+    mailBuy
+} = require('../utils/mailtemplates');
+const {
+    GOOGLE_MAIL,
+} = process.env
+
 
 ordersRouter.post('/confirm_order', passport.authenticate('jwt', {session: false}), async (req, res) => {
     const user = req.user
@@ -55,6 +66,15 @@ ordersRouter.post('/confirm_order', passport.authenticate('jwt', {session: false
         // })
 
         if(verifyOrder) {
+            //send email confirmation
+
+            transporter.sendMail({
+                from: `Onion Food Sup. <${GOOGLE_MAIL}>`,
+                to: user.email,
+                subject: 'Welcome to Onion Food Sup.',
+                html: mailBuy(user.name, order),
+                auth: authMailing,
+            });
             return response.success(req, res, { 
                 message: `The order ${order.id} was successfully created for customer ${user.name} ${user.lastName}`, 
                 result: true,

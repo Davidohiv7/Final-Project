@@ -40,7 +40,27 @@ export function createProduct(product) {
 export function addUrlToDelete(url) {
   const id = url.split('/')[6]
   return (dispatch) => {
-    axios.delete(`http://localhost:3001/image/${id}`)
-    .catch(e => console.error(e))
+    dispatch({type:ADD_URL_TO_DELETE, payload: id})
+  }
 }
+
+export function deleteImages(images) {
+  return (dispatch) => {
+      return axios.post("http://localhost:3001/images", {images: images})
+                  .catch(e => console.error(e))
+  }
+}
+
+export function updateProduct(product) {
+  return (dispatch) => {
+    return axios.put("http://localhost:3001/products", {...product})
+                .catch(e => console.error(e))
+  }
+}
+
+export function deleteProduct(id) {
+  return (dispatch) => {
+    return axios.delete(`http://localhost:3001/products/${id}`)
+                .catch(e => console.error(e))
+  }
 }

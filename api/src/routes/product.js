@@ -317,7 +317,7 @@ router.put('/', async (req, res) => {
 
 		// Get categories
 		const newCategories = [];
-		for (let category of req.body.categories) {
+		for (let category of categories) {
 			let record = await models.Category.findOne({
 				where: { name: category }
 			});
@@ -326,7 +326,7 @@ router.put('/', async (req, res) => {
 
 		// Get images
 		const newImages = [];
-		for (let image of req.body.images) {
+		for (let image of images) {
 			let record = await models.Image.findOne({
 				where: { url: image },
 			})
@@ -341,7 +341,7 @@ router.put('/', async (req, res) => {
     await product.reload();
 		// Add categories and images
 		await product.setCategories(newCategories);
-		// await product.setImages(newImages);
+		await product.setImages(newImages);
 
 		response.success(req, res, product);
 

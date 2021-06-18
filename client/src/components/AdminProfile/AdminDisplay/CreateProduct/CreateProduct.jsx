@@ -9,21 +9,20 @@ import { Box, CardContent, TextField, InputAdornment, Button, Paper, Typography 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import useStyles from './styles';
 
-import { getCategories } from '../../../../actions/admin/admin_actions';
-import { deleteProductImage } from '../../../../actions/admin/admin_actions';
-import { createProduct } from '../../../../actions/admin/admin_actions';
+import { getCategories, deleteImages, deleteProductImage, createProduct, updateProduct, deleteProduct } from '../../../../actions/admin/admin_actions';
 
 
 export default function CreateForm({ setDisplayStatus, editProduct }) {
     const [selectedCategories, setSelectedCategories] = useState(editProduct? editProduct.Categories.map(c => c.name): []);
     const [uploadedFiles, setUploadedFiles] = useState(editProduct? editProduct.Images.map(i => ({ secure_url:i.url, name: i.name})): []);
     const [product, setProduct] = useState({
+        id: editProduct? editProduct.id: '',
         name: editProduct? editProduct.name: '',
         price: editProduct? editProduct.price: '',
         stock: editProduct? editProduct.stock: 1,
         description: editProduct? editProduct.description: '',
-        categories: [],
-        images: '[]',
+        categories: editProduct? editProduct.Categories.map(c => c.name): [],
+        images: editProduct? editProduct.Images.map(i => ({ secure_url:i.url, name: i.name})): []
     })
 
 
@@ -55,7 +54,6 @@ export default function CreateForm({ setDisplayStatus, editProduct }) {
         if(!product.name) return setEname("You must provide a product name.")
         if(product.name.length>50) return setEname("The name cannot be longer than 50 characters.")
         if(product.name.length<2) return setEname("The name cannot be that short.")
-        if((!/^[A-Za-z]+$/.test(product.name))) return setEname("The name should only contain letters.")
         else setEname("")
     }
     useDidUpdateEffect(nameValidator,[product.name])
@@ -108,30 +106,46 @@ export default function CreateForm({ setDisplayStatus, editProduct }) {
         })
     }, [uploadedFiles])
 
+    const { imagesToDelete } = useSelector((state)=> state.adminReducer)
 
     const handleSubmit= () => {
-        // if(editProduct) {
-        //     dispatch(deleteImages())
-        // }
-
-        nameValidator()
-        priceValidator()
-        stockValidator()
-        categoriesValidator()
-        imagesValidator()
-        if(!eName && !ePrice && !eStock && !eCategories && !eImages){
-            dispatch(createProduct(product))
-            setProduct({
-            name: '',
-            price: '',
-            stock: 1,
-            description: '',
-            categories: [],
-            images: []
-            })
-            setSelectedCategories([])
-            setUploadedFiles([])
+        if(editProduct) {
+            dispatch(deleteImages(imagesToDelete))
+            nameValidator()
+            priceValidator()
+            stockValidator()
+            categoriesValidator()
+            imagesValidator()
+            if(!eName && !ePrice && !eStock && !eCategories && !eImages){
+                dispatch(updateProduct(product))
         }
+        }
+        else{
+            nameValidator()
+            priceValidator()
+            stockValidator()
+            categoriesValidator()
+            imagesValidator()
+            if(!eName && !ePrice && !eStock && !eCategories && !eImages){
+                dispatch(createProduct(product))
+                setProduct({
+                name: '',
+                price: '',
+                stock: 1,
+                description: '',
+                categories: [],
+                images: []
+                })
+                setSelectedCategories([])
+                setUploadedFiles([])
+                setDisplayStatus('products')
+            }
+        }
+    }
+
+    const handleDelete = (id) => {
+        dispatch(deleteProduct(id))
+        setDisplayStatus('products')
     }
     
     const categories = useSelector((state) => state.adminReducer.categories)
@@ -241,7 +255,7 @@ export default function CreateForm({ setDisplayStatus, editProduct }) {
                     <Typography className={classes.errorText}>{!product.images.length && eImages}</Typography>
                 </form>
 
-                {editProduct && <Button className= {classes.delete}>DELETE PRODUCT</Button>}
+                {editProduct && <Button onClick={()=> {handleDelete(editProduct.id)}} className= {classes.delete}>DELETE PRODUCT</Button>}
             </CardContent>
     )
 }

@@ -1,6 +1,11 @@
-import { Grid, Paper } from '@material-ui/core';
 import React from 'react';
+
+import { Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch } from'react-redux';
+
+import { addUrlToDelete } from '../../../../../actions/admin/admin_actions';
+
 
 const useStyles = makeStyles((theme) => ({
   delete: {
@@ -27,13 +32,19 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
-
-export default function ImageWrapper({ file, onDelete }) {
-  const classes = useStyles();
+  
+  export default function ImageWrapper({ file, onDelete }) {
+    const classes = useStyles();
+    const dispatch = useDispatch();
   return (
     <Paper className={classes.image} justify="space-between" alignItems="center">
         <img width= '150px' src={file.secure_url} />
-        <button className={classes.delete} size="small" onClick={() => onDelete(file)}>X</button>
+        <button className={classes.delete} size="small" onClick={function(e){
+          e.preventDefault()
+          onDelete(file)
+          dispatch(addUrlToDelete(file.secure_url))
+        }} 
+        >X</button>
     </Paper>
   );
 }

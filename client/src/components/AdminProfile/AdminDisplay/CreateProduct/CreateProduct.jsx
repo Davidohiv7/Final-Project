@@ -110,6 +110,10 @@ export default function CreateForm({ setDisplayStatus, editProduct }) {
 
 
     const handleSubmit= () => {
+        // if(editProduct) {
+        //     dispatch(deleteImages())
+        // }
+
         nameValidator()
         priceValidator()
         stockValidator()
@@ -205,16 +209,16 @@ export default function CreateForm({ setDisplayStatus, editProduct }) {
                         }}
                     />
                     <Typography className={classes.errorText}>{eCategories}</Typography>
-    
+
                     <Paper elevation={5} className = {classes.selectedCategories}>
                         {selectedCategories.map((category)=> (
                             <Paper key= {category} className= {classes.selectedCategory}>
                                 <Typography>{category}</Typography>
-                                <Button onClick= {() =>setSelectedCategories(selectedCategories.filter(c => c !== category))} value={category}  className= {classes.removeCategory}>X</Button>
+                                <Button onClick= {() => setSelectedCategories(selectedCategories.filter(c => c !== category))} value={category}  className= {classes.removeCategory}>X</Button>
                             </Paper>
                         ))}
                     </Paper>
-                    
+
                     <div
                         {...getRootProps()}
                         className={`${classes.dropzone} ${isDragActive ? classes.active : null}`}

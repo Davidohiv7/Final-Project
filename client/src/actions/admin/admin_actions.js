@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_CATEGORIES, CREATE_CATEGORY, CREATE_PRODUCT } from '../../actions_types/admin/admin_action_types'
+import { GET_CATEGORIES, CREATE_CATEGORY, ADD_URL_TO_DELETE } from '../../actions_types/admin/admin_action_types'
 
 
 export function getCategories() {
@@ -35,4 +35,12 @@ export function createProduct(product) {
       return axios.post("http://localhost:3001/products", {...product})
                   .catch(e => console.error(e))
   }
+}
+
+export function addUrlToDelete(url) {
+  const id = url.split('/')[6]
+  return (dispatch) => {
+    axios.delete(`http://localhost:3001/image/${id}`)
+    .catch(e => console.error(e))
+}
 }

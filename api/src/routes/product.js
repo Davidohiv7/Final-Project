@@ -293,6 +293,7 @@ router.post('/', async (req, res) => {
 router.put('/', async (req, res) => {
   
   try {
+    const { name, id, images, categories, stock, score, price, description } = req.body
 		const product = await models.Product.findOne({
 			where: { id: req.body.id },
 			include: [
@@ -303,9 +304,15 @@ router.put('/', async (req, res) => {
 
 		if (!product) return response.success(req, res, { message: "Product not found." }, 404);
 
-    for (const property in req.body) {
-      product[property] = req.body[property];
-    }
+    // for (const property in req.body) {
+    //   product[property] = req.body[property];
+    // }
+    product.name = name;
+    product.stock = stock;
+    product.score = score;
+    product.price = price;
+    product.description = description;
+
 		await product.save();
 
 		// Get categories
@@ -321,14 +328,20 @@ router.put('/', async (req, res) => {
 		const newImages = [];
 		for (let image of req.body.images) {
 			let record = await models.Image.findOne({
-				where: { url: image }
+				where: { url: image },
 			})
+      if(!record) {
+        record = await models.Image.create({
+          url: image,
+          productId: id
+        })
+      }
 			newImages.push(record);
 		}
-
+    await product.reload();
 		// Add categories and images
 		await product.setCategories(newCategories);
-		await product.setImages(newImages);
+		// await product.setImages(newImages);
 
 		response.success(req, res, product);
 

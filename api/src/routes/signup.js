@@ -2,12 +2,41 @@ const express = require('express')
 const jwt = require('jsonwebtoken')
 const response = require('../utils/response')
 const signUpRouter = express.Router();
-const bcrypt = require('bcrypt')
-
-const { SECRET_KEY_JWT, SALT_ROUNDS } = process.env
-
-
+const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
+const { mailSignUp } = require('../utils/mailtemplates');
 const models = require('../database/models/');
+
+const {
+    SECRET_KEY_JWT,
+    SALT_ROUNDS,
+    GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET,
+    GOOGLE_REFRESH_TOKEN,
+    GOOGLE_ACCES_TOKEN,
+    GOOGLE_MAIL,
+} = process.env
+
+
+const mailConfig = {
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+        type: 'OAuth2',
+        clientId: GOOGLE_CLIENT_ID,
+        clientSecret: GOOGLE_CLIENT_SECRET
+    }
+};
+
+const transporter = nodemailer.createTransport(mailConfig);
+
+const auth = {
+    user: GOOGLE_MAIL,
+    refreshToken: GOOGLE_REFRESH_TOKEN,
+    accessToken: GOOGLE_ACCES_TOKEN,
+    expires: 3599
+}
 
 signUpRouter.get('/', (req, res, next) => {
     res.send('Esta es la ruta de sign up')
@@ -17,13 +46,14 @@ signUpRouter.post('/', async (req, res, next) => {
     const newUserData = req.body
     const saltRounds = Number(SALT_ROUNDS)
     try {
+        /*
         const checkedUser = await models.User.findOne({where: {
             email: newUserData.email
             }
         })
         if(checkedUser) {
             return response.error(req, res, {message: 'This email is already taken'})
-        }
+        }*/
 
         const hashedPassword = bcrypt.hashSync(newUserData.password, saltRounds);
 
@@ -45,7 +75,7 @@ signUpRouter.post('/', async (req, res, next) => {
 
         let newCart = false
 
-        if(newUserData.cart.length > 0) {
+        if(newUserData.cart) {
             const cartProductsIdArray = newUserData.cart.map(p => p.id)
             const orderItemsArrayData = newUserData.cart.map(p => {
                 return {
@@ -84,9 +114,26 @@ signUpRouter.post('/', async (req, res, next) => {
             await firstUserOrder.save()
         }
 
-        const jasonWebToken = jwt.sign({id: newUser.id, email: newUser.email}, SECRET_KEY_JWT)
+        const jasonWebToken = jwt.sign({id: newUser.id, email: newUser.email}, SECRET_KEY_JWT);
 
-        response.success(req, res, {message: `User was successfully created`, token: jasonWebToken, cart: newCart})
+        //send email confirmation
+
+        const {
+            email,
+            name,
+            lastName,
+        } = newUser;
+
+        transporter.sendMail({
+            from: `Onion Food Sup. <${GOOGLE_MAIL}>`,
+            to: email,
+            subject: 'Welcome to Onion Food Sup.',
+            html: mailSignUp(name, lastName, email),
+            auth: auth,
+        });
+
+
+        response.success(req, res, {message: `User was successfully created. Check your email`, token: jasonWebToken, cart: newCart})
 
     } catch (error) {
         console.log(error)

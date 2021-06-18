@@ -14,7 +14,6 @@ const checkout = require('./checkout')
 
 
 router.use('/create_preference', mercadopago);
-router.use('/sendmail', sendmail);
 router.use('/categories', categories);
 router.use('/products', product);
 router.use('/signup', signup);

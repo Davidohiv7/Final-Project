@@ -5,10 +5,9 @@ import useStyles from './styles';
 import { Box, Typography, TextField, Button, Snackbar, Popover  } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { Add } from '@material-ui/icons';
-import { readLocalStorageCart } from '../../assets/utils/cartFunctions'
 import GoogleAuth from '../GoogleAuth/GoogleAuth'
 
-import { signUp, emailconfirm } from '../../actions/authentication/authentication_actions'
+import { signUp } from '../../actions/authentication/authentication_actions'
 
 import { signUpValidation, resetSignUpInput } from '../../assets/utils/authentication'
 
@@ -22,7 +21,7 @@ export default function SignUp() {
 
     const { logged, authMessage } = useSelector((state) => ({ ...state.authenticationReducer }))
 
-    const [formInputs, setFormInputs] = React.useState({
+    const [formInputs, setFormInputs] = useState({
         name: '',
         lastName: '',
         email: '',
@@ -54,12 +53,11 @@ export default function SignUp() {
             });
     }
 
-    async function handleSubmit(e) {
+    function handleSubmit(e) {
         e.preventDefault()
         const inputErrors = signUpValidation(formInputs)
         if(Object.keys(inputErrors).length === 0) {
-            const cart = await readLocalStorageCart()
-            cart ? dispatch(signUp({...formInputs, cart})) : dispatch(signUp({...formInputs, cart: false}))
+            dispatch(signUp(formInputs));
             return setFormInputs(resetSignUpInput)
         }
         setErrorsArray(Object.values(inputErrors).reduce((acc, v) => [...acc, ...v], []))

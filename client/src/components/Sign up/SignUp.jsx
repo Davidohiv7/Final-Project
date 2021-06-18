@@ -5,6 +5,7 @@ import useStyles from './styles';
 import { Box, Typography, TextField, Button, Snackbar, Popover  } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { Add } from '@material-ui/icons';
+import { readLocalStorageCart } from '../../assets/utils/cartFunctions'
 import GoogleAuth from '../GoogleAuth/GoogleAuth'
 
 import { signUp, emailconfirm } from '../../actions/authentication/authentication_actions'
@@ -53,13 +54,18 @@ export default function SignUp() {
             });
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault()
         const inputErrors = signUpValidation(formInputs)
         if(Object.keys(inputErrors).length === 0) {
+<<<<<<< HEAD
             dispatch(signUp(formInputs));
             formInputs.subject = 'Welcome to Onion Food Sup.'
             dispatch(emailconfirm(formInputs))
+=======
+            const cart = await readLocalStorageCart()
+            cart ? dispatch(signUp({...formInputs, cart})) : dispatch(signUp({...formInputs, cart: false}))
+>>>>>>> ab44496d889888ed79ea0c7b7ad938d72f2685a9
             return setFormInputs(resetSignUpInput)
         }
         setErrorsArray(Object.values(inputErrors).reduce((acc, v) => [...acc, ...v], []))

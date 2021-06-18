@@ -1,6 +1,7 @@
 const express = require('express')
 const ordersRouter = express.Router();
 const models = require('../database/models/');
+const passport = require('passport');
 const Stripe = require('stripe')
 const response = require('../utils/response');
 const { STRIPE_SECRET_KEY } = process.env
@@ -8,59 +9,21 @@ const { STRIPE_SECRET_KEY } = process.env
 const stripe = new Stripe(STRIPE_SECRET_KEY)
 
 
-ordersRouter.post('/confirm_order', async (req, res) => {
+ordersRouter.post('/confirm_order', passport.authenticate('jwt', {session: false}), async (req, res) => {
+    const user = req.user
     const { subtotal, customerInformation, cart } = req.body
 
     const cartProductsIdArray = cart.map(p => p.id)
-
-    const orderCustomer = {
-        name: customerInformation.name,
-        lastName: customerInformation.lastName,
-        email: customerInformation.email,
-        createdAt: new Date(),
-        updatedAt: new Date() 
-    }
-
-    const orderShippingAddress = {
-        city: customerInformation.city,
-        zip: customerInformation.zip,
-        street: customerInformation.street,
-        neighborhood: customerInformation.neighborhood ? customerInformation.neighborhood : null,
-        createdAt: new Date(),
-        updatedAt: new Date() 
-    }
-
-    //Due to security reasons, it's created in cancelled, and when all the relations are set correctly
-    //the status is changed to created. To avoid create repeated orders
-
-    const newOrder = {
-        status: "cancelled",
-        total: Number(subtotal),
-        createdAt: new Date(),
-        updatedAt: new Date() 
-    }
     
     try {
-        //Create customer
-        const customer = await models.Customer.findOrCreate({where: { email: customerInformation.email}, defaults: orderCustomer})
-        //Create shipping address
-        orderShippingAddress.customerId = customer[0].id
-        const shippingAddress = await models.ShippingAddress.create(orderShippingAddress)
-        //Create order
-        newOrder.customerId = customer[0].id
-        const order = await models.Order.create( newOrder ) 
-        //Create relations between products and order
-        const orderItemArrayData = cart.map(p => {
-            return {
-                ProductId: p.id,
-                OrderId: order.id,
-                quantity: p.quantity,
-                subtotal: ((p.quantity * p.price).toFixed(2)),
-                createdAt: new Date(),
-                updatedAt: new Date() 
-            }
-        })
-        const newOrderItems = await models.OrderItem.bulkCreate(orderItemArrayData);
+        //Find order
+        const order = await models.Order.findOne({
+            where: {
+                status: 'paid',
+                userId: user.id,
+            },
+        }) 
+
         //Update stocks
         const oldProductsArray = await models.Product.findAll({ 
             where: { id: cartProductsIdArray }, 
@@ -75,28 +38,35 @@ ordersRouter.post('/confirm_order', async (req, res) => {
 
         await Promise.all(saveNewStockPromiseArray)
 
-        //Update new order status to create, this is for security
+        //Update new order status to create
 
-        order.status = "created"
+        order.status = "progress"
         await order.save()
 
-        const verifyOrder = await models.Order.findOne({where: {id: order.id}})
+        const verifyOrder = await models.Order.findOne({
+            where: {
+                status: "progress",
+                id: order.id,
+            },
+        }) 
 
         // const verifyStock = await models.Product.findAll({ 
         //     where: { id: cartProductsIdArray }, 
         // })
 
-        if(verifyOrder.status === 'created') {
+        if(verifyOrder) {
             return response.success(req, res, { 
-                message: `The order ${order.id} was successfully created for customer ${customer[0].name} ${customer[0].lastName}`, 
+                message: `The order ${order.id} was successfully created for customer ${user.name} ${user.lastName}`, 
                 result: true,
-                // verifyStock
+                verifyOrder
             })
         }
         response.error(req, res, {
             message: 'There was a problem with the order creation, try again', 
             result: false})
+
     } catch (error) {
+        console.log(error)
         response.error(req, res, {
             message: 'There was a problem with the order creation, try again', 
             result: false})

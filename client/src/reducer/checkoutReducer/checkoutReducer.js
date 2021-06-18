@@ -1,10 +1,15 @@
 import { SET_CHECKOUT_CART, SET_CHECKOUT_SUBTOTAL, SET_CHECKOUT_CUSTOMER_INFORMATION, CONFIRM_STRIPE_PAYMENT, SET_LOADING_TRUE, SET_LOADING_FALSE, 
-    SET_CHECKOUT_ERROR_MESSAGE, SET_CONFIRM_ORDER_SUCCESS_MESSAGE, SET_CONFIRM_ORDER_ERROR_MESSAGE, SET_MERCADOPAGO_ORDER } from '../../actions_types/checkout/checkout_actions_types'
+    SET_CHECKOUT_ERROR_MESSAGE, SET_CONFIRM_ORDER_SUCCESS_MESSAGE, SET_CONFIRM_ORDER_ERROR_MESSAGE, SET_MERCADOPAGO_ORDER, CONFIRM_PAYMENT,
+    CLEAR_CHECKOUT_DATA } from '../../actions_types/checkout/checkout_actions_types'
 
 const initialState = {
-    cart: [],
     subtotal: 0,
-    customerInformation: null,
+    customerInformation: {
+        street: '',
+        neighborhood: '',
+        city: '',
+        zip: '',
+    },
     paymentState: false,
     url: '',
     id: '',
@@ -28,6 +33,30 @@ const checkoutReducer = (state = initialState, action = {}) => {
                 cart: action.payload
             }
         }
+        case CLEAR_CHECKOUT_DATA: {
+            return {
+                subtotal: 0,
+                customerInformation: {
+                    street: '',
+                    neighborhood: '',
+                    city: '',
+                    zip: '',
+                },
+                paymentState: false,
+                url: '',
+                id: '',
+                payment: {
+                    state: false,
+                    method: '',
+                    errorMessage: '',
+                    loading: false,
+                },
+                confirmOrder: {
+                    success: '',
+                    error: '',
+                }
+            }
+        }
         case SET_CHECKOUT_SUBTOTAL: {
             return {
                 ...state,
@@ -45,6 +74,17 @@ const checkoutReducer = (state = initialState, action = {}) => {
                 ...state,
                 url: action.payload.url,
                 id: action.payload.id
+            }
+        }
+        case CONFIRM_PAYMENT: {
+            return {
+                ...state,
+                payment: {
+                    ...state.payment,
+                    state: true,
+                    method: action.payload.paymentMethod,
+                    loading: false
+                },
             }
         }
         case CONFIRM_STRIPE_PAYMENT: {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 //Import components
 import ProductDetailsTab from './ProductDetailsTab/ProductDetailsTab.jsx'
@@ -10,11 +10,18 @@ import { Alert } from '@material-ui/lab';
 import { Star, ShoppingCartOutlined, FavoriteBorder, Close } from '@material-ui/icons';
 //Custom functions
 import { addToCart, addToFavorites } from '../../assets/utils/productCardFunctions'
+//actions
+import { addProductToCart } from '../../actions/cart/cart_actions'
+
+
+
 export default function ProductDetailsCard({ product, scoreArray, setModalState }) {
 
     const classes = useStyles();
+    const dispatch = useDispatch();
 
     const { payment } = useSelector((state) => ({ ...state.checkoutReducer }))
+    const { logged } = useSelector((state) => ({ ...state.authenticationReducer }))
 
     const [quantity, setQuantity] = useState(1);
     const [cartSnackbar, setCartSnackbar] = useState(false);
@@ -26,7 +33,13 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
         if(payment.state) {
             return setDisabledCartSnackbar(true)
         }
-        addToCart(product, quantity, setQuantity)
+        if(!logged) {
+            addToCart(product, quantity, setQuantity)
+            return setCartSnackbar(true)
+        }
+        //Esto es una action que va al back y modifica el carrito
+        dispatch(addProductToCart(product, quantity))
+        setQuantity(1)
         setCartSnackbar(true)
     }
 

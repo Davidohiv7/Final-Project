@@ -29,23 +29,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, { tableName: 'customer' })
 
-  Customer.associate = function(models) {
-    
-    Customer.hasMany(models.Order, {
-      foreignKey: 'customerId',
-      onDelete: 'CASCADE'
-    })
-
-    Customer.hasMany(models.ShippingAddress, {
-      foreignKey: 'customerId',
-      onDelete: 'CASCADE'
-    })
-    
-    Customer.hasMany(models.Review, {
-      foreignKey: 'customerId',
-      onDelete: 'CASCADE'
-    })
-  }
-
   return Customer;
 }

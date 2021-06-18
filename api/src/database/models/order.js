@@ -6,16 +6,28 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       allowNull: false
     },
-    customerId: {
+    // customerId: {
+    //   type: DataTypes.INTEGER,
+    //   references: {
+    //     model: 'customer',
+    //     key: 'id'
+    //   },
+    //   allowNull: false
+    // },
+    userId: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'customer',
+        model: 'user',
         key: 'id'
       },
       allowNull: false
     },
+    // status: {
+    //   type: DataTypes.ENUM("created", "in_process", "cancelled", "completed"),
+    //   allowNull: false
+    // },
     status: {
-      type: DataTypes.ENUM("created", "in_process", "cancelled", "completed"),
+      type: DataTypes.ENUM('created', 'paid', 'progress', 'cancelled', 'completed'),
       allowNull: false
     },
     createdAt: {
@@ -28,13 +40,33 @@ module.exports = (sequelize, DataTypes) => {
     },
     total: {
       type: DataTypes.DECIMAL(10, 2)
-    }
+    },
+    city: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    zip: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    street: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    neighborhood: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    paymentMethod: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
   }, { tableName: 'order' })
 
   Order.associate = function(models) {
 
-    Order.belongsTo(models.Customer, {
-      foreignKey: 'customerId'
+    Order.belongsTo(models.User, {
+      foreignKey: 'userId'
     })
 
     Order.belongsToMany(models.Product, { through: 'OrderItem' })    

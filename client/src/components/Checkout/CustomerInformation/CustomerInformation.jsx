@@ -30,7 +30,7 @@ export default function  CustomerInformation({activeStep, setActiveStep }) {
     const [inputErrorsPopoverAnchor, setInputErrorsPopoverAnchor] = useState(null);
 
     useEffect(() => {
-        if(storeCustomerInformation && storeCustomerInformation.name) {
+        if(storeCustomerInformation.street) {
             setCustomerInformation(storeCustomerInformation)
         }
       }, [])
@@ -52,7 +52,6 @@ export default function  CustomerInformation({activeStep, setActiveStep }) {
         e.preventDefault()
         const inputErrors = customerInformationValidation(customerInformation)
         if(Object.keys(inputErrors).length === 0) {
-            localStorage.setItem('customerInformation', JSON.stringify(customerInformation))
             dispatch(setShippingAdress(customerInformation))
             return setActiveStep(activeStep + 1)
         }

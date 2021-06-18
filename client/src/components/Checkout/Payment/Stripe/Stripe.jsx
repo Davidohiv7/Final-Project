@@ -26,28 +26,32 @@ function StripeElements() {
 
     const { subtotal, customerInformation } = useSelector((state) => ({ ...state.checkoutReducer }))
 
+    const [cardErrorSnackBar, setCardErrorSnackBar] = useState(false);
+
     async function handleConfirmPayment(e) {
         e.preventDefault()
-
-        const { error, paymentMethod } = await stripe.createPaymentMethod({
-            billing_details:{
-                address: {
-                    city: customerInformation.city,
-                    country: 'US',
-                    line1: customerInformation.street,
+        const card = elements.getElement(CardElement)
+        if(card) {
+            const { error, paymentMethod } = await stripe.createPaymentMethod({
+                billing_details:{
+                    address: {
+                        city: customerInformation.city,
+                        country: 'US',
+                        line1: customerInformation.street,
+                    },
+                    email: customerInformation.email,
+                    name: `${customerInformation.name} ${customerInformation.lastName}`,
                 },
-                email: customerInformation.email,
-                name: `${customerInformation.name} ${customerInformation.lastName}`,
-            },
-            type: 'card',
-            card: elements.getElement(CardElement)
-        })
-
-        if(!error) {
-            return dispatch(confirmStripePayment({subtotal: (subtotal * 100).toFixed(0), paymentId: paymentMethod.id}))
+                type: 'card',
+                card: elements.getElement(CardElement)
+            })
+    
+            if(!error) {
+                return dispatch(confirmStripePayment({subtotal: (subtotal * 100).toFixed(0), paymentId: paymentMethod.id}))
+            }
+            if(error) return setCardErrorSnackBar(true)
         }
-        if(error) return alert('Please check the card details')
-
+        setCardErrorSnackBar(true)
     }
 
     return (
@@ -70,6 +74,11 @@ function StripeElements() {
                     Confirm Payment
                 </Button>
             </Box>
+            <Snackbar open={cardErrorSnackBar} autoHideDuration={3000} onClose={() => setCardErrorSnackBar(false)} variant="filled">
+                <Alert onClose={() => setCardErrorSnackBar(false)} severity="error">
+                    Please check the card details
+                </Alert>
+            </Snackbar>
         </form>
             
     )
@@ -78,7 +87,7 @@ function StripeElements() {
 
 export default function  Stripe() {
 
-    const { payment } = useSelector((state) => ({ ...state.checkoutReducer }))
+    const { payment, subtotal } = useSelector((state) => ({ ...state.checkoutReducer }))
 
     const [paymentErrorSnackbar, setPaymentErrorSnackbar] = useState(false);
 
@@ -111,8 +120,11 @@ export default function  Stripe() {
                 </Box>
                 :
                 <Box display="flex" flexDirection='column' justifyContent="center" alignItems="center" width='90%'>
-                    <Box mt={2} mb={4}>
+                    <Box mt={2} mb={3}>
                         <Typography variant="body1" color="secondary.dark">Fill the card information to complete the payment</Typography>
+                    </Box>
+                    <Box mb={3}>
+                        <Typography variant="h5" className={classes.truePayment}>Total order: {`$${subtotal}`}</Typography>
                     </Box>
                     <Box width='75%'>
                         <Elements stripe={stripePromise}>

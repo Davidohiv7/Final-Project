@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { SET_CHECKOUT_SUBTOTAL, SET_CHECKOUT_CUSTOMER_INFORMATION, CONFIRM_STRIPE_PAYMENT, SET_LOADING_TRUE, 
-    SET_LOADING_FALSE, SET_CHECKOUT_ERROR_MESSAGE, SET_CONFIRM_ORDER_SUCCESS_MESSAGE, SET_CONFIRM_ORDER_ERROR_MESSAGE, SET_MERCADOPAGO_ORDER} from '../../actions_types/checkout/checkout_actions_types'
+    SET_LOADING_FALSE, SET_CHECKOUT_ERROR_MESSAGE, SET_CONFIRM_ORDER_SUCCESS_MESSAGE, SET_CONFIRM_ORDER_ERROR_MESSAGE, 
+    SET_MERCADOPAGO_ORDER, CLEAR_CHECKOUT_DATA} from '../../actions_types/checkout/checkout_actions_types'
+    import { CLEAR_CART} from '../../actions_types/cart/cart_actions_types'
 //Custom functios
 import { clearCheckoutData } from '../../assets/utils/confirmOrder'
 
@@ -8,15 +10,20 @@ import { clearCheckoutData } from '../../assets/utils/confirmOrder'
 export function confirmStripePayment(paymentData) {
     return async (dispatch) => {
         dispatch({ type: SET_LOADING_TRUE})
+        const jwt = localStorage.getItem('jwt')
         try {
             const response = await axios.post("http://localhost:3001/orders/payment/stripe", paymentData)
             if(response.data.data.paymentStatus) {
-                dispatch({type: CONFIRM_STRIPE_PAYMENT});
-                const checkoutData = JSON.stringify({payment: {
+                
+                const checkoutData = {payment: {
                     state: true,
                     method: "Stripe"
-                }})
-                localStorage.setItem('checkout', checkoutData)
+                }}
+                
+                const responseDB = await axios.post("http://localhost:3001/checkout/confirmpayment", checkoutData , { headers: { 'Authorization': jwt } })
+                if(responseDB.data.data.paymentStatus.status === 'paid') {
+                    dispatch({type: CONFIRM_STRIPE_PAYMENT});
+                }
             }
         } catch (error) {
             dispatch({ type: SET_LOADING_FALSE})
@@ -29,12 +36,15 @@ export function confirmStripePayment(paymentData) {
 export function confirmOrderAction(checkoutData) {
     return async (dispatch) => {
         dispatch({ type: SET_LOADING_TRUE})
+        const jwt = localStorage.getItem('jwt')
         try {
-            const response = await axios.post("http://localhost:3001/orders/confirm_order", checkoutData)
-            console.log(response.data.data)
+            const response = await axios.post("http://localhost:3001/orders/confirm_order", checkoutData , { headers: { 'Authorization': jwt } })
+            console.log(response.data)
             if(response.data.data.result) {
                 clearCheckoutData()
                 dispatch({type: SET_CONFIRM_ORDER_SUCCESS_MESSAGE, payload: response.data.data.message})
+                dispatch({type: CLEAR_CART})
+                setTimeout(() => dispatch({type: CLEAR_CHECKOUT_DATA}), 5000)
                 setTimeout(() => dispatch({type: SET_CONFIRM_ORDER_SUCCESS_MESSAGE, payload: ''}), 5000)
             }
         } catch (error) {
@@ -55,7 +65,6 @@ export const getCheckoutTotal = () => {
     return async (dispatch) => {
         try {
             const response = await axios.get("http://localhost:3001/checkout/gettotal", { headers: { 'Authorization': jwt } })
-            console.log(response.data)
             dispatch({type: SET_CHECKOUT_SUBTOTAL, payload: response.data.data.total});
         } catch (error) {
             console.log(error)
@@ -68,8 +77,7 @@ export const setShippingAdress = (data) => {
     return async (dispatch) => {
         try {
             const response = await axios.post("http://localhost:3001/checkout/setshippingaddress", data, { headers: { 'Authorization': jwt } })
-            console.log(response.data)
-            // dispatch({type: SET_CHECKOUT_CUSTOMER_INFORMATION, payload: response.data.data.shippingAddress});
+            dispatch({type: SET_CHECKOUT_CUSTOMER_INFORMATION, payload: response.data.data.shippingAddress});
         } catch (error) {
             console.log(error)
         }

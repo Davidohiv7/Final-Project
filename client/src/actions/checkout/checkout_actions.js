@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { SET_CHECKOUT_SUBTOTAL, SET_CHECKOUT_CUSTOMER_INFORMATION, CONFIRM_STRIPE_PAYMENT, SET_LOADING_TRUE, 
     SET_LOADING_FALSE, SET_CHECKOUT_ERROR_MESSAGE, SET_CONFIRM_ORDER_SUCCESS_MESSAGE, SET_CONFIRM_ORDER_ERROR_MESSAGE, 
-    SET_MERCADOPAGO_ORDER, CLEAR_CHECKOUT_DATA} from '../../actions_types/checkout/checkout_actions_types'
+    SET_MERCADOPAGO_ORDER, CLEAR_CHECKOUT_DATA, SET_MERCADOPAGO_CONFIRMATION} from '../../actions_types/checkout/checkout_actions_types'
     import { CLEAR_CART} from '../../actions_types/cart/cart_actions_types'
 //Custom functios
 import { clearCheckoutData } from '../../assets/utils/confirmOrder'
@@ -92,6 +92,21 @@ export const setMercadoPagoOrder = (order) => {
                 .then(res => {
                     console.log(res);
                     dispatch({type: SET_MERCADOPAGO_ORDER, payload: { id: res.response.id, url: res.response.init_point}})
+                })
+        } catch(err) {
+            dispatch(err);
+        }
+    }
+}
+
+export const confirmMercadoPagoOrder = (user) => {
+    return async (dispatch) => {
+        try{
+            axios.post("http://localhost:3001/confirm/mercadopago", {params: {user: user}})
+                .then(res => res.data)
+                .then(res => {
+                    console.log(res);
+                    dispatch({type: SET_MERCADOPAGO_CONFIRMATION})
                 })
         } catch(err) {
             dispatch(err);

@@ -114,7 +114,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                                         }}
                                         InputProps={{
                                             inputProps: { 
-                                                max: 99, min: 1
+                                                max: product, min: 1
                                             }
                                         }}
                                         variant="outlined"

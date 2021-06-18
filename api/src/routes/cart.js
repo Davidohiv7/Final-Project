@@ -36,6 +36,7 @@ router.post('/add', passport.authenticate('jwt', {session: false}), async (req, 
                 ProductId: product.id,
             },
         })
+
         
         let modifiedOrderItem = orderItemValidation
 
@@ -65,17 +66,22 @@ router.post('/add', passport.authenticate('jwt', {session: false}), async (req, 
             }, 
         })
 
+        
+        
+
         const cartProductsIdArray = orderItems.map(p => p.ProductId)
+
         const cartData = await models.Product.findAll({ 
             where: {id: cartProductsIdArray},
             include: [{
                 model: models.Order,
-                where: { id: user.id }
+                where: { id: orderValidation.id  }
               },
               {
                 model: models.Image,
             }],
         })
+        
 
         cart = cartData.map(p => {
             return {
@@ -88,7 +94,6 @@ router.post('/add', passport.authenticate('jwt', {session: false}), async (req, 
                 quantity: p.Orders[0].OrderItem.quantity,
             }
         })
-
 
         response.success(req, res, {cart})
     } catch (error) {
@@ -139,12 +144,13 @@ router.put('/modify', passport.authenticate('jwt', {session: false}), async (req
             where: {id: cartProductsIdArray},
             include: [{
                 model: models.Order,
-                where: { id: user.id }
+                where: { id: cart.id  }
               },
               {
                 model: models.Image,
             }],
         })
+
 
         newCart = cartData.map(p => {
             return {
@@ -157,7 +163,6 @@ router.put('/modify', passport.authenticate('jwt', {session: false}), async (req
                 quantity: p.Orders[0].OrderItem.quantity,
             }
         })
-
 
         response.success(req, res, {cart: newCart})
     } catch (error) {
@@ -202,7 +207,7 @@ router.put('/delete', passport.authenticate('jwt', {session: false}), async (req
             where: {id: cartProductsIdArray},
             include: [{
                 model: models.Order,
-                where: { id: user.id }
+                where: { id: cart.id  }
               },
               {
                 model: models.Image,
@@ -251,7 +256,6 @@ router.delete('/clear', passport.authenticate('jwt', {session: false}), async (r
         })
 
         const orderItemsIdArray = orderItems.map(p => p.ProductId)
-        console.log(orderItemsIdArray)
 
         await models.OrderItem.destroy({
             where: {

@@ -1,18 +1,20 @@
 const { Router } = require('express');
 const router = Router();
-const product = require('./product')
-const signup = require('./signup')
-const signin = require('./signin')
-const googleauth = require('./googleauth')
-const user = require('./user')
-const test = require('./test')
+const product = require('./product');
+const signup = require('./signup');
+const signin = require('./signin');
+const googleauth = require('./googleauth');
+const user = require('./user');
+const test = require('./test');
 const categories = require('./categories');
 const mercadopago = require('./mercadopago');
-const orders = require('./orders')
-const cart = require('./cart')
-const checkout = require('./checkout')
+const orders = require('./orders');
+const cart = require('./cart');
+const checkout = require('./checkout');
+const mercadopagoConfirmation = require('./mercadopagoConfirmation');
 
 
+router.use('/confirm/mercadopago', mercadopagoConfirmation);
 router.use('/create_preference', mercadopago);
 router.use('/categories', categories);
 router.use('/products', product);

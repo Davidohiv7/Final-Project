@@ -9,10 +9,12 @@ display: {
   width: '100%'
 },
 container: {
+  margin: 0,
   display: 'flex',
   flexDirection:'column',
   alignItems: 'center',
-  padding: 20
+  padding: 20,
+  width: '100%'
 },
 
 add: {

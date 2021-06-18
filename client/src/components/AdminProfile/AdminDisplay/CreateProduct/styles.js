@@ -2,10 +2,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-
-tabs: {
-    marginLeft: '27%'
-},
 button: {
     background: theme.palette.primary.main,
     color: "white",
@@ -15,6 +11,20 @@ button: {
     '&:hover': {
         background: theme.palette.primary.dark
     }
+},
+
+cancel: {
+    borderRadius: 5,
+    margin: '4%',
+    width: '30%',
+    background: theme.palette.secondary.main,
+},
+
+buttonContainer: {
+    width: '50%',
+    position: 'relative',
+    right: -235,
+    top: -20
 },
 
 selectedCategory: {
@@ -47,6 +57,9 @@ form: {
 input: {
     margin: '2%',
     width: '90%',
+    '&:hover': {
+        border: 'none',
+    },
 },
 
 selectedCategories: {
@@ -57,6 +70,7 @@ selectedCategories: {
 
 dropzone: {
     height: "8rem",
+    width: '85%',
     margin: "1rem",
     padding: "1rem",
     border: "2px dashed salmon",
@@ -83,6 +97,25 @@ images: {
 
 image: {
     margin:10
+},
+
+errorText: {
+    margin: 0,
+    color: 'red',
+    fontSize: 15
+},
+
+dragTypo: {
+    fontSize: 25
+},
+
+delete: {
+    marginTop: 10,
+    color: 'white',
+    backgroundColor: theme.palette.primary.dark,
+    '&:hover': {
+        backgroundColor: 'gray'
+    },
 }
 
 

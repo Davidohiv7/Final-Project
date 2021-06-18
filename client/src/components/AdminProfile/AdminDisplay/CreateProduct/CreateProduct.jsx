@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { useDropzone } from "react-dropzone";
 import ImageWrapper from './ImageWrapper/ImageWrapper';
@@ -14,85 +14,78 @@ import { deleteProductImage } from '../../../../actions/admin/admin_actions';
 import { createProduct } from '../../../../actions/admin/admin_actions';
 
 
-export default function CreateForm() {
-    const [selectedCategories, setSelectedCategories] = useState([]);
-    const [uploadedFiles, setUploadedFiles] = useState([]);
+export default function CreateForm({ setDisplayStatus, editProduct }) {
+    const [selectedCategories, setSelectedCategories] = useState(editProduct? editProduct.Categories.map(c => c.name): []);
+    const [uploadedFiles, setUploadedFiles] = useState(editProduct? editProduct.Images.map(i => ({ secure_url:i.url, name: i.name})): []);
     const [product, setProduct] = useState({
-        name: '',
-        price: '',
-        stock: 1,
-        description: '',
+        name: editProduct? editProduct.name: '',
+        price: editProduct? editProduct.price: '',
+        stock: editProduct? editProduct.stock: 1,
+        description: editProduct? editProduct.description: '',
         categories: [],
-        images: []
+        images: '[]',
     })
+
+
 
     //---------------------------------------------------------//
     //---------------------VALIDATIONS------------------------//
     //-------------------------------------------------------//
 
     //---ERROR MESSAGES STATE---//
-    const [errors, setErrors] = useState({
-        name: '',
-        price: '',
-        stock: '',
-        description: '',
-        categories: '',
-        images: ''
-    })
+    const [eName, setEname] = useState('')
+    const [ePrice, setEprice] = useState('')
+    const [eStock, setEstock] = useState('')
+    const [eCategories, setEcategories] = useState('')
+    const [eImages, setEimages] = useState('')
+
+    function useDidUpdateEffect(fn, inputs) {
+        const didMountRef = useRef(false);
+        useEffect(() => {
+            if (didMountRef.current)
+                fn();
+            else
+                didMountRef.current = true;
+        }, inputs);
+    }
+
 
     //----NAME VALIDATION----//
-    useEffect(()=> {
-        nameValidator()
-    }, [product.name])
-    
     const nameValidator = () => {
-        if(!product.name) return setErrors({...errors, name: "You must provide a product name."})
-        if(product.name.length>50) return setErrors({...errors, name: "The name cannot be longer than 50 characters."})
-        if(product.name.length<2) return setErrors({...errors, name: "The name cannot be that short."})
-        if((!/^[A-Za-z]+$/.test(product.name))) return setErrors({...errors, name: "The name should only contain letters."})
-        else setErrors({...errors, name: ""})
+        if(!product.name) return setEname("You must provide a product name.")
+        if(product.name.length>50) return setEname("The name cannot be longer than 50 characters.")
+        if(product.name.length<2) return setEname("The name cannot be that short.")
+        if((!/^[A-Za-z]+$/.test(product.name))) return setEname("The name should only contain letters.")
+        else setEname("")
     }
+    useDidUpdateEffect(nameValidator,[product.name])
 
     //----PRICE VALIDATION----//
-    useEffect(()=> {
-        priceValidator()
-    }, [product.price])
-    
     const priceValidator = () => {
-        if(!product.price) return setErrors({...errors, price: "Your product must have a price."})
-        if(product.price<1) return setErrors({...errors, price: "Price cannot be a negative number."})
-        else setErrors({...errors, price: ""})
+        if(!product.price) return setEprice("Your product must have a price.")
+        if(product.price<1) return setEprice("Price cannot be a negative number.")
+        else setEprice("")
     }
+    useDidUpdateEffect(priceValidator,[product.price])
 
     //----STOCK VALIDATION----//
-    useEffect(()=> {
-        stockValidator()
-    }, [product.stock])
-    
     const stockValidator = () => {
-        if(!product.stock) return setErrors({...errors, stock: "You must enter an amount of products available."})
-        if(product.stock<1) return setErrors({...errors, stock: "Stock cannot be less than one."})
-        else setErrors({...errors, stock: ""})
+        if(!product.stock) return setEstock("You must enter an amount of products available.")
+        if(product.stock<1) return setEstock("Stock cannot be less than one.")
+        else setEstock("")
     }
-
+    useDidUpdateEffect(stockValidator,[product.stock])
     //----CATEGORIES VALIDATION----//
-    useEffect(()=> {
-        categoriesValidator()
-    }, [product.categories])
-    
     const categoriesValidator = () => {
-        if(!product.categories.length) return setErrors({...errors, categories: "You must enter at least one category."})
-        else setErrors({...errors, categories: ""})
+        if(!product.categories.length) return setEcategories("You must enter at least one category.")
+        else setEcategories("")
     }
+    useDidUpdateEffect(categoriesValidator,[product.categories])
 
     //----IMAGES VALIDATION----//
-    useEffect(()=> {
-        imagesValidator()
-    }, [product.images])
-    
     const imagesValidator = () => {
-        if(!product.images.length) return setErrors({...errors, images: "You must upload at least one image."})
-        else setErrors({...errors, images: ""})
+        if(!product.images.length) return setEimages("You must upload at least one image.")
+        else setEimages("")
     }
 
 //----------------------------------------//
@@ -116,23 +109,25 @@ export default function CreateForm() {
     }, [uploadedFiles])
 
 
-
     const handleSubmit= () => {
-        console.log(product.name, errors.name)
-        for(let error in errors) {
-            if(errors[error]) return alert('Make sure all inputs are okay.')
-        }
-        dispatch(createProduct(product))
-        setProduct({
+        nameValidator()
+        priceValidator()
+        stockValidator()
+        categoriesValidator()
+        imagesValidator()
+        if(!eName && !ePrice && !eStock && !eCategories && !eImages){
+            dispatch(createProduct(product))
+            setProduct({
             name: '',
-        price: '',
-        stock: 1,
-        description: '',
-        categories: [],
-        images: []
-        })
-        setSelectedCategories([])
-        setUploadedFiles([])
+            price: '',
+            stock: 1,
+            description: '',
+            categories: [],
+            images: []
+            })
+            setSelectedCategories([])
+            setUploadedFiles([])
+        }
     }
     
     const categories = useSelector((state) => state.adminReducer.categories)
@@ -179,70 +174,70 @@ export default function CreateForm() {
 
 
     return (
-        <Box className={classes.root}>
-            <CardContent className={classes.tabContainer}>
+            <CardContent className={classes.container}>
+                <Box className= {classes.buttonContainer}>
+                    <Button onClick={()=> setDisplayStatus('products')} className = {classes.cancel}>Cancel</Button>
+                    <Button onClick={handleSubmit} className = {classes.button}>Save</Button>
+                </Box>
                 <form className= {classes.form}>
-                    <TextField value= {product.name} onChange= {(e)=> setProduct({...product, name: e.target.value})} className= {classes.input} id="outlined-basic" label="Name" variant="outlined" />
-                    <Box className= {classes.errors}>{errors.name}</Box>
+                    <TextField helperText={<Typography className={classes.errorText}>{eName}</Typography>} value= {product.name} onChange= {(e)=> setProduct({...product, name: e.target.value})} className= {classes.input} id="outlined-basic" label="Name" variant="outlined" />
                     
-                    <TextField value= {product.price} onChange= {(e)=> setProduct({...product, price: e.target.value})} className= {classes.input} id="outlined-number" label="Price" type="number" InputLabelProps={{shrink: true,}} variant="outlined" InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>,}}/>
-                    <Box className= {classes.errors}>{errors.price}</Box>
+                    <TextField helperText={<Typography className={classes.errorText}>{ePrice}</Typography>} value= {product.price} onChange= {(e)=> setProduct({...product, price: e.target.value})} className= {classes.input} id="outlined-number" label="Price" type="number" InputLabelProps={{shrink: true,}} variant="outlined" InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>,}}/>
+
                     
-                    <TextField value= {product.stock} onChange= {(e)=> setProduct({...product, stock: e.target.value})} className= {classes.input} id="outlined-number" label="Stock" type="number" InputLabelProps={{shrink: true,}} variant="outlined"/>
-                    <Box className= {classes.errors}>{errors.stock}</Box>
+                    <TextField helperText={<Typography className={classes.errorText}>{eStock}</Typography>} value= {product.stock} onChange= {(e)=> setProduct({...product, stock: e.target.value})} className= {classes.input} id="outlined-number" label="Stock" type="number" InputLabelProps={{shrink: true,}} variant="outlined"/>
                     
                     <TextField value= {product.description} onChange= {(e)=> setProduct({...product, description: e.target.value})} className= {classes.input} id="outlined-basic" label="Description" variant="outlined" multiline />
 
-                <Autocomplete
-                    id= 'categorySelector'
-                    className = {classes.input}
-                    options={categories}
-                    getOptionLabel={(option) => option.name}
-                    renderInput={(params) => <TextField {...params} label="Categories" variant="outlined" />}
-                    onChange={(e, v) => {
-                        if(v){
-                            if(!selectedCategories.includes(v.name)) {
-                                if(selectedCategories.length >= 10) alert('You can set up to 10 categories to a single product.')
-                                else setSelectedCategories([...selectedCategories, v.name])
+                    <Autocomplete
+                        id= 'categorySelector'
+                        className = {classes.input}
+                        options={categories}
+                        getOptionLabel={(option) => option.name}
+                        renderInput={(params) => <TextField {...params} label="Categories" variant="outlined" />}
+                        onChange={(e, v) => {
+                            if(v){
+                                if(!selectedCategories.includes(v.name)) {
+                                    if(selectedCategories.length >= 10) alert('You can set up to 10 categories to a single product.')
+                                    else setSelectedCategories([...selectedCategories, v.name])
+                                }
                             }
-                        }
-                    }}
-                />
-                <Box className= {classes.errors}>{errors.categories}</Box>
-                <Paper elevation={5} className = {classes.selectedCategories}>
-                    {selectedCategories.map((category)=> (
-                        <Paper key= {category} className= {classes.selectedCategory}>
-                            <Typography>{category}</Typography>
-                            <Button onClick= {() =>setSelectedCategories(selectedCategories.filter(c => c !== category))} value={category}  className= {classes.removeCategory}>X</Button>
-                        </Paper>
-                    ))}
-                </Paper>
-                
-                <div
-                    {...getRootProps()}
-                    className={`${classes.dropzone} ${isDragActive ? classes.active : null}`}
-                >
-                    <input {...getInputProps()} />
-                    Drag & drop product images
-                </div>
+                        }}
+                    />
+                    <Typography className={classes.errorText}>{eCategories}</Typography>
+    
+                    <Paper elevation={5} className = {classes.selectedCategories}>
+                        {selectedCategories.map((category)=> (
+                            <Paper key= {category} className= {classes.selectedCategory}>
+                                <Typography>{category}</Typography>
+                                <Button onClick= {() =>setSelectedCategories(selectedCategories.filter(c => c !== category))} value={category}  className= {classes.removeCategory}>X</Button>
+                            </Paper>
+                        ))}
+                    </Paper>
+                    
+                    <div
+                        {...getRootProps()}
+                        className={`${classes.dropzone} ${isDragActive ? classes.active : null}`}
+                    >
+                        <input {...getInputProps()} />
+                    <Typography className={classes.dragTypo}>Drag & drop product images</Typography>
+                    </div>
 
-                <ul className={classes.images}>
-                    {uploadedFiles.map((file) => (
-                    <li className= {classes.image} key={file.name}>
-                        <ImageWrapper
-                            height= '10px'
-                            file={file}
-                            onDelete={onDelete}
-                        />
-                    </li>
-                    ))}
-                </ul>
-                <Box className= {classes.errors}>{errors.images}</Box>
-                
-
-                    <Button onClick={handleSubmit} className = {classes.button}>Create</Button>
+                    <ul className={classes.images}>
+                        {uploadedFiles.map((file) => (
+                        <li className= {classes.image} key={file.name}>
+                            <ImageWrapper
+                                height= '10px'
+                                file={file}
+                                onDelete={onDelete}
+                            />
+                        </li>
+                        ))}
+                    </ul>
+                    <Typography className={classes.errorText}>{!product.images.length && eImages}</Typography>
                 </form>
+
+                {editProduct && <Button className= {classes.delete}>DELETE PRODUCT</Button>}
             </CardContent>
-    </Box>
     )
 }

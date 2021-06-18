@@ -9,9 +9,15 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: '3%'
     },
 
-    slide: {
-        height: 'fit-content',
+    slideContainer: {
         marginLeft: '5%',
+        padding: '0 !important'
+    },
+
+    slide: {
+        display: 'flex',
+        justifyContent: 'center',
+        height: 'fit-content',
     },
 
     grid_container: {

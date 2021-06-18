@@ -27,14 +27,14 @@ export default function AdminProfile() {
             <Avatar className={classes.profilePic}>U</Avatar>
 
             <Button onClick={() => {displayHandler('products')}} size= 'small' className={classes.button}><Typography variant= 'button'>Products</Typography></Button>
-            <Button onClick={(e) => {displayHandler(1)}} size= 'small' className={classes.button}><Typography variant= 'button'>Categories</Typography></Button>
+            <Button onClick={(e) => {displayHandler('categories')}} size= 'small' className={classes.button}><Typography variant= 'button'>Categories</Typography></Button>
             <Button onClick={(e) => {displayHandler(2)}} size= 'small' className={classes.button}><Typography variant= 'button'>Orders</Typography></Button>
             <Button onClick={(e) => {displayHandler(3)}} size= 'small' className={classes.button}><Typography variant= 'button'>Users</Typography></Button>
             <Button  size= 'small' className={classes.button}><Typography variant= 'button'>Log Out</Typography></Button>
 
           </CardContent>
         </Grid>
-        <Grid item xs={9}>
+        <Grid className={classes.slideContainer} item xs={9}>
           <Paper className={classes.slide} elevation={3}>
             <AdminDisplay setDisplayStatus={setDisplayStatus} displayStatus={displayStatus}/>
           </Paper>

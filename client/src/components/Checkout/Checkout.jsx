@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import { useSelector } from "react-redux";
 //Imports Material UI components:
 import {Paper, Box, Divider} from '@material-ui/core'
 //Styles
@@ -17,6 +17,14 @@ export default function Checkout({subtotal}) {
 
     const steps = ['Customer information', 'Payment', 'Confirm order' ]
     const [activeStep, setActiveStep] = useState(0);
+
+    const { payment } = useSelector((state) => ({ ...state.checkoutReducer }))
+
+    useEffect(() => {
+        if (payment.state) {
+            setActiveStep(2);
+        };
+    }, [payment])
     
 
     function renderStep(activeStep) {

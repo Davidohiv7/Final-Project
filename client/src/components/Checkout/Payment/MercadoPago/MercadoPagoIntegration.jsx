@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //Imports Material UI components:
-import {Box, Typography, Button} from '@material-ui/core';
+import { Box, Button, Typography } from '@material-ui/core';
+import SvgIcon from '@material-ui/core/SvgIcon';
 //Styles
 import useStyles from './styles';
 //Actions
@@ -10,7 +11,7 @@ import { setMercadoPagoOrder } from '../../../../actions/checkout/checkout_actio
 export default function  MercadoPagoIntegration() {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const { url } = useSelector((state) => ({ ...state.checkoutReducer }))
+    const { url, subtotal } = useSelector((state) => ({ ...state.checkoutReducer }))
     const { cart } = useSelector((state) => ({ ...state.cartReducer }))
 
     useEffect(() => {
@@ -27,10 +28,11 @@ export default function  MercadoPagoIntegration() {
 
 
     return (
-        <Box display="flex" justifyContent="center" alignItems="center" width='100%'>
-            <Typography variant="h5" color="primary">MercadoPago</Typography>
-            <Button type='submit' variant="contained" color="primary" className={classes.button} onClick={() => getMercadoPagoOrder()}>
-                Go to MercadoPago
+        <Box display="flex" flexDirection='column' marginTop='30px' justifyContent="center" alignItems="center" width='100%'>
+            <Typography variant="h5" className={classes.truePayment}>Total order: {`$${subtotal}`}</Typography>
+            <Typography variant="h6"  color='common-black'>Go to MercadoPago:</Typography>
+            <Button type='submit' variant="contained" className={classes.button} onClick={() => getMercadoPagoOrder()}>
+                <img src='./mercadopago-logo.png' />
             </Button>
         </Box>  
     )

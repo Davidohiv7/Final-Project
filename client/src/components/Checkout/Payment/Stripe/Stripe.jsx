@@ -11,7 +11,7 @@ import { Elements, CardElement, useStripe, useElements } from '@stripe/react-str
 //actions
 import { confirmStripePayment } from '../../../../actions/checkout/checkout_actions'
 
-const stripePublicKey = 'pk_test_51J2lgBHCq2LMDgLerVV4m96xBV7wqNNRERtt40b3VaU396DajyjTp0PEemMdjYN0QFG8aKUpjCsoGdgx07Jy7v6G00qWcxsvS4'
+const stripePublicKey = 'pk_test_51J3m0LBHGUP9cyEVQAWqULamIxTxcI7CYz3AhgDFdBg1RAtQPiclIXDJhplXRCT90VsVgDffq3J6nIADbBXFDhda00S62wWjAw'
 const stripePromise = loadStripe(stripePublicKey)
 
 function StripeElements() {

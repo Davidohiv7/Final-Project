@@ -5,6 +5,14 @@ const models = require('../database/models/');
 
 const router = express.Router();
 
+const transporter = require('../mailingMid/NodemailerGoogleMid')
+const authMailing = require('../mailingMid/NodemailerGoogleMid')
+const {
+    mailBuy
+} = require('../utils/mailtemplates');
+const {
+    GOOGLE_MAIL,
+} = process.env
 
 router.get('/gettotal', passport.authenticate('jwt', {session: false}), async (req, res, next) => {
     const user = req.user
@@ -75,6 +83,15 @@ router.post('/confirmpayment', passport.authenticate('jwt', {session: false}), a
             order.status = 'paid'
             order.paymentMethod = checkoutData.payment.method
             await order.save()
+            //send email confirmation
+
+            transporter.sendMail({
+                from: `Onion Food Sup. <${GOOGLE_MAIL}>`,
+                to: user.email,
+                subject: 'Welcome to Onion Food Sup.',
+                html: mailBuy(user.name, order),
+                auth: authMailing,
+            });
         }
         
         const paidOrder = await models.Order.findOne({

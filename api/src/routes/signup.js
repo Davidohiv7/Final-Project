@@ -3,40 +3,18 @@ const jwt = require('jsonwebtoken')
 const response = require('../utils/response')
 const signUpRouter = express.Router();
 const bcrypt = require('bcrypt');
-const nodemailer = require('nodemailer');
+const {
+    transporter,
+    authMailing
+} = require('../mailingMid/NodemailerGoogleMid')
 const { mailSignUp } = require('../utils/mailtemplates');
 const models = require('../database/models/');
 
 const {
     SECRET_KEY_JWT,
     SALT_ROUNDS,
-    GOOGLE_CLIENT_ID,
-    GOOGLE_CLIENT_SECRET,
-    GOOGLE_REFRESH_TOKEN,
-    GOOGLE_ACCES_TOKEN,
     GOOGLE_MAIL,
 } = process.env
-
-
-const mailConfig = {
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: {
-        type: 'OAuth2',
-        clientId: GOOGLE_CLIENT_ID,
-        clientSecret: GOOGLE_CLIENT_SECRET
-    }
-};
-
-const transporter = nodemailer.createTransport(mailConfig);
-
-const auth = {
-    user: GOOGLE_MAIL,
-    refreshToken: GOOGLE_REFRESH_TOKEN,
-    accessToken: GOOGLE_ACCES_TOKEN,
-    expires: 3599
-}
 
 signUpRouter.get('/', (req, res, next) => {
     res.send('Esta es la ruta de sign up')
@@ -46,14 +24,13 @@ signUpRouter.post('/', async (req, res, next) => {
     const newUserData = req.body
     const saltRounds = Number(SALT_ROUNDS)
     try {
-        /*
         const checkedUser = await models.User.findOne({where: {
             email: newUserData.email
             }
         })
         if(checkedUser) {
             return response.error(req, res, {message: 'This email is already taken'})
-        }*/
+        }
 
         const hashedPassword = bcrypt.hashSync(newUserData.password, saltRounds);
 
@@ -129,7 +106,7 @@ signUpRouter.post('/', async (req, res, next) => {
             to: email,
             subject: 'Welcome to Onion Food Sup.',
             html: mailSignUp(name, lastName, email),
-            auth: auth,
+            auth: authMailing,
         });
 
 

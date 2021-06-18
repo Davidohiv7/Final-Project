@@ -47,48 +47,48 @@ export default function  ConfirmOrder( { activeStep, setActiveStep }) {
             </Box>
 
             {
-                confirmOrder.success ? 
-                <Box mt={8} isplay="flex" justifyContent="center" alignItems="center">
-                    <Typography variant="h3" align='center' className={classes.confirmOrderSuccess}>Your order is confirmed, thank you.</Typography>
+            confirmOrder.success ? 
+            <Box mt={8} isplay="flex" justifyContent="center" alignItems="center">
+                <Typography variant="h3" align='center' className={classes.confirmOrderSuccess}>Your order is confirmed, thank you.</Typography>
+            </Box>
+            :
+            <Box>
+                <Box width="100%" justifyContent='center' ml={3}>
+                    <Typography variant="h6" className={classes.title} >
+                        Order Detail
+                    </Typography>
+                    <Box className={classes.demo}>
+                        <List className={classes.list}>
+                            {cart.map(ele =>
+                                <ListItem divider>
+                                    <ListItemAvatar>
+                                        <Avatar src={ele.Images[0].url} />
+                                    </ListItemAvatar>
+                                    <ListItemText primary={`${ele.name}`} secondary={`Quantity x ${ele.quantity}`}/>
+                                </ListItem>,
+                            )}
+                        </List>
+                    </Box>
+
                 </Box>
-                :
-                <Box>
-                    <Box width="100%" justifyContent='center' ml={3}>
-                        <Typography variant="h6" className={classes.title} >
-                            Order Detail
+
+                <Box display="flex" justifyContent="center" alignItems="center" flexDirection='column'>
+                    <Typography variant="h5" color="default">
+                            {`Payment status: ${payment.state ? 'Paid' : 'Pending'} - Method: ${payment.method}`}
                         </Typography>
-                        <Box className={classes.demo}>
-                            <List className={classes.list}>
-                                {cart.map(ele =>
-                                    <ListItem divider>
-                                        <ListItemAvatar>
-                                            <Avatar src={ele.Images[0].url} />
-                                        </ListItemAvatar>
-                                        <ListItemText primary={`${ele.name}`} secondary={`Quantity x ${ele.quantity}`}/>
-                                    </ListItem>,
-                                )}
-                            </List>
-                        </Box>
-
-                    </Box>
-
-                    <Box display="flex" justifyContent="center" alignItems="center" flexDirection='column'>
-                        <Typography variant="h5" color="default">
-                                {`Payment status: ${payment.state ? 'Paid' : 'Pending'} - Method: ${payment.method}`}
-                            </Typography>
-                        <Typography variant="h5" color="default">{`Total: $${subtotal}`}</Typography>
-                    </Box>
-                
-                    <Box display="flex" justifyContent="center" alignItems="center" >
-                        <Button variant="contained" color="primary" onClick={() => setActiveStep(activeStep - 1)} className={classes.button}>
-                            Back
-                        </Button>
-
-                        <Button variant="contained" color="primary" onClick={(e) => handleConfirmOrder(e)}>
-                            Confirm Order
-                        </Button>
-                    </Box>
+                    <Typography variant="h5" color="default">{`Total: $${subtotal}`}</Typography>
                 </Box>
+            
+                <Box display="flex" justifyContent="center" alignItems="center" >
+                    <Button variant="contained" color="primary" onClick={() => setActiveStep(activeStep - 1)} className={classes.button}>
+                        Back
+                    </Button>
+
+                    <Button variant="contained" color="primary" onClick={(e) => handleConfirmOrder(e)}>
+                        Confirm Order
+                    </Button>
+                </Box>
+            </Box>
             }
 
             <Snackbar open={confirmOrderSuccessSnackbar} autoHideDuration={3000} onClose={() => setConfirmOrderSuccessSnackbar(false)} variant="filled">

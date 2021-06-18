@@ -21,7 +21,7 @@ const mailConfig = {
 
 exports.transporter = nodemailer.createTransport(mailConfig);
 
-exports.auth = {
+exports.authMailing = {
     user: GOOGLE_MAIL,
     refreshToken: GOOGLE_REFRESH_TOKEN,
     accessToken: GOOGLE_ACCES_TOKEN,

@@ -24,5 +24,6 @@ router.use('/orders', orders);
 router.use('/cart', cart);
 router.use('/checkout', checkout);
 router.use('/test', test);
+router.use('/googleauth', googleauth)
 
 module.exports = router;

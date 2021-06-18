@@ -10,7 +10,6 @@ const cors = require('cors');
 
 require('./auth/JWTAuthPassport.js')
 require('./auth/GoogleAuthPassport')
-require('./mailingMid/NodemailerGoogleMid.js')
 server.use(cors({ origin: true }));
 server.use(express.urlencoded({ extended: true, limit: '50mb' }));
 server.use(express.json({ limit: '50mb' }));

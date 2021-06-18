@@ -5,7 +5,10 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const models = require('../database/models')
 
-const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = process.env
+const {
+    GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET
+} = process.env
 const GOOGLE_CALLBACK_URL = 'http://localhost:3001/googleauth/callback'
 
 passport.use(new GoogleStrategy({

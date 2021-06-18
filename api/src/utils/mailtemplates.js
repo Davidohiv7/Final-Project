@@ -132,7 +132,7 @@ img {
     <img src="https://image.shutterstock.com/image-vector/onion-logo-vector-template-260nw-1243777168.jpg" />
 <h2> 
   Your order ${order.id} will be delivered shortly!</h2>
-  <div>${orderList}</div>
+  
     <a href="https://localhost:3000" class="button">Continue!</a>
     <footer>
       <h5>You are more than welcome to write us at <span class="contact"><a href='https://localhost/3000/contact'>Contact</a></span></h5>

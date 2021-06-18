@@ -5,7 +5,7 @@ const signup = require('./signup')
 const signin = require('./signin')
 const googleauth = require('./googleauth')
 const user = require('./user')
-const test = require('./test')
+//const test = require('./test')
 const categories = require('./categories')
 
 
@@ -15,6 +15,6 @@ router.use('/signup', signup);
 router.use('/signin', signin);
 router.use('/googleauth', googleauth);
 router.use('/user', user);
-router.use('/test', test);
+//router.use('/test', test);
 
 module.exports = router;

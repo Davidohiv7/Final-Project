@@ -246,4 +246,66 @@ router.get('/', async (req, res) => {
 
 })
 
+router.put('/', async (req, res) => {
+  
+  try {
+		const product = await models.Product.findOne({
+			where: { id: req.body.id },
+			include: [
+				{ model: models.Category, attributes: ['id', 'name'], through: { attributes: []} },
+				{ model: models.Image, attributes: ['id', 'productId', 'url']} 
+			]
+		});
+
+		if (!product) return response.success(req, res, { message: "Product not found." }, 404);
+
+    for (const property in req.body) {
+      product[property] = req.body[property];
+    }
+		await product.save();
+
+		// Get categories
+		const newCategories = [];
+		for (let category of req.body.categories) {
+			let record = await models.Category.findOne({
+				where: { name: category }
+			});
+			newCategories.push(record);			
+		}
+
+		// Get images
+		const newImages = [];
+		for (let image of req.body.images) {
+			let record = await models.Image.findOne({
+				where: { url: image }
+			})
+			newImages.push(record);
+		}
+
+		// Add categories and images
+		await product.setCategories(newCategories);
+		await product.setImages(newImages);
+
+		response.success(req, res, product);
+
+	} catch (error) {
+		response.error(req, res, error.message);
+	}
+})
+
+router.delete('/:id', async (req, res) => {
+
+	try {
+		const { id } = req.params;
+		const product = await models.Product.findOne({ where: { id: parseInt(id) }});
+
+		if (!product) return response.success(req, res, { message: "Product not found." }, 404);
+
+		await product.destroy();
+		response.success(req, res, { message: "Product deleted successfully." });
+	} catch (error) {
+		response.error(req, res, error);
+	}
+})
+
 module.exports = router;

@@ -4,17 +4,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import {Box, Typography, Button} from '@material-ui/core';
 //Styles
 import useStyles from './styles';
-//Custom functions
-import { readLocalStorageCart } from '../../../../assets/utils/cartFunctions';
 //Actions
 import { setMercadoPagoOrder } from '../../../../actions/checkout/checkout_actions';
 
 export default function  MercadoPagoIntegration() {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const { url, id } = useSelector((state) => ({ ...state.checkoutReducer }))
-
-    let cartProducts = readLocalStorageCart();
+    const { url } = useSelector((state) => ({ ...state.checkoutReducer }))
+    const { cart } = useSelector((state) => ({ ...state.cartReducer }))
 
     useEffect(() => {
         if (url && url != '') {
@@ -23,7 +20,7 @@ export default function  MercadoPagoIntegration() {
     }, [url])
 
     function getMercadoPagoOrder() {
-        dispatch(setMercadoPagoOrder(cartProducts));
+        dispatch(setMercadoPagoOrder(cart));
     }
   
 

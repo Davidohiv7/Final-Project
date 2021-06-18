@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { getAllProducts } from './../../actions/home/home_actions';
+import { confirmMercadoPagoOrder } from './../../actions/checkout/checkout_actions';
+import queryString from 'query-string';
 
 // Material UI imports
 import { Grid, Paper, Container  } from '@material-ui/core';
@@ -15,9 +18,16 @@ import Carousel from '../../components/Carousel/Carousel';
 export default function Home() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const location = useLocation();
+  const { user } = useSelector((state) => ({ ...state.authenticationReducer }))
+
+  const parsed = queryString.parse(location.search);
 
   useEffect(() => {
     dispatch(getAllProducts())
+    if (parsed.status === 'approved') {
+      dispatch(confirmMercadoPagoOrder(user));
+    }
   }, []
   )
 

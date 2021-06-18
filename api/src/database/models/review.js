@@ -14,10 +14,18 @@ module.exports = (sequelize, DataTypes) => {
       },
       allowNull: false
     },
-    customerId: {
+    // customerId: {
+    //   type: DataTypes.INTEGER,
+    //   references: {
+    //     model: 'customer',
+    //     key: 'id'
+    //   },
+    //   allowNull: false
+    // },
+    userId: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'customer',
+        model: 'user',
         key: 'id'
       },
       allowNull: false
@@ -43,8 +51,12 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'productId',
     })
 
-    Review.belongsTo(models.Customer, {
-      foreignKey: 'customerId',
+    // Review.belongsTo(models.Customer, {
+    //   foreignKey: 'customerId',
+    // })
+
+    Review.belongsTo(models.User, {
+      foreignKey: 'userId',
     })
   }
 

@@ -8,6 +8,7 @@ import useStyles from './styles';
 import { Cookies } from 'react-cookie'
 
 import { GOOGLE_AUTH } from '../../actions_types/authentication/authentication_actions_types'
+import { setGoogleUserNewCart, getGoogleUserCart } from '../../actions/authentication/authentication_actions'
 
 export default function GoogleAuth() {
 
@@ -29,7 +30,18 @@ export default function GoogleAuth() {
             let timer = setInterval(() => {
                 if(newWindow.closed) {
                     const jwt = cookies.get('jwt')
+                    const isNewUser = cookies.get('newUser')
+                    const localCart = JSON.parse(localStorage.getItem('cart'))
                     if(jwt) {
+                        if(isNewUser && localCart) {
+                            if(localCart.length > 0) {
+                                dispatch(setGoogleUserNewCart(`Bearer ${jwt}`, localCart))
+                                cookies.remove('newUser')
+                            }
+                        }
+                        if(!isNewUser) {
+                            dispatch(getGoogleUserCart(`Bearer ${jwt}`))
+                        }
                         localStorage.setItem('jwt', `Bearer ${jwt}`)
                         cookies.remove('jwt')
                         dispatch({type: GOOGLE_AUTH})

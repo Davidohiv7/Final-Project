@@ -1,24 +1,4 @@
-function validateName(name) {
-    const nameErrors = []
-    if(!name) nameErrors.push('A name is required')
-    if(name && !(/^[A-Za-z]+$/.test(name))) nameErrors.push('First name must contain only letters')
-    if(nameErrors.length > 0) return nameErrors
-}
-
-function validateLastName(lastName) {
-    const lastNameErrors = []
-    if(!lastName) lastNameErrors.push('A last name is required')
-    if(lastName && !(/^[A-Za-z]+$/.test(lastName))) lastNameErrors.push('Last name must contain only letters')
-    if(lastNameErrors.length > 0) return lastNameErrors
-}
-
-function validateEmail(email) {
-    const emailErrors = []
-    if(!email) emailErrors.push('An e-mail is required')
-    if(email && !(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email))) emailErrors.push('This is not an e-mail')
-    if(emailErrors.length > 0) return emailErrors
-}
-
+//Borre los campos de name, email y lastname
 function validateAddress(address) {
     const addressErrors = []
     if(!address) addressErrors.push('An address is required')
@@ -42,15 +22,6 @@ function validateCity(city) {
 export function customerInformationValidation(obj) {
     const errors = {}
 
-    const nameErrors = validateName(obj.name)
-    if (nameErrors) errors.name = nameErrors
-
-    const lastNameErrors = validateLastName(obj.lastName)
-    if (lastNameErrors) errors.lastName = lastNameErrors
-
-    const emailErrors = validateEmail(obj.email)
-    if (emailErrors) errors.email = emailErrors
-
     const streetErrors = validateAddress(obj.street)
     if (streetErrors) errors.street = streetErrors
 
@@ -64,9 +35,6 @@ export function customerInformationValidation(obj) {
 }
 
 export const resetCustomerInformationInput = {
-    name: '',
-    lastName: '',
-    email: '',
     street: '',
     neighborhood: '',
     city: '',

@@ -21,10 +21,18 @@ module.exports = (sequelize, DataTypes) => {
     neighborhood: {
       type: DataTypes.STRING,
     },
-    customerId: {
+    // customerId: {
+    //   type: DataTypes.INTEGER,
+    //   references: {
+    //     model: 'customer',
+    //     key: 'id'
+    //   },
+    //   allowNull: false
+    // },
+    userId: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'customer',
+        model: 'user',
         key: 'id'
       },
       allowNull: false
@@ -39,8 +47,11 @@ module.exports = (sequelize, DataTypes) => {
 
   ShippingAddress.associate = function(models) {
 
-    ShippingAddress.belongsTo(models.Customer, {
-      foreignKey: 'customerId'
+    // ShippingAddress.belongsTo(models.Customer, {
+    //   foreignKey: 'customerId'
+    // })
+    ShippingAddress.belongsTo(models.User, {
+      foreignKey: 'userId'
     })
   }
 

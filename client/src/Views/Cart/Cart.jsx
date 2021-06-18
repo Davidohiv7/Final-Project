@@ -22,7 +22,6 @@ import { confirmMercadoPagoOrder } from '../../actions/checkout/checkout_actions
 
 
 
-
 export default function Cart() {
 
     const classes = useStyles();
@@ -36,10 +35,12 @@ export default function Cart() {
     const [cartProducts, setCartProducts] = useState([]);
     const [subtotal, setSubtotal] = useState(0);
     const [stockProblemProducts, setStockProblemProducts] = useState([]);
+    const [productStock, setProductStock] = useState(null);
 
     const [cartDisabledSnackbar, setDisabledCartSnackbar] = useState(false);
     const [noProductsSnackbar, setNoProductsSnackbar] = useState(false);
     const [noLoggedSnackbar, setNoLoggedSnackbar] = useState(false);
+    const [noStockSnackBar, setNoStockSnackBar] = useState(false);
 
     const [stockPopover, setStockPopover] = useState(false);
     const [stockPopoverAnchor, setStockPopoverAnchor] = useState(null);
@@ -101,7 +102,15 @@ export default function Cart() {
             modifyQuantity(product, Number(e.target.value))
             return setCartProducts(readLocalStorageCart())
         }
-        //AQUI VA LA PARTE DE CUANDO ESTE LOGGEADO DEBE SER UNA ACTION, CREAR LA ACTION
+        if(e.target.value > product.stock) {
+            setProductStock(product)
+            return setNoStockSnackBar(true)
+        }
+        if(Number(e.target.value) === 0) {
+            const cartProduct = cartProducts.find(p => p.id === product.id)
+            cartProduct.quantity = 1
+            return dispatch(changeCartQuantity(product, 1))
+        }
         dispatch(changeCartQuantity(product, Number(e.target.value)))
     }
 
@@ -203,7 +212,8 @@ export default function Cart() {
                                     }}
                                     InputProps={{
                                         inputProps: { 
-                                            max: 99, min: 1
+                                            max: product.stock, 
+                                            min: 1
                                         }
                                     }}
                                     variant="outlined"
@@ -270,6 +280,12 @@ export default function Cart() {
                     </Box>
                 </Popover>
             </Box>
+
+            <Snackbar open={noStockSnackBar} autoHideDuration={5000} onClose={() => {setNoStockSnackBar(false)}} variant="filled">
+                <Alert onClose={() => setNoStockSnackBar(false)} severity="error">
+                    Sorry, our stock of {productStock?.name} is {productStock?.stock} EA
+                </Alert>
+            </Snackbar>
 
             <Snackbar open={cartDisabledSnackbar} autoHideDuration={3000} onClose={() => setDisabledCartSnackbar(false)} variant="filled">
                 <Alert onClose={() => setDisabledCartSnackbar(false)} severity="error">

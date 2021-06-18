@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 //Import components
@@ -7,7 +7,7 @@ import ProductDetailsTab from './ProductDetailsTab/ProductDetailsTab.jsx'
 import {Paper, Card, CardMedia, CardContent, Box, Typography, TextField, Button, IconButton, Divider, Snackbar} from '@material-ui/core'
 import { Alert } from '@material-ui/lab';
 //Imports Material UI icons:
-import { Star, ShoppingCartOutlined, FavoriteBorder, Close } from '@material-ui/icons';
+import { Star, ShoppingCartOutlined, FavoriteBorder, Close, CodeOutlined } from '@material-ui/icons';
 //Custom functions
 import { addToCart, addToFavorites } from '../../assets/utils/productCardFunctions'
 //actions
@@ -22,12 +22,30 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
 
     const { payment } = useSelector((state) => ({ ...state.checkoutReducer }))
     const { logged } = useSelector((state) => ({ ...state.authenticationReducer }))
+    const { cart } = useSelector((state) => ({ ...state.cartReducer }))
 
     const [quantity, setQuantity] = useState(1);
+    const [quantityInCart, setQuantityInCart] = useState(0);
     const [cartSnackbar, setCartSnackbar] = useState(false);
     const [cartDisabledSnackbar, setDisabledCartSnackbar] = useState(false);
     const [favSnackbar, setFavSnackbar] = useState(false);
     const [alreadyFavSnackbar, setAlreadyFavSnackbar] = useState(false);
+
+    useEffect(() => {
+        const validateCartProduct = cart.find(p => p.id === product.id);
+        console.log(cart)
+        if(validateCartProduct) {
+            setQuantityInCart(validateCartProduct.quantity)
+        }
+      }, [])
+
+    useEffect(() => {
+        const validateCartProduct = cart.find(p => p.id === product.id);
+        console.log(cart)
+        if(validateCartProduct) {
+            setQuantityInCart(validateCartProduct.quantity)
+        }
+    }, [cart])
 
     function handleAddToCart(product, quantity, setQuantity) {
         if(payment.state) {
@@ -106,7 +124,12 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                                     <TextField
                                         size='small'
                                         value={quantity}
-                                        onChange={e => setQuantity(Number(e.target.value))}
+                                        onChange={e => {
+                                            if(Number(e.target.value) > (product.stock - quantityInCart)) {
+                                                return setQuantity(product.stock - quantityInCart)
+                                            }
+                                            setQuantity(Number(e.target.value))
+                                        }}
                                         className={classes.quantityInput}
                                         type="number"
                                         InputLabelProps={{
@@ -114,7 +137,8 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                                         }}
                                         InputProps={{
                                             inputProps: { 
-                                                max: product, min: 1
+                                                max: (product.stock - quantityInCart), 
+                                                min: 1
                                             }
                                         }}
                                         variant="outlined"

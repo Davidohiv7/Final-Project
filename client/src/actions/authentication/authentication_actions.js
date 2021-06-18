@@ -103,21 +103,3 @@ export function getGoogleUserCart(jwt) {
         }
     }
 }
-
-export function emailconfirm(obj) {
-    return async (dispatch) => {
-        try {
-            const response = await axios.post("http://localhost:3001/sendmail", obj)
-            console.log(response)
-        } catch (error) {
-            dispatch({
-                type: AUTH_ERROR,
-                payload: error.response.data.data.message
-            });
-            setTimeout(() => dispatch({
-                type: AUTH_ERROR,
-                payload: ''
-            }), 5000)
-        }
-    }
-}

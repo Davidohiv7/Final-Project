@@ -58,14 +58,8 @@ export default function SignUp() {
         e.preventDefault()
         const inputErrors = signUpValidation(formInputs)
         if(Object.keys(inputErrors).length === 0) {
-<<<<<<< HEAD
-            dispatch(signUp(formInputs));
-            formInputs.subject = 'Welcome to Onion Food Sup.'
-            dispatch(emailconfirm(formInputs))
-=======
             const cart = await readLocalStorageCart()
             cart ? dispatch(signUp({...formInputs, cart})) : dispatch(signUp({...formInputs, cart: false}))
->>>>>>> ab44496d889888ed79ea0c7b7ad938d72f2685a9
             return setFormInputs(resetSignUpInput)
         }
         setErrorsArray(Object.values(inputErrors).reduce((acc, v) => [...acc, ...v], []))

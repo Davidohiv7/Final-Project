@@ -9,12 +9,8 @@ const test = require('./test')
 const categories = require('./categories');
 const mercadopago = require('./mercadopago');
 const orders = require('./orders')
-<<<<<<< HEAD
-const sendmail = require('./sendmail')
-=======
 const cart = require('./cart')
 const checkout = require('./checkout')
->>>>>>> ab44496d889888ed79ea0c7b7ad938d72f2685a9
 
 
 router.use('/create_preference', mercadopago);

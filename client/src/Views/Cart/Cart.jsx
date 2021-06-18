@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
+import { useLocation } from 'react-router-dom';
+import queryString from 'query-string';
 //Imports Material UI components:
 import { Snackbar, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Avatar, TextField, IconButton, Divider, Button, Popover, Modal, Fade, Backdrop} from '@material-ui/core/'
 import { Alert } from '@material-ui/lab';
@@ -15,6 +17,7 @@ import Checkout from '../../components/Checkout/Checkout';
 //actions
 import { getCheckoutTotal } from '../../actions/checkout/checkout_actions' 
 import { changeCartQuantity, deleteCartProduct, clearCart} from '../../actions/cart/cart_actions' 
+import { confirmMercadoPagoOrder } from '../../actions/checkout/checkout_actions';
 
 
 
@@ -42,6 +45,9 @@ export default function Cart() {
     const [stockPopoverAnchor, setStockPopoverAnchor] = useState(null);
 
     const [modalState, setModalState] = useState(false);
+    const location = useLocation();
+
+    const parsed = queryString.parse(location.search);
 
     useEffect(() => {
         if(!logged) {
@@ -51,10 +57,21 @@ export default function Cart() {
     }, [])
 
     useEffect(() => {
+        if (parsed.status === 'approved') {
+            dispatch(confirmMercadoPagoOrder())
+        }
+    }, [parsed])
+
+    useEffect(() => {
+        if(payment.state !== false) {
+            setModalState(true);
+        }
+    }, [payment.state])
+
+    useEffect(() => {
         if(logged) {
             setCartProducts(cart)
         }
-
     }, [cart])
 
     useEffect(() => {

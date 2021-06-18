@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { SET_CHECKOUT_SUBTOTAL, SET_CHECKOUT_CUSTOMER_INFORMATION, CONFIRM_STRIPE_PAYMENT, SET_LOADING_TRUE, 
     SET_LOADING_FALSE, SET_CHECKOUT_ERROR_MESSAGE, SET_CONFIRM_ORDER_SUCCESS_MESSAGE, SET_CONFIRM_ORDER_ERROR_MESSAGE, 
-    SET_MERCADOPAGO_ORDER, CLEAR_CHECKOUT_DATA, SET_MERCADOPAGO_CONFIRMATION} from '../../actions_types/checkout/checkout_actions_types'
+    SET_MERCADOPAGO_ORDER, CLEAR_CHECKOUT_DATA, CONFIRM_MERCADOPAGO_PAYMENT} from '../../actions_types/checkout/checkout_actions_types'
     import { CLEAR_CART} from '../../actions_types/cart/cart_actions_types'
 //Custom functios
 import { clearCheckoutData } from '../../assets/utils/confirmOrder'
@@ -99,17 +99,17 @@ export const setMercadoPagoOrder = (order) => {
     }
 }
 
-export const confirmMercadoPagoOrder = (user) => {
+export const confirmMercadoPagoOrder = () => {
     return async (dispatch) => {
-        try{
-            axios.post("http://localhost:3001/confirm/mercadopago", {params: {user: user}})
-                .then(res => res.data)
-                .then(res => {
-                    console.log(res);
-                    dispatch({type: SET_MERCADOPAGO_CONFIRMATION})
-                })
-        } catch(err) {
-            dispatch(err);
+        const checkoutData = {payment: {
+            state: true,
+            method: "MercadoPago"
+        }}
+        const jwt = localStorage.getItem('jwt')
+        
+        const responseDB = await axios.post("http://localhost:3001/checkout/confirmpayment", checkoutData , { headers: { 'Authorization': jwt } })
+        if(responseDB.data.data.paymentStatus.status === 'paid') {
+            dispatch({type: CONFIRM_MERCADOPAGO_PAYMENT});
         }
     }
 }

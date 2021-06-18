@@ -61,7 +61,6 @@ router.post('/setshippingaddress', passport.authenticate('jwt', {session: false}
 router.post('/confirmpayment', passport.authenticate('jwt', {session: false}), async (req, res, next) => {
     const user = req.user
     const checkoutData = req.body
-    console.log(checkoutData)
     
     try {
         const order = await models.Order.findOne({
@@ -76,14 +75,13 @@ router.post('/confirmpayment', passport.authenticate('jwt', {session: false}), a
             order.paymentMethod = checkoutData.payment.method
             await order.save()
         }
-        
         const paidOrder = await models.Order.findOne({
             where: {
                 id: order.id,
                 userId: user.id,
             },
         })
-
+           
         const paymentStatus = {
             status: paidOrder.status,
             paymentMethod: paidOrder.paymentMethod

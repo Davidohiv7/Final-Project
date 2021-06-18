@@ -46,7 +46,7 @@ ordersRouter.post('/confirm_order', passport.authenticate('jwt', {session: false
         const verifyOrder = await models.Order.findOne({
             where: {
                 status: "progress",
-                userId: user.id,
+                id: order.id,
             },
         }) 
 

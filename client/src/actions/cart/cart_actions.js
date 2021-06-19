@@ -51,3 +51,14 @@ export const clearCart = () => {
         }
     }
 }
+
+export const setLocalCart = () => {
+    let localCart = JSON.parse(localStorage.getItem('cart'))
+    if(!localCart) {
+        localCart = []
+    }
+    return {
+        type: SET_CART,
+        payload: localCart
+    }
+}

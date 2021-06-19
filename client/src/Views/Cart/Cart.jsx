@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
@@ -7,7 +8,7 @@ import queryString from 'query-string';
 import { Snackbar, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Avatar, TextField, IconButton, Divider, Button, Popover, Modal, Fade, Backdrop} from '@material-ui/core/'
 import { Alert } from '@material-ui/lab';
 //Material UI icons
-import { Delete, LocalMall } from '@material-ui/icons/';
+import { Delete, LocalMall, Home } from '@material-ui/icons/';
 //Custom functions
 import { readLocalStorageCart, modifyQuantity, deleteProductFromCart } from '../../assets/utils/cartFunctions'
 //modules
@@ -16,17 +17,16 @@ import axios from 'axios';
 import Checkout from '../../components/Checkout/Checkout';
 //actions
 import { getCheckoutTotal } from '../../actions/checkout/checkout_actions' 
-import { changeCartQuantity, deleteCartProduct, clearCart} from '../../actions/cart/cart_actions' 
+import { changeCartQuantity, deleteCartProduct, clearCart, setLocalCart} from '../../actions/cart/cart_actions' 
 import { confirmMercadoPagoOrder } from '../../actions/checkout/checkout_actions';
-
-
-
 
 export default function Cart() {
 
     const classes = useStyles();
 
     const dispatch = useDispatch();
+
+    let history = useHistory();
 
     const { payment } = useSelector((state) => ({ ...state.checkoutReducer }))
     const { logged } = useSelector((state) => ({ ...state.authenticationReducer }))
@@ -87,7 +87,6 @@ export default function Cart() {
     useEffect(() => {
         if(logged) {
             if(cart && cart.length > 0) {
-                //Este se puede romper en funcion de como llegue la info del back
                 return setSubtotal(cart.map(p => p.price * p.quantity).reduce((acc, v) => acc + v))
             }
             setSubtotal(0)
@@ -120,6 +119,7 @@ export default function Cart() {
         }
         if (!logged) {
             deleteProductFromCart(product)
+            dispatch(setLocalCart())
             return setCartProducts(readLocalStorageCart())
         }
         dispatch(deleteCartProduct(product))
@@ -132,11 +132,11 @@ export default function Cart() {
         if(!logged) {
             const cart = localStorage.getItem('cart')
             if(cart) {
+                localStorage.removeItem('cart')
                 setCartProducts([])
-                return localStorage.removeItem('cart')
+                return dispatch(setLocalCart())
             } 
         }
-        //AQUI VA LA PARTE DE CUANDO ESTE LOGGEADO DEBE SER UNA ACTION, CREAR LA ACTION
         dispatch(clearCart())
     }
     
@@ -180,148 +180,165 @@ export default function Cart() {
 
     return (
         <Box bgcolor='secondary.main' mt={6} m={5} p={5} className={classes.root}>
-            <TableContainer component={Paper} className={classes.tableContainer}>
-                <Table aria-label="customized table">
-                    <TableHead className={classes.head}>
-                        <TableRow>
-                            <TableCell className={classes.title} >Product</TableCell>
-                            <TableCell align="center" className={classes.title} >Quantity</TableCell>
-                            <TableCell align="center" className={classes.title} >Unit price</TableCell>
-                            <TableCell align="center" className={classes.title} >Total price</TableCell>
-                            <TableCell align="center" className={classes.title} >Delete</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                    {cartProducts && cartProducts.map((product) => (
-                        <TableRow key={product.name}>
-                            <TableCell align="center">
-                                <Box display='flex' justifyContent="flex-start" alignItems="center" >
-                                    <Avatar src={product.Images[0].url}/>
-                                    <Typography className={classes.productName} display='inline' variant="h6" color="initial">{product.name}</Typography>
-                                </Box>
-                            </TableCell>
-                            <TableCell align="center">
-                                <TextField
-                                    size='small'
-                                    value={product.quantity}
-                                    onChange={e => handleQuantityChange(product, e)}
-                                    className={classes.quantityInput}
-                                    type="number"
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    InputProps={{
-                                        inputProps: { 
-                                            max: product.stock, 
-                                            min: 1
-                                        }
-                                    }}
-                                    variant="outlined"
-                                />
-                            </TableCell>
-                            <TableCell align="center">${product.price} EA</TableCell>
-                            <TableCell align="center">${(product.price * product.quantity).toFixed(2)}</TableCell>
-                            <TableCell align="center">
-                                <IconButton variant='contained' color='primary' aria-label="delete" onClick={e => handleDelete(product)}>
-                                    <Delete />
-                                </IconButton>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            {
+                cartProducts.length > 0 ?
+                <Box>
+                    <TableContainer component={Paper} className={classes.tableContainer}>
+                        <Table aria-label="customized table">
+                            <TableHead className={classes.head}>
+                                <TableRow>
+                                    <TableCell className={classes.title} >Product</TableCell>
+                                    <TableCell align="center" className={classes.title} >Quantity</TableCell>
+                                    <TableCell align="center" className={classes.title} >Unit price</TableCell>
+                                    <TableCell align="center" className={classes.title} >Total price</TableCell>
+                                    <TableCell align="center" className={classes.title} >Delete</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                            {cartProducts && cartProducts.map((product) => (
+                                <TableRow key={product.name}>
+                                    <TableCell align="center">
+                                        <Box display='flex' justifyContent="flex-start" alignItems="center" >
+                                            <Avatar src={product.Images[0].url}/>
+                                            <Typography className={classes.productName} display='inline' variant="h6" color="initial">{product.name}</Typography>
+                                        </Box>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        <TextField
+                                            size='small'
+                                            value={product.quantity}
+                                            onChange={e => handleQuantityChange(product, e)}
+                                            className={classes.quantityInput}
+                                            type="number"
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                            InputProps={{
+                                                inputProps: { 
+                                                    max: product.stock, 
+                                                    min: 1
+                                                }
+                                            }}
+                                            variant="outlined"
+                                        />
+                                    </TableCell>
+                                    <TableCell align="center">${product.price} EA</TableCell>
+                                    <TableCell align="center">${(product.price * product.quantity).toFixed(2)}</TableCell>
+                                    <TableCell align="center">
+                                        <IconButton variant='contained' color='primary' aria-label="delete" onClick={e => handleDelete(product)}>
+                                            <Delete />
+                                        </IconButton>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
 
-            <Divider className={classes.divider} />
+                    <Divider className={classes.divider} />
 
-            <Box display='flex' flexDirection='column' justifyContent="space-around" alignItems="center" >
-                <Typography variant="h3" color="secondary.dark" className={classes.subtotal}> {`Subtotal: $${subtotal.toFixed(2)}`}</Typography>
-                <Box display='flex' justifyContent="center" alignItems="center" >
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        startIcon={<LocalMall />}
-                        className={classes.checkout}
-                        onClick={e => handleCheckoutClick(e, cartProducts)}
-                    >
-                        checkout
-                    </Button>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        startIcon={<Delete />}
-                        className={classes.checkout}
-                        onClick={e => handleClearCart(e)}
-                    >
-                        clear cart
-                    </Button>
-                </Box>
-                
-                <Popover
-                    open={stockPopover}
-                    anchorEl={stockPopoverAnchor}
-                    onClose={() => setStockPopover(false)}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'center',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'center',
-                    }}
-                >
-                    <Box p={2}>
-                        <Typography>Sorry, we don't have enough stock of the following items</Typography>
-                        {
-                            stockProblemProducts.map(p => {
-                                return <Typography>- {p.name}, Actual stock: {p.stock}</Typography>
-                            })
-                        }
+                    <Box display='flex' flexDirection='column' justifyContent="space-around" alignItems="center" >
+                        <Typography variant="h3" color="secondary.dark" className={classes.subtotal}> {`Subtotal: $${subtotal.toFixed(2)}`}</Typography>
+                        <Box display='flex' justifyContent="center" alignItems="center" >
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                startIcon={<LocalMall />}
+                                className={classes.checkout}
+                                onClick={e => handleCheckoutClick(e, cartProducts)}
+                            >
+                                checkout
+                            </Button>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                startIcon={<Delete />}
+                                className={classes.checkout}
+                                onClick={e => handleClearCart(e)}
+                            >
+                                clear cart
+                            </Button>
+                        </Box>
+                        
+                        <Popover
+                            open={stockPopover}
+                            anchorEl={stockPopoverAnchor}
+                            onClose={() => setStockPopover(false)}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'center',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'center',
+                            }}
+                        >
+                            <Box p={2}>
+                                <Typography>Sorry, we don't have enough stock of the following items</Typography>
+                                {
+                                    stockProblemProducts.map(p => {
+                                        return <Typography>- {p.name}, Actual stock: {p.stock}</Typography>
+                                    })
+                                }
+                            </Box>
+                        </Popover>
                     </Box>
-                </Popover>
+
+                    <Snackbar open={noStockSnackBar} autoHideDuration={5000} onClose={() => {setNoStockSnackBar(false)}} variant="filled">
+                        <Alert onClose={() => setNoStockSnackBar(false)} severity="error">
+                            Sorry, our stock of {productStock?.name} is {productStock?.stock} EA
+                        </Alert>
+                    </Snackbar>
+
+                    <Snackbar open={cartDisabledSnackbar} autoHideDuration={3000} onClose={() => setDisabledCartSnackbar(false)} variant="filled">
+                        <Alert onClose={() => setDisabledCartSnackbar(false)} severity="error">
+                            Please confirm yor active paid order, before modify the cart
+                        </Alert>
+                    </Snackbar>
+
+                    <Snackbar open={noProductsSnackbar} autoHideDuration={3000} onClose={() => setNoProductsSnackbar(false)} variant="filled">
+                        <Alert onClose={() => setNoProductsSnackbar(false)} severity="error">
+                            Please add products before the checkout
+                        </Alert>
+                    </Snackbar>
+
+                    <Snackbar open={noLoggedSnackbar} autoHideDuration={3000} onClose={() => setNoLoggedSnackbar(false)} variant="filled">
+                        <Alert onClose={() => setNoLoggedSnackbar(false)} severity="error">
+                            Please log in to your account or create a new one to continue to the checkout
+                        </Alert>
+                    </Snackbar>
+                    
+                    <Modal
+                        aria-labelledby="Product details"
+                        aria-describedby="Product details"
+                        className={classes.modal}
+                        open={modalState}
+                        onClose={() => setModalState(false)}
+                        closeAfterTransition
+                        BackdropComponent={Backdrop}
+                        BackdropProps={{
+                            timeout: 500,
+                        }}
+                    >
+                        <Fade in={modalState}>
+                            <Checkout subtotal={subtotal.toFixed(2)} />
+                        </Fade>
+                    </Modal> 
+                </Box>
+            :
+            <Box display="flex" flexDirection='column' justifyContent="center" alignItems="center">
+                <Typography align='center' variant="h3" color="initial"> You dont`t have any product in the cart, go to the home and check our incredible products in our catalogue</Typography>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<Home />}
+                    className={classes.checkout}
+                    onClick={e => history.push("/")}
+                >
+                    home
+                </Button>
             </Box>
-
-            <Snackbar open={noStockSnackBar} autoHideDuration={5000} onClose={() => {setNoStockSnackBar(false)}} variant="filled">
-                <Alert onClose={() => setNoStockSnackBar(false)} severity="error">
-                    Sorry, our stock of {productStock?.name} is {productStock?.stock} EA
-                </Alert>
-            </Snackbar>
-
-            <Snackbar open={cartDisabledSnackbar} autoHideDuration={3000} onClose={() => setDisabledCartSnackbar(false)} variant="filled">
-                <Alert onClose={() => setDisabledCartSnackbar(false)} severity="error">
-                    Please confirm yor active paid order, before modify the cart
-                </Alert>
-            </Snackbar>
-
-            <Snackbar open={noProductsSnackbar} autoHideDuration={3000} onClose={() => setNoProductsSnackbar(false)} variant="filled">
-                <Alert onClose={() => setNoProductsSnackbar(false)} severity="error">
-                    Please add products before the checkout
-                </Alert>
-            </Snackbar>
-
-            <Snackbar open={noLoggedSnackbar} autoHideDuration={3000} onClose={() => setNoLoggedSnackbar(false)} variant="filled">
-                <Alert onClose={() => setNoLoggedSnackbar(false)} severity="error">
-                    Please log in to your account or create a new one to continue to the checkout
-                </Alert>
-            </Snackbar>
-            
-            <Modal
-                aria-labelledby="Product details"
-                aria-describedby="Product details"
-                className={classes.modal}
-                open={modalState}
-                onClose={() => setModalState(false)}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 500,
-                }}
-            >
-                <Fade in={modalState}>
-                    <Checkout subtotal={subtotal.toFixed(2)} />
-                </Fade>
-            </Modal>
-            
+            }
         </Box>
     )
 }

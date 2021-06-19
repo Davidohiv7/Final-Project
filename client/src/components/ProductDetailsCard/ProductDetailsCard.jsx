@@ -11,7 +11,7 @@ import { Star, ShoppingCartOutlined, FavoriteBorder, Close, CodeOutlined } from 
 //Custom functions
 import { addToCart, addToFavorites } from '../../assets/utils/productCardFunctions'
 //actions
-import { addProductToCart } from '../../actions/cart/cart_actions'
+import { addProductToCart, setLocalCart } from '../../actions/cart/cart_actions'
 
 
 
@@ -53,9 +53,9 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
         }
         if(!logged) {
             addToCart(product, quantity, setQuantity)
+            dispatch(setLocalCart())
             return setCartSnackbar(true)
         }
-        //Esto es una action que va al back y modifica el carrito
         dispatch(addProductToCart(product, quantity))
         setQuantity(1)
         setCartSnackbar(true)

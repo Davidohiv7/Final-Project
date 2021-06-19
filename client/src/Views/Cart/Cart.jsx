@@ -181,7 +181,7 @@ export default function Cart() {
     return (
         <Box bgcolor='secondary.main' mt={6} m={5} p={5} className={classes.root}>
             {
-                cartProducts.length > 0 ?
+                cartProducts && cartProducts.length > 0 ?
                 <Box>
                     <TableContainer component={Paper} className={classes.tableContainer}>
                         <Table aria-label="customized table">

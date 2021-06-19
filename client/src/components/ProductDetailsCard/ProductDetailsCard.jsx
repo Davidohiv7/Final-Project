@@ -125,6 +125,9 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                                         size='small'
                                         value={quantity}
                                         onChange={e => {
+                                            if(Number(e.target.value) === 0){
+                                                return setQuantity(1)
+                                            }
                                             if(Number(e.target.value) > (product.stock - quantityInCart)) {
                                                 return setQuantity(product.stock - quantityInCart)
                                             }

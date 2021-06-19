@@ -97,10 +97,6 @@ export default function Cart() {
         if(payment.state) {
             return setDisabledCartSnackbar(true)
         }
-        if(!logged) {
-            modifyQuantity(product, Number(e.target.value))
-            return setCartProducts(readLocalStorageCart())
-        }
         if(e.target.value > product.stock) {
             setProductStock(product)
             return setNoStockSnackBar(true)
@@ -108,7 +104,15 @@ export default function Cart() {
         if(Number(e.target.value) === 0) {
             const cartProduct = cartProducts.find(p => p.id === product.id)
             cartProduct.quantity = 1
+            if(!logged) {
+                modifyQuantity(product, 1)
+                return setCartProducts(readLocalStorageCart())
+            }
             return dispatch(changeCartQuantity(product, 1))
+        }
+        if(!logged) {
+            modifyQuantity(product, Number(e.target.value))
+            return setCartProducts(readLocalStorageCart())
         }
         dispatch(changeCartQuantity(product, Number(e.target.value)))
     }

@@ -43,7 +43,7 @@ export function confirmOrderAction(checkoutData) {
             if(response.data.data.result) {
                 clearCheckoutData()
                 dispatch({type: SET_CONFIRM_ORDER_SUCCESS_MESSAGE, payload: response.data.data.message})
-                dispatch({type: CLEAR_CART})
+                setTimeout(() => dispatch({type: CLEAR_CART}), 5000)
                 setTimeout(() => dispatch({type: CLEAR_CHECKOUT_DATA}), 5000)
                 setTimeout(() => dispatch({type: SET_CONFIRM_ORDER_SUCCESS_MESSAGE, payload: ''}), 5000)
             }

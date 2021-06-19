@@ -11,7 +11,9 @@ const useStyles = makeStyles((theme) => ({
     },
     truePayment: {
       color: theme.palette.success.main,
-      marginBottom: 20
+    },
+    logo: {
+      width: 150,
     },
 }));
 

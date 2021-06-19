@@ -38,25 +38,25 @@ export default function CreateForm({ setDisplayStatus, editProduct }) {
     const [eCategories, setEcategories] = useState('')
     const [eImages, setEimages] = useState('')
 
-    function useDidUpdateEffect(fn, inputs) {
-        const didMountRef = useRef(false);
-        useEffect(() => {
-            if (didMountRef.current)
-                fn();
-            else
-                didMountRef.current = true;
-        }, inputs);
-    }
+    //----TOUCH FIELD STATE---//
+    const [nameTouch, setNameTouch]= useState(false)
+    const [priceTouch, setPriceTouch]= useState(false)
+    const [stockTouch, setStockTouch]= useState(false)
+    const [categoriesTouch, setCategoriesTouch]= useState(false)
+    const [ImageTouch, setImageTouch]= useState(false)
+
 
 
     //----NAME VALIDATION----//
     const nameValidator = () => {
         if(!product.name) return setEname("You must provide a product name.")
-        if(product.name.length>50) return setEname("The name cannot be longer than 50 characters.")
+        if(product.name.length>100) return setEname("The name cannot be longer than 50 characters.")
         if(product.name.length<2) return setEname("The name cannot be that short.")
         else setEname("")
     }
-    useDidUpdateEffect(nameValidator,[product.name])
+    useEffect(()=> {
+        nameValidator()
+    },[product.name])
 
     //----PRICE VALIDATION----//
     const priceValidator = () => {
@@ -64,7 +64,9 @@ export default function CreateForm({ setDisplayStatus, editProduct }) {
         if(product.price<1) return setEprice("Price cannot be a negative number.")
         else setEprice("")
     }
-    useDidUpdateEffect(priceValidator,[product.price])
+    useEffect(()=> {
+        priceValidator()
+    },[product.price])
 
     //----STOCK VALIDATION----//
     const stockValidator = () => {
@@ -72,33 +74,39 @@ export default function CreateForm({ setDisplayStatus, editProduct }) {
         if(product.stock<1) return setEstock("Stock cannot be less than one.")
         else setEstock("")
     }
-    useDidUpdateEffect(stockValidator,[product.stock])
+    useEffect(()=> {
+        stockValidator()
+    },[product.stock])
     //----CATEGORIES VALIDATION----//
     const categoriesValidator = () => {
         if(!product.categories.length) return setEcategories("You must enter at least one category.")
         else setEcategories("")
     }
-    useDidUpdateEffect(categoriesValidator,[product.categories])
+    useEffect(()=> {
+        categoriesValidator()
+    },[product.categories])
 
     //----IMAGES VALIDATION----//
     const imagesValidator = () => {
         if(!product.images.length) return setEimages("You must upload at least one image.")
         else setEimages("")
     }
+    useEffect(()=> {
+        imagesValidator()
+    },[product.images])
 
 //----------------------------------------//
 //-------------VALIDATIONS ENDS------------//
 //----------------------------------------//
 
 
-    
-    useEffect(() => {
-        setProduct({
+useEffect(() => {
+    setProduct({
             ...product,
             categories: selectedCategories
         })
     }, [selectedCategories])
-
+    
     useEffect(() => {
         setProduct({
             ...product,
@@ -107,7 +115,8 @@ export default function CreateForm({ setDisplayStatus, editProduct }) {
     }, [uploadedFiles])
 
     const { imagesToDelete } = useSelector((state)=> state.adminReducer)
-
+    
+    
     const handleSubmit= () => {
         nameValidator()
         priceValidator()
@@ -132,8 +141,8 @@ export default function CreateForm({ setDisplayStatus, editProduct }) {
                     })
                     setSelectedCategories([])
                     setUploadedFiles([])
-                    // setDisplayStatus('products')
-                }
+                    setDisplayStatus('products')
+                }   
                 console.log(eName)
         }
     }
@@ -158,7 +167,7 @@ export default function CreateForm({ setDisplayStatus, editProduct }) {
     }
 
     const onDrop = (acceptedFiles) => {
-        
+        setImageTouch(true)
         const url = `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`;
         acceptedFiles.forEach(async (acceptedFile) => {
 
@@ -192,16 +201,17 @@ export default function CreateForm({ setDisplayStatus, editProduct }) {
                     <Button onClick={handleSubmit} className = {classes.button}>Save</Button>
                 </Box>
                 <form className= {classes.form}>
-                    <TextField helperText={<Typography className={classes.errorText}>{eName}</Typography>} value= {product.name} onChange= {(e)=> setProduct({...product, name: e.target.value})} className= {classes.input} id="outlined-basic" label="Name" variant="outlined" />
+                    <TextField onClickCapture = {()=>setNameTouch(true)} helperText={nameTouch && (<Typography className={classes.errorText}>{eName}</Typography>)} value= {product.name} onChange= {(e)=> setProduct({...product, name: e.target.value})} className= {classes.input} id="outlined-basic" label="Name" variant="outlined" />
                     
-                    <TextField helperText={<Typography className={classes.errorText}>{ePrice}</Typography>} value= {product.price} onChange= {(e)=> setProduct({...product, price: e.target.value})} className= {classes.input} id="outlined-number" label="Price" type="number" InputLabelProps={{shrink: true,}} variant="outlined" InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>,}}/>
+                    <TextField onClickCapture = {()=>setPriceTouch(true)} helperText={priceTouch &&(<Typography className={classes.errorText}>{ePrice}</Typography>)} value= {product.price} onChange= {(e)=> setProduct({...product, price: e.target.value})} className= {classes.input} id="outlined-number" label="Price" type="number" InputLabelProps={{shrink: true,}} variant="outlined" InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>,}}/>
 
                     
-                    <TextField helperText={<Typography className={classes.errorText}>{eStock}</Typography>} value= {product.stock} onChange= {(e)=> setProduct({...product, stock: e.target.value})} className= {classes.input} id="outlined-number" label="Stock" type="number" InputLabelProps={{shrink: true,}} variant="outlined"/>
+                    <TextField onClickCapture = {()=>setStockTouch(true)} helperText={stockTouch &&(<Typography className={classes.errorText}>{eStock}</Typography>)} value= {product.stock} onChange= {(e)=> setProduct({...product, stock: e.target.value})} className= {classes.input} id="outlined-number" label="Stock" type="number" InputLabelProps={{shrink: true,}} variant="outlined"/>
                     
                     <TextField value= {product.description} onChange= {(e)=> setProduct({...product, description: e.target.value})} className= {classes.input} id="outlined-basic" label="Description" variant="outlined" multiline />
 
                     <Autocomplete
+                        onClickCapture = {()=>setCategoriesTouch(true)}
                         id= 'categorySelector'
                         className = {classes.input}
                         options={categories}
@@ -216,7 +226,7 @@ export default function CreateForm({ setDisplayStatus, editProduct }) {
                             }
                         }}
                     />
-                    <Typography className={classes.errorText}>{eCategories}</Typography>
+                    {categoriesTouch &&(<Typography className={classes.errorText}>{eCategories}</Typography>)}
 
                     <Paper elevation={5} className = {classes.selectedCategories}>
                         {selectedCategories.map((category)=> (
@@ -246,7 +256,7 @@ export default function CreateForm({ setDisplayStatus, editProduct }) {
                         </li>
                         ))}
                     </ul>
-                    <Typography className={classes.errorText}>{!product.images.length && eImages}</Typography>
+                    {ImageTouch &&(<Typography className={classes.errorText}>{eImages}</Typography>)}
                 </form>
 
                 {editProduct && <Button onClick={()=> {handleDelete(editProduct.id)}} className= {classes.delete}>DELETE PRODUCT</Button>}

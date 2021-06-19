@@ -109,37 +109,32 @@ export default function CreateForm({ setDisplayStatus, editProduct }) {
     const { imagesToDelete } = useSelector((state)=> state.adminReducer)
 
     const handleSubmit= () => {
-        if(editProduct) {
-            dispatch(deleteImages(imagesToDelete))
-            nameValidator()
-            priceValidator()
-            stockValidator()
-            categoriesValidator()
-            imagesValidator()
-            if(!eName && !ePrice && !eStock && !eCategories && !eImages){
+        nameValidator()
+        priceValidator()
+        stockValidator()
+        categoriesValidator()
+        imagesValidator()
+        if(!eName && !ePrice && !eStock && !eCategories && !eImages){
+            if(editProduct) {
                 dispatch(updateProduct(product))
-        }
-        }
-        else{
-            nameValidator()
-            priceValidator()
-            stockValidator()
-            categoriesValidator()
-            imagesValidator()
-            if(!eName && !ePrice && !eStock && !eCategories && !eImages){
-                dispatch(createProduct(product))
-                setProduct({
-                name: '',
-                price: '',
-                stock: 1,
-                description: '',
-                categories: [],
-                images: []
-                })
-                setSelectedCategories([])
-                setUploadedFiles([])
-                setDisplayStatus('products')
+                dispatch(deleteImages(imagesToDelete))
             }
+            else{
+                    dispatch(createProduct(product))
+                    dispatch(deleteImages(imagesToDelete))
+                    setProduct({
+                    name: '',
+                    price: '',
+                    stock: 1,
+                    description: '',
+                    categories: [],
+                    images: []
+                    })
+                    setSelectedCategories([])
+                    setUploadedFiles([])
+                    // setDisplayStatus('products')
+                }
+                console.log(eName)
         }
     }
 
@@ -165,7 +160,6 @@ export default function CreateForm({ setDisplayStatus, editProduct }) {
     const onDrop = (acceptedFiles) => {
         
         const url = `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`;
-
         acceptedFiles.forEach(async (acceptedFile) => {
 
             const formData = new FormData();

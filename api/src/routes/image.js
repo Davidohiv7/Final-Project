@@ -6,6 +6,7 @@ const cloudinary = require("../utils/cloudinary");
 const { Op } = require("sequelize");
 
 
+
 router.delete("/cloudinary/:id", async (req, res) => {
   const imageId = req.params.id;
   try {

@@ -53,6 +53,7 @@ signUpRouter.post('/', async (req, res, next) => {
         let newCart = false
 
         if(newUserData.cart) {
+            console.log('ENTRO')
             const cartProductsIdArray = newUserData.cart.map(p => p.id)
             const orderItemsArrayData = newUserData.cart.map(p => {
                 return {

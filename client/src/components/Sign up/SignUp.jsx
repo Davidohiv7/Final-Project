@@ -57,7 +57,8 @@ export default function SignUp() {
         e.preventDefault()
         const inputErrors = signUpValidation(formInputs)
         if(Object.keys(inputErrors).length === 0) {
-            dispatch(signUp(formInputs));
+            const newCart = JSON.parse(localStorage.getItem('cart'))
+            dispatch(signUp({...formInputs, cart: newCart}));
             return setFormInputs(resetSignUpInput)
         }
         setErrorsArray(Object.values(inputErrors).reduce((acc, v) => [...acc, ...v], []))

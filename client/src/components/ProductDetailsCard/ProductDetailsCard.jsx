@@ -27,6 +27,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
     const [quantity, setQuantity] = useState(1);
     const [quantityInCart, setQuantityInCart] = useState(0);
     const [cartSnackbar, setCartSnackbar] = useState(false);
+    const [noMoreStockSnackBar, setNoMoreStockSnackBar] = useState(false);
     const [cartDisabledSnackbar, setDisabledCartSnackbar] = useState(false);
     const [favSnackbar, setFavSnackbar] = useState(false);
     const [alreadyFavSnackbar, setAlreadyFavSnackbar] = useState(false);
@@ -50,6 +51,9 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
     function handleAddToCart(product, quantity, setQuantity) {
         if(payment.state) {
             return setDisabledCartSnackbar(true)
+        }
+        if(quantityInCart === product.stock) {
+            return setNoMoreStockSnackBar(true)
         }
         if(!logged) {
             addToCart(product, quantity, setQuantity)
@@ -123,7 +127,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                                 <Box className={classes.cartTotal} display="flex" flexDirection='column-reverse' justifyContent="center" alignItems="center" >
                                     <TextField
                                         size='small'
-                                        value={quantity}
+                                        value={quantityInCart === product.stock ? 0 : quantity}
                                         onChange={e => {
                                             if(Number(e.target.value) === 0){
                                                 return setQuantity(1)
@@ -167,6 +171,12 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
             <Snackbar open={cartSnackbar} autoHideDuration={3000} onClose={() => setCartSnackbar(false)} variant="filled">
                 <Alert onClose={() => setCartSnackbar(false)} severity="success">
                     The product was successfully added to the cart!
+                </Alert>
+            </Snackbar>
+
+            <Snackbar open={noMoreStockSnackBar} autoHideDuration={3000} onClose={() => setNoMoreStockSnackBar(false)} variant="filled">
+                <Alert onClose={() => setNoMoreStockSnackBar(false)} severity="error">
+                    You already have all our avaible stock in your cart, we'll have more soon.
                 </Alert>
             </Snackbar>
 
@@ -223,7 +233,7 @@ const useStyles = makeStyles((theme) => ({
         marginRight: 17,
     },
     quantityInput: {
-        width: 65,
+        width: 80,
         borderRadius: 5,
         backgroundColor: theme.palette.common.white,
       },

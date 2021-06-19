@@ -1,6 +1,4 @@
-import React, { useEffect } from 'react';
-import { useHistory } from "react-router-dom";
-import { Cookies } from 'react-cookie'
+import React from 'react';
 import { Box, Typography } from '@material-ui/core';
 import useStyles from './styles';
 

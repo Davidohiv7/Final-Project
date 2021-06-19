@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 import { getAllProducts } from './../../actions/home/home_actions';
 
 // Material UI imports
@@ -10,6 +10,7 @@ import useStyles from './styles';
 import Catalogue from './../../components/Catalogue/Catalogue';
 import HomeLeftBar from '../../components/HomeLeftBar/HomeLeftBar.jsx';
 import Carousel from '../../components/Carousel/Carousel';
+
 
 
 export default function Home() {

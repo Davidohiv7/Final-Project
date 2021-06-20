@@ -19,7 +19,7 @@ export default function ProductDetailsTab({ product }) {
     };
 
     return (
-        <Box className={classes.root}>
+        <Box className={classes.root} width='100%'>
 
             <Tabs value={selectedTab} onChange={handleChange} >
                 <Tab label="Description"  />

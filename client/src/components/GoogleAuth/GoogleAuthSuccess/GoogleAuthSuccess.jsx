@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Cookies } from 'react-cookie'
 import { Box, Typography } from '@material-ui/core';
 import useStyles from './styles';
 

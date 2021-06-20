@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 //Import components
 import ProductDetailsTab from './ProductDetailsTab/ProductDetailsTab.jsx'
@@ -7,20 +7,61 @@ import ProductDetailsTab from './ProductDetailsTab/ProductDetailsTab.jsx'
 import {Paper, Card, CardMedia, CardContent, Box, Typography, TextField, Button, IconButton, Divider, Snackbar} from '@material-ui/core'
 import { Alert } from '@material-ui/lab';
 //Imports Material UI icons:
-import { Star, ShoppingCartOutlined, FavoriteBorder, Close } from '@material-ui/icons';
+import { Star, ShoppingCartOutlined, FavoriteBorder, Close, CodeOutlined } from '@material-ui/icons';
 //Custom functions
 import { addToCart, addToFavorites } from '../../assets/utils/productCardFunctions'
+//actions
+import { addProductToCart, setLocalCart } from '../../actions/cart/cart_actions'
+
+
+
 export default function ProductDetailsCard({ product, scoreArray, setModalState }) {
 
     const classes = useStyles();
+    const dispatch = useDispatch();
+
+    const { payment } = useSelector((state) => ({ ...state.checkoutReducer }))
+    const { logged } = useSelector((state) => ({ ...state.authenticationReducer }))
+    const { cart } = useSelector((state) => ({ ...state.cartReducer }))
 
     const [quantity, setQuantity] = useState(1);
+    const [quantityInCart, setQuantityInCart] = useState(0);
     const [cartSnackbar, setCartSnackbar] = useState(false);
+    const [noMoreStockSnackBar, setNoMoreStockSnackBar] = useState(false);
+    const [cartDisabledSnackbar, setDisabledCartSnackbar] = useState(false);
     const [favSnackbar, setFavSnackbar] = useState(false);
     const [alreadyFavSnackbar, setAlreadyFavSnackbar] = useState(false);
 
+    useEffect(() => {
+        const validateCartProduct = cart.find(p => p.id === product.id);
+        console.log(cart)
+        if(validateCartProduct) {
+            setQuantityInCart(validateCartProduct.quantity)
+        }
+      }, [])
+
+    useEffect(() => {
+        const validateCartProduct = cart.find(p => p.id === product.id);
+        console.log(cart)
+        if(validateCartProduct) {
+            setQuantityInCart(validateCartProduct.quantity)
+        }
+    }, [cart])
+
     function handleAddToCart(product, quantity, setQuantity) {
-        addToCart(product, quantity, setQuantity)
+        if(payment.state) {
+            return setDisabledCartSnackbar(true)
+        }
+        if(quantityInCart === product.stock) {
+            return setNoMoreStockSnackBar(true)
+        }
+        if(!logged) {
+            addToCart(product, quantity, setQuantity)
+            dispatch(setLocalCart())
+            return setCartSnackbar(true)
+        }
+        dispatch(addProductToCart(product, quantity))
+        setQuantity(1)
         setCartSnackbar(true)
     }
 
@@ -86,8 +127,16 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                                 <Box className={classes.cartTotal} display="flex" flexDirection='column-reverse' justifyContent="center" alignItems="center" >
                                     <TextField
                                         size='small'
-                                        value={quantity}
-                                        onChange={e => setQuantity(Number(e.target.value))}
+                                        value={quantityInCart === product.stock ? 0 : quantity}
+                                        onChange={e => {
+                                            if(Number(e.target.value) === 0){
+                                                return setQuantity(1)
+                                            }
+                                            if(Number(e.target.value) > (product.stock - quantityInCart)) {
+                                                return setQuantity(product.stock - quantityInCart)
+                                            }
+                                            setQuantity(Number(e.target.value))
+                                        }}
                                         className={classes.quantityInput}
                                         type="number"
                                         InputLabelProps={{
@@ -95,7 +144,8 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                                         }}
                                         InputProps={{
                                             inputProps: { 
-                                                max: 99, min: 1
+                                                max: (product.stock - quantityInCart), 
+                                                min: 1
                                             }
                                         }}
                                         variant="outlined"
@@ -121,6 +171,18 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
             <Snackbar open={cartSnackbar} autoHideDuration={3000} onClose={() => setCartSnackbar(false)} variant="filled">
                 <Alert onClose={() => setCartSnackbar(false)} severity="success">
                     The product was successfully added to the cart!
+                </Alert>
+            </Snackbar>
+
+            <Snackbar open={noMoreStockSnackBar} autoHideDuration={3000} onClose={() => setNoMoreStockSnackBar(false)} variant="filled">
+                <Alert onClose={() => setNoMoreStockSnackBar(false)} severity="error">
+                    You already have all our avaible stock in your cart, we'll have more soon.
+                </Alert>
+            </Snackbar>
+
+            <Snackbar open={cartDisabledSnackbar} autoHideDuration={3000} onClose={() => setDisabledCartSnackbar(false)} variant="filled">
+                <Alert onClose={() => setDisabledCartSnackbar(false)} severity="error">
+                    Please confirm yor active paid order, before add a new product to the cart
                 </Alert>
             </Snackbar>
 
@@ -171,7 +233,7 @@ const useStyles = makeStyles((theme) => ({
         marginRight: 17,
     },
     quantityInput: {
-        width: 65,
+        width: 80,
         borderRadius: 5,
         backgroundColor: theme.palette.common.white,
       },

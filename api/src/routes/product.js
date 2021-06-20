@@ -246,6 +246,7 @@ router.get('/', async (req, res) => {
 
 })
 
+
 router.post('/', async (req, res) => {
   const { name, price, description = "", stock, score = 5, categories, images } = req.body;
   if (!name || !price || !stock) return response.success(req, res, { message: "Required fields are missing." });
@@ -364,5 +365,20 @@ router.delete('/:id', async (req, res) => {
 		response.error(req, res, error);
 	}
 })
+
+
+router.post('/stockbyid', async (req, res) => {
+  const { idArray } = req.body 
+  try {
+    const productList = await models.Product.findAll({ 
+      where: { id: idArray }, 
+      attributes: ['stock', 'id', 'name'],
+    })
+    response.success(req, res, {productList}, 200)
+  } catch (error) {
+    response.error(req, res, error, 500);
+  }
+})
+
 
 module.exports = router;

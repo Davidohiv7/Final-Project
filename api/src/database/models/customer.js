@@ -19,10 +19,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true
     },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false
@@ -32,24 +28,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     }
   }, { tableName: 'customer' })
-
-  Customer.associate = function(models) {
-    
-    Customer.hasMany(models.Order, {
-      foreignKey: 'customerId',
-      onDelete: 'CASCADE'
-    })
-
-    Customer.hasMany(models.ShippingAddress, {
-      foreignKey: 'customerId',
-      onDelete: 'CASCADE'
-    })
-    
-    Customer.hasMany(models.Review, {
-      foreignKey: 'customerId',
-      onDelete: 'CASCADE'
-    })
-  }
 
   return Customer;
 }

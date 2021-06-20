@@ -10,16 +10,15 @@ import { getCategories, createCategory } from '../../../../actions/admin/admin_a
 
 
 export default function CreateForm() {
-    
-    const [selectedTab, setSelectedTab] = useState(0);
-    const [selectedCategories, setSelectedCategories] = useState([]);
 
-    const categories = useSelector((state) => state.adminReducer.categories)
-    const dispatch = useDispatch()
+    // const [selectedCategories, setSelectedCategories] = useState([]);
 
-    useEffect(() => {
-        dispatch(getCategories())
-    },[])
+    // const categories = useSelector((state) => state.adminReducer.categories)
+    // const dispatch = useDispatch()
+
+    // useEffect(() => {
+    //     dispatch(getCategories())
+    // },[])
 
     const classes = useStyles();
 
@@ -31,10 +30,6 @@ export default function CreateForm() {
     return (
         <Box className={classes.root}>
 
-            <Tabs className= {classes.tabs} value={selectedTab} onChange={handleChange} >
-                <Tab label="Create Product"  />
-                <Tab label="Create Category"  />
-            </Tabs>
             {selectedTab === 0 && 
             <CardContent className={classes.tabContainer}>
                 <form className= {classes.form}>
@@ -71,28 +66,29 @@ export default function CreateForm() {
             </CardContent>
             }
 
-            {selectedTab === 1 && 
-            <CardContent className={classes.tabContainer}>
-                <form className= {classes.form}>
-                    <TextField className= {classes.input} id="nameOfCategory" label="Name" variant="outlined" />
-                    <Button 
-                    onClick= {async() => {
-                        await getCategories()
-                        for(let category of categories) {
-                            if(category.name === document.getElementById('nameOfCategory').value) {
-                                return alert(`${document.getElementById('nameOfCategory').value} category already exists.`)
-                            }
-                        }
-                        dispatch(createCategory(document.getElementById('nameOfCategory').value))
-                        alert(`${document.getElementById('nameOfCategory').value} category has been created`)
-                        }
-                    } 
-                    className = {classes.button}>Create
-                    </Button>
-                </form>
-            </CardContent>
-            }
+
+
     
-        </Box>
+    </Box>
     )
 }
+            {/* CREATE CATEGORY */}
+            {/* // <CardContent className={classes.tabContainer}>
+            //     <form className= {classes.form}>
+            //         <TextField className= {classes.input} id="nameOfCategory" label="Name" variant="outlined" />
+            //         <Button 
+            //         onClick= {async() => {
+            //             await getCategories()
+            //             for(let category of categories) {
+            //                 if(category.name === document.getElementById('nameOfCategory').value) {
+            //                     return alert(`${document.getElementById('nameOfCategory').value} category already exists.`)
+            //                 }
+            //             }
+            //             dispatch(createCategory(document.getElementById('nameOfCategory').value))
+            //             alert(`${document.getElementById('nameOfCategory').value} category has been created`)
+            //             }
+            //         } 
+            //         className = {classes.button}>Create
+            //         </Button>
+            //     </form>
+            // </CardContent> */}

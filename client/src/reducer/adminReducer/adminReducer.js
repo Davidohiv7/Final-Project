@@ -1,7 +1,8 @@
-import { CREATE_CATEGORY, GET_CATEGORIES } from '../../actions_types/admin/admin_action_types'
+import { CREATE_CATEGORY, GET_CATEGORIES, ADD_URL_TO_DELETE } from '../../actions_types/admin/admin_action_types'
 
 const initialState = {
-    categories: []
+    categories: [],
+    imagesToDelete: []
 };
 
 const adminReducer = (state = initialState, action = {}) => {
@@ -16,6 +17,12 @@ const adminReducer = (state = initialState, action = {}) => {
         return {
         ...state,
         categories: [...state.categories, action.payload]
+        }
+    }
+    case ADD_URL_TO_DELETE: {
+        return {
+            ...state,
+            imagesToDelete: [...state.imagesToDelete, action.payload]
         }
     }
         default:

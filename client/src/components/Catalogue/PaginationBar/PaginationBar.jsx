@@ -12,6 +12,7 @@ export default function PaginationBar() {
     dispatch(getProducts({name: searched, category, order, filter, page: value}))
   }
 
+
   return (
     <>
       <Pagination 

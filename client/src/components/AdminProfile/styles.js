@@ -9,9 +9,15 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: '3%'
     },
 
-    slide: {
-        height: 'fit-content',
+    slideContainer: {
         marginLeft: '5%',
+        padding: '0 !important'
+    },
+
+    slide: {
+        display: 'flex',
+        justifyContent: 'center',
+        height: 'fit-content',
     },
 
     grid_container: {
@@ -26,13 +32,14 @@ const useStyles = makeStyles((theme) => ({
         background: theme.palette.primary.dark,
         '&:hover': {
             background: '#4d0f00',
-          },
+        },
         color: "white",
         borderRadius: 5,
         margin: '4%',
         width: '90%'
     },
     filterGrid: {
+        marginLeft: 20,
         backgroundColor: theme.palette.primary.main,
         borderRadius: theme.shape.borderRadius,
         marginTop: 11,

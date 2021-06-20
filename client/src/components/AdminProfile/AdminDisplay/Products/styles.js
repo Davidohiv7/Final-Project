@@ -9,14 +9,13 @@ const useStyles = makeStyles((theme) => ({
   },
 
   editButton: {
-    background: theme.palette.primary.main,
+    minWidth: 30,
+    borderRadius: 55,
     color: 'white',
     '&:hover': {
-      background: theme.palette.primary.dark,
+      backgroundColor: 'lightGray',
     },
-    marginLeft: 10
   },
-
   
 
 }));

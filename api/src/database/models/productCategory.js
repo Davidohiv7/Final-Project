@@ -11,14 +11,18 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'product',
         key: 'id'
-      }
+      },
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     },
     CategoryId: {
       type: DataTypes.INTEGER,
       references: {
         model: 'category',
         key: 'id'
-      }
+      },
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     },
     createdAt: {
       type: DataTypes.DATE,

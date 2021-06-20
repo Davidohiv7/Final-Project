@@ -246,6 +246,127 @@ router.get('/', async (req, res) => {
 
 })
 
+
+router.post('/', async (req, res) => {
+  const { name, price, description = "", stock, score = 5, categories, images } = req.body;
+  if (!name || !price || !stock) return response.success(req, res, { message: "Required fields are missing." });
+  
+  try {
+
+
+      
+      const product = await models.Product.create({
+        name,
+        price: Number(price),
+        description,
+        stock,
+        score,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      const productCategories = [];
+      for (let category of categories) {
+        let record = await models.Category.findOne({
+          where: { name: category } // Assumes "categories" is an array of category names
+        });
+        productCategories.push(record);
+      }
+      await product.addCategories(productCategories);
+
+      const productImages = [];
+      for (let image of images) {
+        let record = {
+          url: image, // Assumes "images" is an array of URLs
+          productId: product.id
+        }
+        productImages.push(record);
+      }
+      await models.Image.bulkCreate(productImages);
+
+      response.success(req, res, product);
+
+  } catch (error) {
+    response.error(req, res, error.message);
+  }
+})
+
+router.put('/', async (req, res) => {
+  
+  try {
+    const { name, id, images, categories, stock, score, price, description } = req.body
+		const product = await models.Product.findOne({
+			where: { id: req.body.id },
+			include: [
+				{ model: models.Category, attributes: ['id', 'name'], through: { attributes: []} },
+				{ model: models.Image, attributes: ['id', 'productId', 'url']} 
+			]
+		});
+
+		if (!product) return response.success(req, res, { message: "Product not found." }, 404);
+
+    // for (const property in req.body) {
+    //   product[property] = req.body[property];
+    // }
+    product.name = name;
+    product.stock = stock;
+    product.score = score;
+    product.price = price;
+    product.description = description;
+
+		await product.save();
+
+		// Get categories
+		const newCategories = [];
+		for (let category of categories) {
+			let record = await models.Category.findOne({
+				where: { name: category }
+			});
+			newCategories.push(record);			
+		}
+
+		// Get images
+		const newImages = [];
+		for (let image of images) {
+			let record = await models.Image.findOne({
+				where: { url: image },
+			})
+      if(!record) {
+        record = await models.Image.create({
+          url: image,
+          productId: id
+        })
+      }
+			newImages.push(record);
+		}
+    await product.reload();
+		// Add categories and images
+		await product.setCategories(newCategories);
+		await product.setImages(newImages);
+
+		response.success(req, res, product);
+
+	} catch (error) {
+		response.error(req, res, error.message);
+	}
+})
+
+router.delete('/:id', async (req, res) => {
+
+	try {
+		const { id } = req.params;
+		const product = await models.Product.findOne({ where: { id: parseInt(id) }});
+
+		if (!product) return response.success(req, res, { message: "Product not found." }, 404);
+
+		await product.destroy();
+		response.success(req, res, { message: "Product deleted successfully." });
+	} catch (error) {
+		response.error(req, res, error);
+	}
+})
+
+
 router.post('/stockbyid', async (req, res) => {
   const { idArray } = req.body 
   try {
@@ -258,5 +379,6 @@ router.post('/stockbyid', async (req, res) => {
     response.error(req, res, error, 500);
   }
 })
+
 
 module.exports = router;

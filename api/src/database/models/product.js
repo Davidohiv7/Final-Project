@@ -39,7 +39,6 @@ module.exports = (sequelize, DataTypes) => {
   Product.associate = function(models) {
     Product.hasMany(models.Image, {
       foreignKey: 'productId',
-      onDelete: 'CASCADE'
     })
 
     Product.belongsToMany(models.Category, {
@@ -48,7 +47,6 @@ module.exports = (sequelize, DataTypes) => {
 
     Product.hasMany(models.Review, {
       foreignKey: 'productId',
-      onDelete: 'CASCADE'
     })
 
     Product.belongsToMany(models.Order, {

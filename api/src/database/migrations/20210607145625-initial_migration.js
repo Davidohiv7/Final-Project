@@ -56,7 +56,9 @@ module.exports = {
           model: 'product',
           key: 'id'
         },
-        allowNull: false
+        allowNull: true,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -102,14 +104,18 @@ module.exports = {
         references: {
           model: 'product',
           key: 'id'
-        }
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       CategoryId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'category',
           key: 'id'
-        }
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       createdAt: {
         type: Sequelize.DATE,

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_CATEGORIES, CREATE_CATEGORY } from '../../actions_types/admin/admin_action_types'
+import { GET_CATEGORIES, CREATE_CATEGORY, ADD_URL_TO_DELETE } from '../../actions_types/admin/admin_action_types'
 
 
 export function getCategories() {
@@ -23,3 +23,44 @@ export function createCategory(name) {
   }
 }
 
+export function deleteProductImage(file) {
+  return (dispatch) => {
+        axios.delete(`http://localhost:3001/image/cloudinary/${file.public_id}`)
+        .catch(e => console.error(e))
+  }
+}
+
+export function createProduct(product) {
+  return (dispatch) => {
+      return axios.post("http://localhost:3001/products", {...product})
+                  .catch(e => console.error(e))
+  }
+}
+
+export function addUrlToDelete(url) {
+  const id = url.split('/')[6]
+  return (dispatch) => {
+    dispatch({type:ADD_URL_TO_DELETE, payload: id})
+  }
+}
+
+export function deleteImages(images) {
+  return (dispatch) => {
+      return axios.post("http://localhost:3001/images", {images: images})
+                  .catch(e => console.error(e))
+  }
+}
+
+export function updateProduct(product) {
+  return (dispatch) => {
+    return axios.put("http://localhost:3001/products", {...product})
+                .catch(e => console.error(e))
+  }
+}
+
+export function deleteProduct(id) {
+  return (dispatch) => {
+    return axios.delete(`http://localhost:3001/products/${id}`)
+                .catch(e => console.error(e))
+  }
+}

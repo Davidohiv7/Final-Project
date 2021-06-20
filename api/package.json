@@ -5,18 +5,20 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon -L",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cross-env NODE_ENV=test jest --runInBand",
     "migrate": "npx sequelize db:migrate",
     "migrate:undo": "npx sequelize db:migrate:undo:all",
     "migrate:reset": "npx sequelize db:migrate:undo:all && npm run migrate",
     "seed-data": "npx sequelize db:seed:all",
-    "undo-seed": "npx sequelize db:seed:undo:all"
+    "undo-seed": "npx sequelize db:seed:undo:all",
+    "migrate-test-db": "cross-env NODE_ENV=test npx sequelize db:migrate"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
     "bcrypt": "^5.0.1",
+    "cloudinary": "^1.26.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
@@ -37,6 +39,9 @@
     "stripe": "^8.154.0"
   },
   "devDependencies": {
-    "sequelize-cli": "^6.2.0"
+    "cross-env": "^7.0.3",
+    "jest": "^27.0.4",
+    "sequelize-cli": "^6.2.0",
+    "supertest": "^6.1.3"
   }
 }

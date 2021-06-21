@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 //Import components
 import ProductDetailsTab from './ProductDetailsTab/ProductDetailsTab.jsx'
+import ProductDetailsPhotoSlider from './ProductDetailsPhotoSlider/ProductDetailsPhotoSlider.jsx'
 //Imports Material UI components:
 import {Paper, Card, CardMedia, CardContent, Box, Typography, TextField, Button, IconButton, Divider, Snackbar} from '@material-ui/core'
 import { Alert } from '@material-ui/lab';
@@ -75,13 +76,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
         <Paper className={classes.root} elevation={24} variant='elevation' >
             <Box className={classes.container} display="flex" flexDirection='row' justifyContent="center" alignItems="center" >
                 <Box className={classes.section}>
-                    <Card className={classes.card}>
-                        <CardMedia
-                            className={classes.image}
-                            title={product.name}
-                            image={product.Images[0].url}
-                        />
-                    </Card>
+                    <ProductDetailsPhotoSlider product={product} />
                 </Box>
                 <Box className={classes.section}>
                     <Card className={classes.card}>
@@ -224,9 +219,6 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 65
     },
     card: {
-        height: '100%',
-    },
-    image: {
         height: '100%',
     },
     name: {

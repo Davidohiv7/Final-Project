@@ -98,6 +98,11 @@ export default function Cart() {
             return setDisabledCartSnackbar(true)
         }
         if(e.target.value > product.stock) {
+            if(logged) dispatch(changeCartQuantity(product, Number(product.stock)))
+            if(!logged) {
+                modifyQuantity(product, Number(product.stock))
+                setCartProducts(readLocalStorageCart())
+            }
             setProductStock(product)
             return setNoStockSnackBar(true)
         }

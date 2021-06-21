@@ -82,6 +82,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  homeButton: {
+    margin: 16,
+  },
 }));
 
 export default useStyles;

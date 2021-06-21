@@ -2,6 +2,7 @@ const express = require('express')
 const response = require('../utils/response')
 const passport = require('passport')
 const models = require('../database/models/');
+const { Op } = require("sequelize");
 
 const router = express.Router();
 
@@ -63,8 +64,20 @@ router.get('/data', passport.authenticate('jwt', {session: false}), async (req, 
       })
     }
 
+
+    userOrders = await models.Order.findAll({
+        where: {
+            userId: req.user.id,
+            status: { [Op.not]: ['created', 'paid']},
+        }, 
+    })
+
+    console.log(userOrders)
+
+    const orders = userOrders ? userOrders : []
     
     const total = orderValidation ? orderValidation.total : 0.00
+
     const shippingAddress = orderValidation ? {
         city: orderValidation.city,
         zip: orderValidation.zip,
@@ -80,7 +93,7 @@ router.get('/data', passport.authenticate('jwt', {session: false}), async (req, 
     :
     null
     
-    response.success(req, res, {userData, cart, total, shippingAddress, paymentStatus })
+    response.success(req, res, {userData, cart, total, shippingAddress, paymentStatus, orders })
 })
   
 

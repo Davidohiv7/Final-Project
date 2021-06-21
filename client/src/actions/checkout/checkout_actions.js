@@ -5,7 +5,7 @@ import { SET_CHECKOUT_SUBTOTAL, SET_CHECKOUT_CUSTOMER_INFORMATION, CONFIRM_STRIP
     import { CLEAR_CART} from '../../actions_types/cart/cart_actions_types'
 //Custom functios
 import { clearCheckoutData } from '../../assets/utils/confirmOrder'
-
+import { getUserData } from '../authentication/authentication_actions'
 
 export function confirmStripePayment(paymentData) {
     return async (dispatch) => {
@@ -39,7 +39,7 @@ export function confirmOrderAction(checkoutData) {
         const jwt = localStorage.getItem('jwt')
         try {
             const response = await axios.post("http://localhost:3001/orders/confirm_order", checkoutData , { headers: { 'Authorization': jwt } })
-            console.log(response.data)
+            dispatch(getUserData(jwt))
             if(response.data.data.result) {
                 clearCheckoutData()
                 dispatch({type: SET_CONFIRM_ORDER_SUCCESS_MESSAGE, payload: response.data.data.message})

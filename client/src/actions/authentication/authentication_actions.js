@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SIGN_UP, SIGN_IN, LOG_OUT, AUTH_ERROR, GET_USER_DATA } from '../../actions_types/authentication/authentication_actions_types'
+import { SIGN_UP, SIGN_IN, LOG_OUT, AUTH_ERROR, GET_USER_DATA, SET_USER_ORDERS } from '../../actions_types/authentication/authentication_actions_types'
 import { SET_CART, } from '../../actions_types/cart/cart_actions_types'
 import { SET_CHECKOUT_CUSTOMER_INFORMATION, CONFIRM_PAYMENT, SET_CHECKOUT_SUBTOTAL} from '../../actions_types/checkout/checkout_actions_types'
 
@@ -48,6 +48,9 @@ export function getUserData(jwt) {
             const response = await axios.get("http://localhost:3001/user/data", { headers: { 'Authorization': jwt } })
             const data = response.data.data
             dispatch({type: GET_USER_DATA, payload: data.userData});
+            if(data.orders) {
+                dispatch({type: SET_USER_ORDERS, payload: data.orders});
+            }
             if(data.shippingAddress) {
                 dispatch({type: SET_CHECKOUT_CUSTOMER_INFORMATION, payload: data.shippingAddress});
             }

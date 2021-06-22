@@ -11,8 +11,10 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(3),
     },
     images: {
-        display: 'flex',
-        listStyle: 'none'
+        display: 'inline',
+        margin: theme.spacing(1),
+        width: '15%',
+        listStyle: 'none',
     },
     imageSlider: {
         margin: 2,

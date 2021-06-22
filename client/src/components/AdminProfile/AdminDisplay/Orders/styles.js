@@ -26,6 +26,10 @@ const useStyles = makeStyles((theme) => ({
   
   pagination: {
     marginTop: 15
+  },
+  
+  header: {
+    fontWeight: '600'
   }
 
 }));

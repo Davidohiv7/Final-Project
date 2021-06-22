@@ -5,3 +5,4 @@ export const ADD_URL_TO_DELETE = 'ADD_URL_TO_DELETE';
 export const DELETE_IMAGES = 'DELETE_IMAGES';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 export const GET_ORDERS = 'GET_ORDERS';
+export const SET_STATUS = 'SET_STATUS'

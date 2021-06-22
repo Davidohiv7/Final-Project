@@ -33,11 +33,11 @@ export default function Products({ setDisplayStatus, setEditProduct  }) {
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
-              <TableCell align= 'left'></TableCell>
-                <TableCell align= 'left'>Name</TableCell>
-                <TableCell align="center">Price</TableCell>
-                <TableCell align="center">Stock</TableCell>
-                <TableCell align="center">Edit</TableCell>
+                <TableCell className=  {classes.header} align= 'left'></TableCell>
+                <TableCell className=  {classes.header} align= 'left'>Name</TableCell>
+                <TableCell className=  {classes.header} align="center">Price</TableCell>
+                <TableCell className=  {classes.header} align="center">Stock</TableCell>
+                <TableCell className=  {classes.header} align="center">Edit</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

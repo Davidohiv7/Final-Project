@@ -13,6 +13,8 @@ import Products from './Products/Products'
 import ProductsPaginationBar from '../../Catalogue/PaginationBar/PaginationBar';
 import OrdersPaginationBar from './Orders/PaginationBar/PaginationBar'
 import { getProducts } from '../../../actions/home/home_actions';
+import { getOrders } from '../../../actions/admin/admin_actions';
+import OrderDetail from './OrderDetail/orderDetail';
 
 
 export default function AdminDisplay({displayStatus, setDisplayStatus}) {
@@ -20,6 +22,7 @@ export default function AdminDisplay({displayStatus, setDisplayStatus}) {
   const dispatch = useDispatch();
   const { searched, products, filter, order } = useSelector((state) => ({ ...state.homeReducer }))
   const [editProduct, setEditProduct] = useState({})
+  const [editOrder, setEditOrder] = useState({})
 
   const handleProductSearch = event => {
     dispatch(getProducts({name: event.target.value, filter, order}))
@@ -86,24 +89,30 @@ export default function AdminDisplay({displayStatus, setDisplayStatus}) {
       <Autocomplete
         className = {classes.filter}
         id= 'statusSelector'
-        options={['Created', 'Paid', 'In progress', 'Cancelled', 'Completed']}
+        options={['All','Created', 'Paid', 'In progress', 'Cancelled', 'Completed']}
         getOptionLabel={(option) => option}
         renderInput={(params) => <TextField {...params} label="Status" variant="outlined" />}
-        // onChange={(e, v) => {
-        //     if(v){
-        //         if(!selectedCategories.includes(v.name)) {
-        //             if(selectedCategories.length >= 10) alert('You can set up to 10 categories to a single product.')
-        //             else setSelectedCategories([...selectedCategories, v.name])
-        //         }
-        //     }
-        // }}
+        onChange={(e, v) => {
+          if (v === 'All') dispatch(getOrders())
+          else if(v){
+                dispatch(getOrders({status: v}))
+            }
+        }}
       />
       </CardContent>
       <Paper elevation= '8' className= {classes.display}>
-        <Orders/>
+        <Orders setEditOrder={setEditOrder} setDisplayStatus={setDisplayStatus}/>
       </Paper>
       <OrdersPaginationBar/>
     </Box>
+    )
+  }
+
+  if(displayStatus === 'orderDetail') {
+    return (
+        <CardContent className= {classes.display}>
+          <OrderDetail editOrder={editOrder} setDisplayStatus={setDisplayStatus}/>
+        </CardContent>
     )
   }
 

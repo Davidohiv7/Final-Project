@@ -66,9 +66,20 @@ export function deleteProduct(id) {
 }
 
 export function getOrders(params) {
-  return async (dispatch) => {
-      let res = await axios.get(`http://localhost:3001/orders`, { params: params})
-      dispatch({type: GET_ORDERS, payload: res.data})
+  return (dispatch) => {
+      axios.get(`http://localhost:3001/orders`, { params: params})
+      .then(res => {
+        dispatch({type: GET_ORDERS, payload: res.data})
+      })
+      .catch(e => {
+        console.error(e)
+      })
+  }
+}
 
+export function setStatus(order) {
+  return (dispatch) => {
+      axios.patch(`http://localhost:3001/orders`, order)
+      .catch(e => {console.error(e)})
   }
 }

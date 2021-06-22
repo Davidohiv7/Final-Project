@@ -7,7 +7,15 @@ const useStyles = makeStyles((theme) => ({
         height: '100%',
     },
     image: {
-        height: '100%',
+        height: '70%',
+        margin: theme.spacing(3),
+    },
+    images: {
+        display: 'flex',
+        listStyle: 'none'
+    },
+    imageSlider: {
+        margin: 2,
     },
 }));
 

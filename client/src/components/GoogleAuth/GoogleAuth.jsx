@@ -27,11 +27,12 @@ export default function GoogleAuth() {
         const newWindow = window.open(googleAuthURL, 'blank','width=500,height=600')
 
         if(newWindow) {
-            let timer = setInterval(() => {
+            let timer = setInterval(async () => {
                 if(newWindow.closed) {
                     const jwt = cookies.get('jwt')
                     const isNewUser = cookies.get('newUser')
                     const localCart = JSON.parse(localStorage.getItem('cart'))
+                    console.log('entra')
                     if(jwt) {
                         if(isNewUser && localCart) {
                             if(localCart.length > 0) {
@@ -39,13 +40,12 @@ export default function GoogleAuth() {
                                 cookies.remove('newUser')
                             }
                         }
-                        localStorage.setItem('jwt', `Bearer ${jwt}`)
-                        cookies.remove('jwt')
-                        dispatch({type: GOOGLE_AUTH})
-                        history.push('/')
                         if(!isNewUser) {
                             dispatch(getGoogleUserCart(`Bearer ${jwt}`))
                         }
+                        localStorage.setItem('jwt', `Bearer ${jwt}`)
+                        cookies.remove('jwt')
+                        history.push('/')
                         return clearInterval(timer)
                     }
                     setErrorSignInSnackbar(true)

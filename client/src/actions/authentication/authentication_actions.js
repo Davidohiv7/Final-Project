@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SIGN_UP, SIGN_IN, LOG_OUT, AUTH_ERROR, GET_USER_DATA, SET_USER_ORDERS } from '../../actions_types/authentication/authentication_actions_types'
+import { SIGN_UP, SIGN_IN, LOG_OUT, AUTH_ERROR, GET_USER_DATA, SET_USER_ORDERS, GOOGLE_AUTH } from '../../actions_types/authentication/authentication_actions_types'
 import { SET_CART, } from '../../actions_types/cart/cart_actions_types'
 import { SET_CHECKOUT_CUSTOMER_INFORMATION, CONFIRM_PAYMENT, SET_CHECKOUT_SUBTOTAL} from '../../actions_types/checkout/checkout_actions_types'
 
@@ -84,7 +84,7 @@ export function setGoogleUserNewCart(jwt, cart) {
         try {
             const response = await axios.post("http://localhost:3001/googleAuth/setnewcart", data, { headers: { 'Authorization': jwt } })
             if(response.data.data.cart) {
-                dispatch({type: SET_CART, payload: response.data.data.cart});
+                dispatch({type: GOOGLE_AUTH})
                 localStorage.removeItem('cart')
             }
         } catch (error) {
@@ -98,9 +98,8 @@ export function getGoogleUserCart(jwt) {
     return async (dispatch) => {
         try {
             const response = await axios.post("http://localhost:3001/googleAuth/getcart", {localCart}, { headers: { 'Authorization': jwt } })
-            console.log(response.data.data)
             if(response.data.data.cart) {
-                dispatch({type: SET_CART, payload: response.data.data.cart});
+                dispatch({type: GOOGLE_AUTH})
                 localStorage.removeItem('cart')
             }
         } catch (error) {

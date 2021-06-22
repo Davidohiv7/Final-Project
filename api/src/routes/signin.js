@@ -62,23 +62,6 @@ signInRouter.post('/', async (req, res, next) => {
             cartProductsIdArray = orderItems.map(p => p.ProductId)
         }
 
-        
-       
-        if(orderItems.length === 0 && localCart?.length > 0) {
-            cartProductsIdArray = localCart.map(p => p.id)
-            const orderItemsArrayData = localCart.map(p => {
-                return {
-                    ProductId: p.id,
-                    OrderId: orderValidation.id,
-                    quantity: p.quantity,
-                    subtotal: ((p.quantity * p.price).toFixed(2)),
-                    createdAt: new Date(),
-                    updatedAt: new Date() 
-                }
-            })
-            orderItems = await models.OrderItem.bulkCreate(orderItemsArrayData);
-        }
-
         if(orderItems.length > 0 && localCart?.length > 0) {
             const existingProductsId = []
             const modifiedOrderItems = []
@@ -118,6 +101,21 @@ signInRouter.post('/', async (req, res, next) => {
                     OrderId: orderValidation.id,
                 }, 
             })
+        }
+
+        if(orderItems.length === 0 && localCart?.length > 0) {
+            cartProductsIdArray = localCart.map(p => p.id)
+            const orderItemsArrayData = localCart.map(p => {
+                return {
+                    ProductId: p.id,
+                    OrderId: orderValidation.id,
+                    quantity: p.quantity,
+                    subtotal: ((p.quantity * p.price).toFixed(2)),
+                    createdAt: new Date(),
+                    updatedAt: new Date() 
+                }
+            })
+            orderItems = await models.OrderItem.bulkCreate(orderItemsArrayData);
         }
 
         let cart = false

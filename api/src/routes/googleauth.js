@@ -150,21 +150,6 @@ googleAuthRouter.post('/getcart', passport.authenticate('jwt', {session: false})
       if(orderItems) {
         cartProductsIdArray = orderItems.map(p => p.ProductId)
       }
-      
-      if(orderItems.length === 0 && localCart?.length > 0) {
-        cartProductsIdArray = localCart.map(p => p.id)
-        const orderItemsArrayData = localCart.map(p => {
-            return {
-                ProductId: p.id,
-                OrderId: orderValidation.id,
-                quantity: p.quantity,
-                subtotal: ((p.quantity * p.price).toFixed(2)),
-                createdAt: new Date(),
-                updatedAt: new Date() 
-            }
-        })
-        orderItems = await models.OrderItem.bulkCreate(orderItemsArrayData);
-      }
 
       if(orderItems.length > 0 && localCart?.length > 0) {
         const existingProductsId = []
@@ -207,6 +192,21 @@ googleAuthRouter.post('/getcart', passport.authenticate('jwt', {session: false})
         })
       }
 
+      if(orderItems.length === 0 && localCart?.length > 0) {
+        cartProductsIdArray = localCart.map(p => p.id)
+        const orderItemsArrayData = localCart.map(p => {
+            return {
+                ProductId: p.id,
+                OrderId: orderValidation.id,
+                quantity: p.quantity,
+                subtotal: ((p.quantity * p.price).toFixed(2)),
+                createdAt: new Date(),
+                updatedAt: new Date() 
+            }
+        })
+        orderItems = await models.OrderItem.bulkCreate(orderItemsArrayData);
+      }
+
       let cart = false 
       
       if(orderItems) {
@@ -223,7 +223,6 @@ googleAuthRouter.post('/getcart', passport.authenticate('jwt', {session: false})
                 model: models.Image,
               }],
           })
-
         cart = cartData.map(p => {
             return {
                 id: p.id,

@@ -14,9 +14,10 @@ const orders = require('./orders');
 const cart = require('./cart');
 const checkout = require('./checkout');
 const mercadopagoConfirmation = require('./mercadopagoConfirmation');
+const getReviews = require('./getReviews');
 
 
-
+router.use('/confirm/mercadopago', getReviews);
 router.use('/confirm/mercadopago', mercadopagoConfirmation);
 router.use('/create_preference', mercadopago);
 router.use('/categories', categories);

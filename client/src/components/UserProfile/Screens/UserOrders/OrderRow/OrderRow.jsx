@@ -1,5 +1,5 @@
 //react imports
-import React, { useState }from "react";
+import React, { useState, useEffect }from "react";
 //Components 
 import OrderDetails from './OrderDetails/OrderDetails'
 // Material UI imports
@@ -12,7 +12,7 @@ import { capitalize } from '../../../../../assets/utils/stringFunctions'
 //axios
 import axios from 'axios'
 
-export default function OrderRow( { order }) {
+export default function OrderRow( { order, openOrder, setOpenOrder }) {
 
     const classes = useStyles();
 
@@ -24,11 +24,17 @@ export default function OrderRow( { order }) {
             const jwt = localStorage.getItem('jwt')
             const response = await axios.post("http://localhost:3001/orders/products", { order }, { headers: { 'Authorization': jwt }} )
             const orderDetailedData = response.data.data.orderData
-            console.log(orderDetailedData)
+            setOpenOrder(order.id)
             orderDetailedData && setProductsData(orderDetailedData)
         }
         setOpen(!open)
     }
+
+    useEffect(() => {
+        if(openOrder != order.id) {
+            setOpen(false)
+        }
+      }, [openOrder])
 
     return (
 
@@ -65,8 +71,8 @@ export default function OrderRow( { order }) {
 
             <TableRow>
                 <TableCell className={classes.collapseTableCell} colSpan={6}>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <OrderDetails order={order} productsData={productsData}/>
+                    <Collapse in={open && (openOrder == order.id)} timeout="auto" unmountOnExit>
+                        <OrderDetails order={order} productsData={productsData} setProductsData={setProductsData}/>
                     </Collapse>
                 </TableCell>
             </TableRow>

@@ -14,7 +14,7 @@ const orders = require('./orders');
 const cart = require('./cart');
 const checkout = require('./checkout');
 const mercadopagoConfirmation = require('./mercadopagoConfirmation');
-
+const reviews = require('./reviews');
 
 
 router.use('/confirm/mercadopago', mercadopagoConfirmation);
@@ -30,6 +30,7 @@ router.use('/orders', orders);
 router.use('/cart', cart);
 router.use('/checkout', checkout);
 //router.use('/test', test);
+router.use('/reviews', reviews);
 
 
 module.exports = router;

@@ -7,8 +7,7 @@ import { useHistory } from "react-router-dom";
 import useStyles from './styles';
 import { Cookies } from 'react-cookie'
 
-import { GOOGLE_AUTH } from '../../actions_types/authentication/authentication_actions_types'
-import { setGoogleUserNewCart, getGoogleUserCart } from '../../actions/authentication/authentication_actions'
+import { setGoogleUserNewCart, getGoogleUserCart, getUserData } from '../../actions/authentication/authentication_actions'
 
 export default function GoogleAuth() {
 
@@ -34,10 +33,12 @@ export default function GoogleAuth() {
                     const localCart = JSON.parse(localStorage.getItem('cart'))
                     console.log('entra')
                     if(jwt) {
-                        if(isNewUser && localCart) {
-                            if(localCart.length > 0) {
+                        if(isNewUser) {
+                            cookies.remove('newUser')
+                            if(localCart && localCart.length > 0) {
                                 dispatch(setGoogleUserNewCart(`Bearer ${jwt}`, localCart))
-                                cookies.remove('newUser')
+                            }else {
+                                dispatch(getUserData(`Bearer ${jwt}`))
                             }
                         }
                         if(!isNewUser) {

@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
         variant: "contained",
         color: "white",
         marginLeft: theme.spacing(2),
+        marginRight: theme.spacing(1),
         borderRadius: 5,
     },
     buttonUser: {

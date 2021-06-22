@@ -19,7 +19,7 @@ signInRouter.post('/', async (req, res, next) => {
     const { email, password, localCart} = req.body
 
     try {
-        const userExistCheck = await models.User.findOne({ where: { email }})
+        const userExistCheck = await models.Person.findOne({ where: { email }})
         if(!userExistCheck || !userExistCheck.password) {
             return response.error(req, res, { message: 'The email or the password does not match' })
         }
@@ -30,10 +30,10 @@ signInRouter.post('/', async (req, res, next) => {
             return response.error(req, res, { message: 'The email or the password does not match' })
         }
 
-        let orderValidation = await models.Order.findOne({
+        let orderValidation = await models.Cart.findOne({
             where: {
                 status: 'created',
-                userId: userExistCheck.id,
+                personId: userExistCheck.id,
             },
         })
 
@@ -41,16 +41,16 @@ signInRouter.post('/', async (req, res, next) => {
         let orderItems = false
 
         if(orderValidation) {
-            orderItems = await models.OrderItem.findAll({
+            orderItems = await models.CartItem.findAll({
                 where: {
-                    OrderId: orderValidation.id,
+                    CartId: orderValidation.id,
                 }, 
             })
         }
 
         if(!orderValidation) {
-            orderValidation = await models.Order.create({
-                userId: userExistCheck.id,
+            orderValidation = await models.Cart.create({
+                personId: userExistCheck.id,
                 status: "created",
                 createdAt: new Date(),
                 updatedAt: new Date(),
@@ -85,7 +85,7 @@ signInRouter.post('/', async (req, res, next) => {
                 if(!existingProductsId.includes(p.id)) {
                     newProductsInCart.push({
                         ProductId: p.id,
-                        OrderId: orderValidation.id,
+                        CartId: orderValidation.id,
                         quantity: p.quantity,
                         subtotal: ((p.quantity * p.price).toFixed(2)),
                         createdAt: new Date(),
@@ -94,11 +94,11 @@ signInRouter.post('/', async (req, res, next) => {
                 }
             })
             if(newProductsInCart.length > 0) {
-                await models.OrderItem.bulkCreate(newProductsInCart);
+                await models.CartItem.bulkCreate(newProductsInCart);
             }
-            orderItems = await models.OrderItem.findAll({
+            orderItems = await models.CartItem.findAll({
                 where: {
-                    OrderId: orderValidation.id,
+                    CartId: orderValidation.id,
                 }, 
             })
         }
@@ -108,14 +108,14 @@ signInRouter.post('/', async (req, res, next) => {
             const orderItemsArrayData = localCart.map(p => {
                 return {
                     ProductId: p.id,
-                    OrderId: orderValidation.id,
+                    CartId: orderValidation.id,
                     quantity: p.quantity,
                     subtotal: ((p.quantity * p.price).toFixed(2)),
                     createdAt: new Date(),
                     updatedAt: new Date() 
                 }
             })
-            orderItems = await models.OrderItem.bulkCreate(orderItemsArrayData);
+            orderItems = await models.CartItem.bulkCreate(orderItemsArrayData);
         }
 
         let cart = false
@@ -126,7 +126,7 @@ signInRouter.post('/', async (req, res, next) => {
             const cartData = await models.Product.findAll({ 
                 where: {id: cartProductsIdArray},
                 include: [{
-                    model: models.Order,
+                    model: models.Cart,
                     where: { id: userExistCheck.id }
                   },
                   {
@@ -142,7 +142,7 @@ signInRouter.post('/', async (req, res, next) => {
                     price: p.price,
                     stock: p.stock,
                     Images: p.Images,
-                    quantity: p.Orders[0].OrderItem.quantity,
+                    quantity: p.Carts[0].CartItem.quantity,
                 }
             })
         }

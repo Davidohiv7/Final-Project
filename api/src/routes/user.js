@@ -16,10 +16,10 @@ router.get('/data', passport.authenticate('jwt', {session: false}), async (req, 
     }
 
     try {
-        let orderValidation = await models.Order.findOne({
+        let orderValidation = await models.Cart.findOne({
             where: {
                 status: ['created', 'paid'],
-                userId: req.user.id,
+                personId: req.user.id,
             },
         })
     
@@ -27,9 +27,9 @@ router.get('/data', passport.authenticate('jwt', {session: false}), async (req, 
         let orderItems = false
       
         if(orderValidation) {
-            orderItems = await models.OrderItem.findAll({
+            orderItems = await models.CartItem.findAll({
                 where: {
-                    OrderId: orderValidation.id,
+                    CartId: orderValidation.id,
                 }, 
             })
         }
@@ -42,7 +42,7 @@ router.get('/data', passport.authenticate('jwt', {session: false}), async (req, 
             const cartData = await models.Product.findAll({ 
                 where: {id: cartProductsIdArray},
                 include: [{
-                    model: models.Order,
+                    model: models.Cart,
                     where: { 
                         id: orderValidation.id 
                         }
@@ -60,15 +60,15 @@ router.get('/data', passport.authenticate('jwt', {session: false}), async (req, 
                     price: p.price,
                     stock: p.stock,
                     Images: p.Images,
-                    quantity: p.Orders[0].OrderItem.quantity,
+                    quantity: p.Carts[0].CartItem.quantity,
             }
           })
         }
     
     
-        userOrders = await models.Order.findAll({
+        userOrders = await models.Cart.findAll({
             where: {
-                userId: req.user.id,
+                personId: req.user.id,
                 status: { [Op.not]: ['created', 'paid']},
             },
             attributes:  { exclude: ['createdAt'] },

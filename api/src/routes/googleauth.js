@@ -56,8 +56,8 @@ googleAuthRouter.post('/setnewcart', passport.authenticate('jwt', {session: fals
   const { cart } =req.body
   const cartProductsIdArray = cart.map(p => p.id)
   try {
-    const firstUserOrder = await models.Order.create({
-      userId: user.id,
+    const firstUserOrder = await models.Cart.create({
+      personId: user.id,
       status: "created",
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -67,7 +67,7 @@ googleAuthRouter.post('/setnewcart', passport.authenticate('jwt', {session: fals
     const orderItemsArrayData = cart.map(p => {
       return {
           ProductId: p.id,
-          OrderId: firstUserOrder.id,
+          CartId: firstUserOrder.id,
           quantity: p.quantity,
           subtotal: ((p.quantity * p.price).toFixed(2)),
           createdAt: new Date(),
@@ -75,11 +75,11 @@ googleAuthRouter.post('/setnewcart', passport.authenticate('jwt', {session: fals
       }
     })
 
-    await models.OrderItem.bulkCreate(orderItemsArrayData);
+    await models.CartItem.bulkCreate(orderItemsArrayData);
     const newCartData = await models.Product.findAll({ 
       where: {id: cartProductsIdArray},
       include: [{
-          model: models.Order,
+          model: models.Cart,
           where: { id: firstUserOrder.id }
         },
         {
@@ -95,7 +95,7 @@ googleAuthRouter.post('/setnewcart', passport.authenticate('jwt', {session: fals
           price: p.price,
           stock: p.stock,
           Images: p.Images,
-          quantity: p.Orders[0].OrderItem.quantity,
+          quantity: p.Carts[0].CartItem.quantity,
       }
     })
 
@@ -119,10 +119,10 @@ googleAuthRouter.post('/getcart', passport.authenticate('jwt', {session: false})
   console.log(localCart)
 
     try {
-      let orderValidation = await models.Order.findOne({
+      let orderValidation = await models.Cart.findOne({
         where: {
             status: 'created',
-            userId: user.id,
+            personId: user.id,
         },
       })
     
@@ -130,16 +130,16 @@ googleAuthRouter.post('/getcart', passport.authenticate('jwt', {session: false})
       let orderItems = false
     
       if(orderValidation) {
-        orderItems = await models.OrderItem.findAll({
+        orderItems = await models.CartItem.findAll({
             where: {
-                OrderId: orderValidation.id,
+              CartId: orderValidation.id,
             }, 
         })
       }
 
       if(!orderValidation) {
-        orderValidation = await models.Order.create({
-            userId: user.id,
+        orderValidation = await models.Cart.create({
+            personId: user.id,
             status: "created",
             createdAt: new Date(),
             updatedAt: new Date(),
@@ -174,7 +174,7 @@ googleAuthRouter.post('/getcart', passport.authenticate('jwt', {session: false})
             if(!existingProductsId.includes(p.id)) {
                 newProductsInCart.push({
                     ProductId: p.id,
-                    OrderId: orderValidation.id,
+                    CartId: orderValidation.id,
                     quantity: p.quantity,
                     subtotal: ((p.quantity * p.price).toFixed(2)),
                     createdAt: new Date(),
@@ -183,11 +183,11 @@ googleAuthRouter.post('/getcart', passport.authenticate('jwt', {session: false})
             }
         })
         if(newProductsInCart.length > 0) {
-            await models.OrderItem.bulkCreate(newProductsInCart);
+            await models.CartItem.bulkCreate(newProductsInCart);
         }
-        orderItems = await models.OrderItem.findAll({
+        orderItems = await models.CartItem.findAll({
             where: {
-                OrderId: orderValidation.id,
+                CartId: orderValidation.id,
             }, 
         })
       }
@@ -197,14 +197,14 @@ googleAuthRouter.post('/getcart', passport.authenticate('jwt', {session: false})
         const orderItemsArrayData = localCart.map(p => {
             return {
                 ProductId: p.id,
-                OrderId: orderValidation.id,
+                CartId: orderValidation.id,
                 quantity: p.quantity,
                 subtotal: ((p.quantity * p.price).toFixed(2)),
                 createdAt: new Date(),
                 updatedAt: new Date() 
             }
         })
-        orderItems = await models.OrderItem.bulkCreate(orderItemsArrayData);
+        orderItems = await models.CartItem.bulkCreate(orderItemsArrayData);
       }
 
       let cart = false 
@@ -216,8 +216,8 @@ googleAuthRouter.post('/getcart', passport.authenticate('jwt', {session: false})
         const cartData = await models.Product.findAll({ 
             where: {id: cartProductsIdArray},
             include: [{
-                model: models.Order,
-                where: { id: user.id }
+                model: models.Cart,
+                where: { personId: user.id }
               },
               {
                 model: models.Image,
@@ -231,7 +231,7 @@ googleAuthRouter.post('/getcart', passport.authenticate('jwt', {session: false})
                 price: p.price,
                 stock: p.stock,
                 Images: p.Images,
-                quantity: p.Orders[0].OrderItem.quantity,
+                quantity: p.Carts[0].CartItem.quantity,
             }
         })
       }

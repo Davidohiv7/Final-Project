@@ -9,10 +9,10 @@ router.get('/gettotal', passport.authenticate('jwt', {session: false}), async (r
     const user = req.user
     
     try {
-        const order = await models.Order.findOne({
+        const order = await models.Cart.findOne({
             where: {
                 status: 'created',
-                userId: user.id,
+                personId: user.id,
             },
         }) 
 
@@ -29,10 +29,10 @@ router.post('/setshippingaddress', passport.authenticate('jwt', {session: false}
     const data = req.body
     
     try {
-        const order = await models.Order.findOne({
+        const order = await models.Cart.findOne({
             where: {
                 status: 'created',
-                userId: user.id,
+                personId: user.id,
             },
         }) 
 
@@ -62,10 +62,10 @@ router.post('/confirmpayment', passport.authenticate('jwt', {session: false}), a
     const checkoutData = req.body
     
     try {
-        const order = await models.Order.findOne({
+        const order = await models.Cart.findOne({
             where: {
                 status: 'created',
-                userId: user.id,
+                personId: user.id,
             },
         }) 
 
@@ -74,10 +74,10 @@ router.post('/confirmpayment', passport.authenticate('jwt', {session: false}), a
             order.paymentMethod = checkoutData.payment.method
             await order.save()
         }
-        const paidOrder = await models.Order.findOne({
+        const paidOrder = await models.Cart.findOne({
             where: {
                 id: order.id,
-                userId: user.id,
+                personId: user.id,
             },
         })
            

@@ -32,7 +32,7 @@ router.post('/confirm_order', passport.authenticate('jwt', {session: false}), as
         const order = await models.Cart.findOne({
             where: {
                 status: 'paid',
-                userId: user.id,
+                personId: user.id,
             },
         }) 
 
@@ -125,9 +125,9 @@ router.post('/products', passport.authenticate('jwt', {session: false}), async (
 
     try {
 
-        const orderItems = await models.OrderItem.findAll({
+        const orderItems = await models.CartItem.findAll({
             where: {
-                OrderId: order.id,
+                CartId: order.id,
             },
         })
 

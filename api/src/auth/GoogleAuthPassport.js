@@ -29,7 +29,7 @@ passport.use(new GoogleStrategy({
     }
 
     try {
-        const user = await models.User.findOrCreate({where: { email: profile.emails[0].value}, defaults: googleUser})
+        const user = await models.Person.findOrCreate({where: { email: profile.emails[0].value}, defaults: googleUser})
         if(user && user[0]) {
             return cb(null, user)
         }

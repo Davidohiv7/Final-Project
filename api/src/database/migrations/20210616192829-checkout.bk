@@ -7,7 +7,10 @@ module.exports = {
     await queryInterface.removeColumn('order', 'customerId');
     await queryInterface.addColumn('order', 'userId', {
       type: Sequelize.INTEGER,
-      references: { model: 'user', key: 'id' }
+      references: { model: 'user_account', key: 'id' },
+      allowNull: false,
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     });
     await replaceEnum({
       queryInterface,
@@ -41,13 +44,19 @@ module.exports = {
     await queryInterface.removeColumn('review', 'customerId');
     await queryInterface.addColumn('review', 'userId', {
       type: Sequelize.INTEGER,
-      references: { model: 'user', key: 'id' }
+      references: { model: 'user_account', key: 'id' },
+      allowNull: false,
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     });
 
     await queryInterface.removeColumn('shipping_address', 'customerId');
     await queryInterface.addColumn('shipping_address', 'userId', {
       type: Sequelize.INTEGER,
-      references: { model: 'user', key: 'id' }
+      references: { model: 'user_account', key: 'id' },
+      allowNull: false,
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     });
 
     await queryInterface.dropTable('customer');
@@ -86,13 +95,19 @@ module.exports = {
 
     await queryInterface.addColumn('shipping_address', 'customerId', {
       type: Sequelize.INTEGER,
-      references: { model: 'customer', key: 'id' }
+      references: { model: 'customer', key: 'id' },
+      allowNull: false,
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     });
     await queryInterface.removeColumn('shipping_address', 'userId');
 
     await queryInterface.addColumn('review', 'customerId', {
       type: Sequelize.INTEGER,
-      references: { model: 'customer', key: 'id' }
+      references: { model: 'customer', key: 'id' },
+      allowNull: false,
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     });
     await queryInterface.removeColumn('review', 'userId');
 
@@ -105,7 +120,10 @@ module.exports = {
     });
     await queryInterface.addColumn('order', 'customerId', {
       type: Sequelize.INTEGER,
-      references: { model: 'customer', key: 'id' }
+      references: { model: 'customer', key: 'id' },
+      allowNull: false,
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     });
     await queryInterface.removeColumn('order', 'userId');
     await queryInterface.removeColumn('order', 'city');

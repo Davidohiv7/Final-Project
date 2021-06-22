@@ -28,9 +28,9 @@ export default function UserOrders() {
                         component={Paper}
                         className={classes.tableContainer}
                     >
-                        <Table aria-label="customized table">
+                        <Table>
                             <TableHead className={classes.head}>
-                                <TableRow>
+                                <TableRow className={classes.headRow}>
                                     <TableCell />
                                     <TableCell align="center" className={classes.title}>
                                         Order number

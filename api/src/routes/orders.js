@@ -22,7 +22,7 @@ const {
 
 ordersRouter.post('/confirm_order', passport.authenticate('jwt', {session: false}), async (req, res) => {
     const user = req.user
-    const { subtotal, customerInformation, cart } = req.body
+    const { cart } = req.body
 
     const cartProductsIdArray = cart.map(p => p.id)
     

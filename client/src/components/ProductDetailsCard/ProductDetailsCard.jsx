@@ -79,7 +79,18 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                 <Box className={classes.section}>
                     <Card className={classes.card}>
                         <CardContent>
-                            <Typography className={classes.name} gutterBottom={false} variant="h6" color="initial">{product.name}</Typography>
+                            <Box className={classes.container} display="flex" justifyContent="center" alignItems="flex-start">
+                                <Typography className={classes.name} gutterBottom={false} variant="h6" color="initial">{product.name}</Typography>
+                                <IconButton 
+                                    color="initial" 
+                                    aria-label="close" 
+                                    component="span" 
+                                    className={classes.closeButton}
+                                    onClick={() => setModalState(false)}
+                                >
+                                    <Close/>
+                                </IconButton>
+                            </Box>
                             <Box display="flex" flexDirection='row' justifyContent="flex-start" alignItems="center">
                                 <Typography variant="h5" color="initial" display='inline'>${product.price} EA</Typography>
                                 <Box display="flex" justifyContent="center" className={classes.scoreContainer}>
@@ -147,16 +158,6 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                                 </Box>
                             </Box>
                         </CardContent>
-                        
-                        <IconButton 
-                            color="initial" 
-                            aria-label="close" 
-                            component="span" 
-                            className={classes.closeButton}
-                            onClick={() => setModalState(false)}
-                        >
-                            <Close/>
-                        </IconButton>
                     </Card>
                 </Box>
             </Box>
@@ -228,11 +229,8 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.common.white,
       },
     closeButton: {
-        position: 'absolute',
-        top: '12%',
-        right: '21%',
-        //zIndex: 1,
-        //transform: 'translate(330px, -500px);'
+        margin: 0,
+        padding: 0,
       },
     cartTotal: {
         marginLeft: 25,

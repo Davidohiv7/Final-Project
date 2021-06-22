@@ -5,9 +5,10 @@ import { SET_CHECKOUT_CUSTOMER_INFORMATION, CONFIRM_PAYMENT, SET_CHECKOUT_SUBTOT
 
 
 export function signIn(obj) {
+    const cart = JSON.parse(localStorage.getItem('cart'))
     return async (dispatch) => {
         try {
-            const response = await axios.post("http://localhost:3001/signin", obj)
+            const response = await axios.post("http://localhost:3001/signin", {...obj, localCart: cart})
             if(response.data.data.token) {
                 localStorage.removeItem('cart')
                 localStorage.setItem('jwt', `Bearer ${response.data.data.token}`)
@@ -48,7 +49,6 @@ export function getUserData(jwt) {
             const response = await axios.get("http://localhost:3001/user/data", { headers: { 'Authorization': jwt } })
             const data = response.data.data
             await dispatch({type: GET_USER_DATA, payload: data.userData});
-            console.log(data)
             if(data.orders) {
                 dispatch({type: SET_USER_ORDERS, payload: data.orders});
             }
@@ -94,10 +94,11 @@ export function setGoogleUserNewCart(jwt, cart) {
 }
 
 export function getGoogleUserCart(jwt) {
+    const localCart = JSON.parse(localStorage.getItem('cart'))
     return async (dispatch) => {
         try {
-            const response = await axios.get("http://localhost:3001/googleAuth/getcart", { headers: { 'Authorization': jwt } })
-            console.log(response)
+            const response = await axios.post("http://localhost:3001/googleAuth/getcart", {localCart}, { headers: { 'Authorization': jwt } })
+            console.log(response.data.data)
             if(response.data.data.cart) {
                 dispatch({type: SET_CART, payload: response.data.data.cart});
                 localStorage.removeItem('cart')

@@ -39,13 +39,13 @@ export default function GoogleAuth() {
                                 cookies.remove('newUser')
                             }
                         }
-                        if(!isNewUser) {
-                            dispatch(getGoogleUserCart(`Bearer ${jwt}`))
-                        }
                         localStorage.setItem('jwt', `Bearer ${jwt}`)
                         cookies.remove('jwt')
                         dispatch({type: GOOGLE_AUTH})
                         history.push('/')
+                        if(!isNewUser) {
+                            dispatch(getGoogleUserCart(`Bearer ${jwt}`))
+                        }
                         return clearInterval(timer)
                     }
                     setErrorSignInSnackbar(true)

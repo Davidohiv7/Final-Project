@@ -24,6 +24,7 @@ export default function OrderRow( { order }) {
             const jwt = localStorage.getItem('jwt')
             const response = await axios.post("http://localhost:3001/orders/products", { order }, { headers: { 'Authorization': jwt }} )
             const orderDetailedData = response.data.data.orderData
+            console.log(orderDetailedData)
             orderDetailedData && setProductsData(orderDetailedData)
         }
         setOpen(!open)

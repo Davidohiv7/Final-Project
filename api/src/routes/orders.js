@@ -132,6 +132,7 @@ ordersRouter.post('/products', passport.authenticate('jwt', {session: false}), a
 
         const orderProductsIdArray = orderItems.map(p => p.ProductId)
 
+
         const productData = await models.Product.findAll({ 
             where: {id: orderProductsIdArray},
             include: [{
@@ -139,8 +140,9 @@ ordersRouter.post('/products', passport.authenticate('jwt', {session: false}), a
             }],
         })
 
+
         const orderData = productData.map(p => {
-            const orderProductData = orderItems.find(oi => oi.ProductId = p.id)
+            const orderProductData = orderItems.find(oi => oi.ProductId === p.id)
             return {product: p, orderProductData}
         })
         

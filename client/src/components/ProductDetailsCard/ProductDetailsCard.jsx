@@ -231,8 +231,10 @@ const useStyles = makeStyles((theme) => ({
       },
     closeButton: {
         position: 'absolute',
-        zIndex: 5,
-        transform: 'translate(330px, -500px);'
+        top: '12%',
+        right: '21%',
+        //zIndex: 1,
+        //transform: 'translate(330px, -500px);'
       },
     cartTotal: {
         marginLeft: 25,

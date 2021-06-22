@@ -189,6 +189,7 @@ router.put('/delete', passport.authenticate('jwt', {session: false}), async (req
 
         await models.CartItem.destroy({
             where: {
+                CartId: cart.id,
                 ProductId: product.id,
             }
         });
@@ -259,6 +260,7 @@ router.delete('/clear', passport.authenticate('jwt', {session: false}), async (r
 
         await models.CartItem.destroy({
             where: {
+                CartId: cart.id,
                 ProductId: orderItemsIdArray,
             }
         });

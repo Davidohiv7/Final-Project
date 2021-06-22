@@ -1,10 +1,11 @@
 const express = require('express')
-const ordersRouter = express.Router();
+const router = express.Router();
 const models = require('../database/models/');
 const passport = require('passport');
 const Stripe = require('stripe')
 const response = require('../utils/response');
 const { STRIPE_SECRET_KEY } = process.env
+const { Op } = require("sequelize");
 
 const stripe = new Stripe(STRIPE_SECRET_KEY)
 
@@ -20,7 +21,7 @@ const {
 } = process.env
 
 
-ordersRouter.post('/confirm_order', passport.authenticate('jwt', {session: false}), async (req, res) => {
+router.post('/confirm_order', passport.authenticate('jwt', {session: false}), async (req, res) => {
     const user = req.user
     const { cart } = req.body
 
@@ -28,7 +29,7 @@ ordersRouter.post('/confirm_order', passport.authenticate('jwt', {session: false
     
     try {
         //Find order
-        const order = await models.Order.findOne({
+        const order = await models.Cart.findOne({
             where: {
                 status: 'paid',
                 userId: user.id,
@@ -54,7 +55,7 @@ ordersRouter.post('/confirm_order', passport.authenticate('jwt', {session: false
         order.status = "progress"
         await order.save()
 
-        const verifyOrder = await models.Order.findOne({
+        const verifyOrder = await models.Cart.findOne({
             where: {
                 status: "progress",
                 id: order.id,
@@ -95,7 +96,7 @@ ordersRouter.post('/confirm_order', passport.authenticate('jwt', {session: false
 
 
 
-ordersRouter.post('/payment/stripe', async (req, res) => {
+router.post('/payment/stripe', async (req, res) => {
 
     const { paymentId, subtotal } = req.body
 
@@ -115,9 +116,9 @@ ordersRouter.post('/payment/stripe', async (req, res) => {
         response.error(req, res, {paymentStatus: false, message: error.raw.message})
     } 
   }
-); 
+);
 
-ordersRouter.post('/products', passport.authenticate('jwt', {session: false}), async (req, res) => {
+router.post('/products', passport.authenticate('jwt', {session: false}), async (req, res) => {
 
     const user = req.user
     const { order } = req.body
@@ -155,4 +156,92 @@ ordersRouter.post('/products', passport.authenticate('jwt', {session: false}), a
   }
 ); 
 
-module.exports = ordersRouter
+
+router.get('/', async (req, res) => {
+
+    try {
+        let { status, page = 1, limit = 8 } = req.query;
+
+        if (status === "") status = null;
+
+        if (!status) {
+            const { count } = await models.Cart.findAndCountAll();
+
+            if (count === 0) return response.success(req, res, { message: "No orders found!" }, 404);
+    
+            const data = {};
+            let pages = Math.ceil(count / limit);
+            if (page > pages) page = pages;
+            const pageNumber = parseInt(page)
+            let startIndex = (page - 1) * limit;
+            let endIndex = page * limit;
+            if (endIndex < count) data.nextPage = pageNumber + 1;
+            if (startIndex > 0) data.previousPage = pageNumber - 1;
+
+            const orders = await models.Cart.findAll({
+                limit: limit,
+                offset: (page * limit) - limit,
+            });
+
+            return response.success(req, res, { ...data, count, pages, pageNumber, orders }, 200);
+        }
+    
+        const { count } = await models.Cart.findAndCountAll({
+            where: { status: status }
+        });
+    
+        if (count === 0) return response.success(req, res, { message: "No orders found!" }, 404);
+    
+        const data = {};
+        let pages = Math.ceil(count / limit);
+        if (page > pages) page = pages;
+        const pageNumber = parseInt(page)
+        let startIndex = (page - 1) * limit;
+        let endIndex = page * limit;
+        if (endIndex < count) data.nextPage = pageNumber + 1;
+        if (startIndex > 0) data.previousPage = pageNumber - 1;
+
+        const orders = await models.Cart.findAll({
+            where: { status: status },
+            limit: limit,
+            offset: (page * limit) - limit,
+        });
+
+        response.success(req, res, { ...data, count, pages, pageNumber, orders }, 200);
+
+    } catch (error) {
+        response.error(req, res, error, 500);
+    }
+
+})
+
+router.patch('/', async (req, res) => {
+    try {
+        let { id, status } = req.body;
+        const order = await models.Cart.findOne({
+            where: { id: id }
+        });
+        if (!order) return response.suceess(req, res, { message: "Order not found."}, 404);
+
+        order.status = status.toLowerCase();
+        await order.save();
+        response.success(req, res, { message: "Order updated successfully." });
+
+    } catch (error) {
+        response.error(req, res, error);
+    }
+})
+
+router.get('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const order = await models.Cart.findOne({ where: { id: id } });
+        if (!order) return response.success(req, res, { message: "Order not found." }, 404);
+        response.success(req, res, order);
+    } catch (error) {
+        response.error(req, res, error);
+    }
+})
+
+module.exports = router;
+

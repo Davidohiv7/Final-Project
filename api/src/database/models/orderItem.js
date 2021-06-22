@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const OrderItem = sequelize.define('OrderItem', {
+  const CartItem = sequelize.define('CartItem', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -12,15 +12,19 @@ module.exports = (sequelize, DataTypes) => {
         model: 'product',
         key: 'id'
       },
-      allowNull: false
+      allowNull: false,
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     },
-    OrderId: {
+    CartId: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'order',
+        model: 'cart',
         key: 'id'
       },
-      allowNull: false
+      allowNull: false,
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     },
     quantity: {
       type: DataTypes.INTEGER,
@@ -35,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     updatedAt: {
       type: DataTypes.DATE,
     }
-  }, { tableName: 'order_item'})
+  }, { tableName: 'cart_item'})
 
-  return OrderItem;
+  return CartItem;
 }

@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Order = sequelize.define('Order', {
+  const Cart = sequelize.define('Cart', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -14,10 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     //   },
     //   allowNull: false
     // },
-    userId: {
+    personId: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'user',
+        model: 'person',
         key: 'id'
       },
       allowNull: false
@@ -27,16 +27,16 @@ module.exports = (sequelize, DataTypes) => {
     //   allowNull: false
     // },
     status: {
-      type: DataTypes.ENUM('created', 'paid', 'progress', 'cancelled', 'completed'),
+      type: DataTypes.STRING,
       allowNull: false
     },
     createdAt: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     updatedAt: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     total: {
       type: DataTypes.DECIMAL(10, 2)
@@ -61,16 +61,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true
     },
-  }, { tableName: 'order' })
+  }, { tableName: 'cart', timestamps: true })
 
-  Order.associate = function(models) {
+  Cart.associate = function(models) {
 
-    Order.belongsTo(models.User, {
-      foreignKey: 'userId'
+    Cart.belongsTo(models.Person, {
+      foreignKey: 'personId',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     })
 
-    Order.belongsToMany(models.Product, { through: 'OrderItem' })    
+    Cart.belongsToMany(models.Product, { through: 'CartItem' })    
   }
 
-  return Order;
+  return Cart;
 }

@@ -2,6 +2,47 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
+
+    //await queryInterface.createTable('user_account', {
+    await queryInterface.createTable('person', {
+      id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false
+      },
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      lastName: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
+      },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      role: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+        allowNull: false
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+        allowNull: false
+      },
+    })
+
+
     await queryInterface.createTable('product', {
       id: {
         type: Sequelize.INTEGER,
@@ -127,73 +168,61 @@ module.exports = {
       },
     })
 
-    await queryInterface.createTable('customer', {
+    await queryInterface.createTable('cart', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      lastName: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-      },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      createdAt: {
-        type: Sequelize.DATE,
-        allowNull: false
-      },
-      updatedAt: {
-        type: Sequelize.DATE,
-        allowNull: false
-      },
-    })
-
-    await queryInterface.createTable('order', {
-      id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false
-      },
-      customerId: {
+      personId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'customer',
+          model: 'person',
           key: 'id'
         },
-        allowNull: false
+        allowNull: true,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       status: {
-        type: Sequelize.ENUM("created", "in_process", "cancelled", "completed"),
+        type: Sequelize.STRING,
         allowNull: false
       },
       createdAt: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: true
       },
       updatedAt: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: true
       },
       total: {
         type: Sequelize.DECIMAL(10, 2)
-      }
+      },
+      city: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      zip: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      street: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      neighborhood: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      paymentMethod: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
     })
 
-    await queryInterface.createTable('order_item', {
+    await queryInterface.createTable('cart_item', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -206,15 +235,17 @@ module.exports = {
           model: 'product',
           key: 'id'
         },
-        allowNull: false
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
-      OrderId: {
+      CartId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'order',
+          model: 'cart',
           key: 'id'
         },
-        allowNull: false
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       quantity: {
         type: Sequelize.INTEGER,
@@ -244,15 +275,19 @@ module.exports = {
           model: 'product',
           key: 'id'
         },
-        allowNull: false
+        allowNull: false,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
-      customerId: {
+      personId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'customer',
+          model: 'person',
           key: 'id'
         },
-        allowNull: false
+        allowNull: false,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       description: {
         type: Sequelize.TEXT,
@@ -291,13 +326,15 @@ module.exports = {
       neighborhood: {
         type: Sequelize.STRING,
       },
-      customerId: {
+      personId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'customer',
+          model: 'person',
           key: 'id'
         },
-        allowNull: false
+        allowNull: false,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -307,55 +344,21 @@ module.exports = {
       },
     }) 
 
-    await queryInterface.createTable('user', {
-      id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false
-      },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      lastName: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-      },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      role: {
-        type: Sequelize.ENUM("admin", "staff"),
-        allowNull: false
-      },
-      createdAt: {
-        type: Sequelize.DATE,
-        allowNull: false
-      },
-      updatedAt: {
-        type: Sequelize.DATE,
-        allowNull: false
-      },
-    })
+    
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('user');
+    
     await queryInterface.dropTable('shipping_address');
     await queryInterface.dropTable('review');
-    await queryInterface.dropTable('order_item');
-    await queryInterface.dropTable('order');
-    await queryInterface.dropTable('customer');
+    await queryInterface.dropTable('cart_item');
+    await queryInterface.dropTable('cart');
+    //await queryInterface.dropTable('customer');
     await queryInterface.dropTable('product_category');
     await queryInterface.dropTable('category');
     await queryInterface.dropTable('image');
     await queryInterface.dropTable('product');
+    await queryInterface.dropTable('person');
   }
 };
+

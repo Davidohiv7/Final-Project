@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
+  const Person = sequelize.define('Person', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     role: {
-      type: DataTypes.ENUM("admin", "staff", "customer"),
+      type: DataTypes.STRING,
       allowNull: false
     },
     createdAt: {
@@ -35,7 +35,23 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: false
     }
-  }, { tableName: 'user' })
+  }, { tableName: 'person', timestamps: true })
 
-  return User;
+  Person.associate = function(models) {
+    Person.hasMany(models.Cart, {
+      foreignKey: 'personId'
+    })
+
+    Person.hasMany(models.Review, {
+      foreignKey: 'personId'
+    })
+
+    Person.hasMany(models.ShippingAddress, {
+      foreignKey: 'personId'
+    })
+
+    
+  }
+
+  return Person;
 }

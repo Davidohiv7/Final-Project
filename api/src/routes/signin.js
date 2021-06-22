@@ -103,8 +103,13 @@ signInRouter.post('/', async (req, res, next) => {
             })
         }
 
+        if(!orderItems) {
+            orderItems = []
+        }
+
         if(orderItems.length === 0 && localCart?.length > 0) {
             cartProductsIdArray = localCart.map(p => p.id)
+            console.log(cartProductsIdArray)
             const orderItemsArrayData = localCart.map(p => {
                 return {
                     ProductId: p.id,

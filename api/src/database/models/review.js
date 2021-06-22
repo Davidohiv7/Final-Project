@@ -22,10 +22,10 @@ module.exports = (sequelize, DataTypes) => {
     //   },
     //   allowNull: false
     // },
-    userId: {
+    personId: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'user',
+        model: 'person',
         key: 'id'
       },
       allowNull: false
@@ -49,14 +49,18 @@ module.exports = (sequelize, DataTypes) => {
 
     Review.belongsTo(models.Product, {
       foreignKey: 'productId',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     })
 
     // Review.belongsTo(models.Customer, {
     //   foreignKey: 'customerId',
     // })
 
-    Review.belongsTo(models.User, {
-      foreignKey: 'userId',
+    Review.belongsTo(models.Person, {
+      foreignKey: 'personId',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     })
   }
 

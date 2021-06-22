@@ -5,20 +5,43 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon -L",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cross-env NODE_ENV=test jest --runInBand",
+    "migrate": "npx sequelize db:migrate",
+    "migrate:undo": "npx sequelize db:migrate:undo:all",
+    "migrate:reset": "npx sequelize db:migrate:undo:all && npm run migrate",
+    "seed-data": "npx sequelize db:seed:all",
+    "undo-seed": "npx sequelize db:seed:undo:all",
+    "migrate-test-db": "cross-env NODE_ENV=test npx sequelize db:migrate"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
     "bcrypt": "^5.0.1",
+    "cloudinary": "^1.26.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
+    "mercadopago": "^1.5.8",
     "morgan": "^1.10.0",
+    "nodemailer": "^6.6.1",
     "nodemon": "^2.0.7",
-    "passport": "^0.4.1"
+    "passport": "^0.4.1",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-jwt": "^4.0.0",
+    "pg": "^8.6.0",
+    "pg-hstore": "^2.3.3",
+    "react-cookie": "^4.0.3",
+    "sequelize": "^6.6.2",
+    "sequelize-replace-enum-postgres": "^1.6.0",
+    "stripe": "^8.154.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "jest": "^27.0.4",
+    "sequelize-cli": "^6.2.0",
+    "supertest": "^6.1.3"
   }
 }

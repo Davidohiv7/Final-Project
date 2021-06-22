@@ -3,6 +3,13 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
 
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    minHeight: '50vh'
+  },  
+
   table: {
     minWidth: 650,
     marginTop: 10,
@@ -16,7 +23,11 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: 'lightGray',
     },
   },
-
+  
+  pagination: {
+    marginTop: 15
+  },
+  
   header: {
     fontWeight: '600'
   }

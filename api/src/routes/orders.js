@@ -158,7 +158,6 @@ router.post('/products', passport.authenticate('jwt', {session: false}), async (
 
 
 router.get('/', async (req, res) => {
-
     try {
         let { status, page = 1, limit = 8 } = req.query;
 
@@ -167,7 +166,7 @@ router.get('/', async (req, res) => {
         if (!status) {
             const { count } = await models.Cart.findAndCountAll();
 
-            if (count === 0) return response.success(req, res, { message: "No orders found!" }, 404);
+            if (count === 0) return response.success(req, res,  {orders: []}, 200);
     
             const data = {};
             let pages = Math.ceil(count / limit);
@@ -185,12 +184,12 @@ router.get('/', async (req, res) => {
 
             return response.success(req, res, { ...data, count, pages, pageNumber, orders }, 200);
         }
-    
+        status = status.toLowerCase()
         const { count } = await models.Cart.findAndCountAll({
             where: { status: status }
         });
     
-        if (count === 0) return response.success(req, res, { message: "No orders found!" }, 404);
+        if (count === 0) return response.success(req, res, {orders: []}, 200);
     
         const data = {};
         let pages = Math.ceil(count / limit);
@@ -210,7 +209,7 @@ router.get('/', async (req, res) => {
         response.success(req, res, { ...data, count, pages, pageNumber, orders }, 200);
 
     } catch (error) {
-        response.error(req, res, error, 500);
+        response.error(req, res, {orders: []}, 500);
     }
 
 })
@@ -221,7 +220,7 @@ router.patch('/', async (req, res) => {
         const order = await models.Cart.findOne({
             where: { id: id }
         });
-        if (!order) return response.suceess(req, res, { message: "Order not found."}, 404);
+        if (!order) return response.suceess(req, res, { message: "Order not found."}, 200);
 
         order.status = status.toLowerCase();
         await order.save();

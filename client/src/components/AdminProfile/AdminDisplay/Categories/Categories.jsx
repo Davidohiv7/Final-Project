@@ -29,8 +29,8 @@ export default function Categories() {
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell align= 'left'>Name</TableCell>
-                <TableCell align="right">Edit</TableCell>
+                <TableCell className={classes.header} align= 'left'>Name</TableCell>
+                <TableCell className={classes.header} align="right">Edit</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

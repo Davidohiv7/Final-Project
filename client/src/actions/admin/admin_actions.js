@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_CATEGORIES, CREATE_CATEGORY, ADD_URL_TO_DELETE } from '../../actions_types/admin/admin_action_types'
+import { GET_CATEGORIES, CREATE_CATEGORY, ADD_URL_TO_DELETE, GET_ORDERS } from '../../actions_types/admin/admin_action_types'
 
 
 export function getCategories() {
@@ -62,5 +62,24 @@ export function deleteProduct(id) {
   return (dispatch) => {
     return axios.delete(`http://localhost:3001/products/${id}`)
                 .catch(e => console.error(e))
+  }
+}
+
+export function getOrders(params) {
+  return (dispatch) => {
+      axios.get(`http://localhost:3001/orders`, { params: params})
+      .then(res => {
+        dispatch({type: GET_ORDERS, payload: res.data})
+      })
+      .catch(e => {
+        console.error(e)
+      })
+  }
+}
+
+export function setStatus(order) {
+  return (dispatch) => {
+      axios.patch(`http://localhost:3001/orders`, order)
+      .catch(e => {console.error(e)})
   }
 }

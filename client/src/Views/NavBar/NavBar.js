@@ -44,12 +44,6 @@ export default function NavBar() {
     }
   }, [logged])
 
-  useEffect(() => {
-    const checkout = JSON.parse(localStorage.getItem('checkout'))
-    if(checkout && checkout.payment.state) {
-      dispatch({type: CONFIRM_STRIPE_PAYMENT})
-    }
-  }, [])
   
   return (
     <div className={classes.root}>

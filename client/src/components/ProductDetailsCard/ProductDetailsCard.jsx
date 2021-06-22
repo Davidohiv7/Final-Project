@@ -34,7 +34,6 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
 
     useEffect(() => {
         const validateCartProduct = cart.find(p => p.id === product.id);
-        console.log(cart)
         if(validateCartProduct) {
             setQuantityInCart(validateCartProduct.quantity)
         }
@@ -42,7 +41,6 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
 
     useEffect(() => {
         const validateCartProduct = cart.find(p => p.id === product.id);
-        console.log(cart)
         if(validateCartProduct) {
             setQuantityInCart(validateCartProduct.quantity)
         }

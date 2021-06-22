@@ -15,7 +15,7 @@ import {
 import useStyles from "./styles";
 
 //child components imports
-import TableDisplay from "./Screens/TableDisplay";
+import UserOrders from "./Screens/UserOrders/UserOrders";
 import UserInfo from "./Screens/UserInfo";
 
 import { logOut } from '../..//actions/authentication/authentication_actions'
@@ -43,7 +43,7 @@ export default function Home() {
 
   //function to display the different screens
   function displayScreens() {
-    if(screenDisplay==='orderHistory') return (<TableDisplay/>)
+    if(screenDisplay==='orderHistory') return (<UserOrders/>)
     if(screenDisplay==='accountConfig') return (<UserInfo user={user} />)
   }
 

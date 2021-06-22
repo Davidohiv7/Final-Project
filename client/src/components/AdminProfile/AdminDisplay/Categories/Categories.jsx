@@ -20,7 +20,6 @@ export default function Categories() {
     function createData(name, edit) {
       return { name, edit };
     }
-
     
     const rows = categories && categories.map((category) => createData(category.name,<Button onClick={() => {}}className= {classes.editButton}><img width='25px' src={edit}></img></Button>))
     return (

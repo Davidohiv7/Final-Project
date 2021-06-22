@@ -12,8 +12,9 @@ import CreateProduct from './CreateProduct/CreateProduct';
 import Products from './Products/Products'
 import ProductsPaginationBar from '../../Catalogue/PaginationBar/PaginationBar';
 import OrdersPaginationBar from './Orders/PaginationBar/PaginationBar'
+import CategoriesPaginationBar from './Categories/PaginationBar/PaginationBar'
 import { getProducts } from '../../../actions/home/home_actions';
-import { getOrders } from '../../../actions/admin/admin_actions';
+import { getOrders, getCategories } from '../../../actions/admin/admin_actions';
 import OrderDetail from './OrderDetail/orderDetail';
 
 
@@ -26,6 +27,10 @@ export default function AdminDisplay({displayStatus, setDisplayStatus}) {
 
   const handleProductSearch = event => {
     dispatch(getProducts({name: event.target.value, filter, order}))
+  };
+
+  const handleCategoriesSearch = event => {
+    dispatch(getCategories({name: event.target.value}))
   };
 
   if(displayStatus === 'products') {
@@ -63,13 +68,13 @@ export default function AdminDisplay({displayStatus, setDisplayStatus}) {
     return (
       <Box className={classes.container}>
         <CardContent className= {classes.upBar}>
-          <TextField className={classes.searchBar} label="Search" variant="outlined" />
+          <TextField onChange={handleCategoriesSearch} className={classes.searchBar} label="Search" variant="outlined" />
           <Button className={classes.add} onClick={()=>setDisplayStatus('create_category')}>ADD CATEGORY</Button>
         </CardContent>
         <Paper elevation= '8' className= {classes.display}>
           <Categories setDisplayStatus={setDisplayStatus}/>
         </Paper>
-        <ProductsPaginationBar/>
+        <CategoriesPaginationBar/>
       </Box>
     )
   }

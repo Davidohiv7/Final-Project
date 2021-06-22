@@ -47,7 +47,8 @@ export function getUserData(jwt) {
         try {
             const response = await axios.get("http://localhost:3001/user/data", { headers: { 'Authorization': jwt } })
             const data = response.data.data
-            dispatch({type: GET_USER_DATA, payload: data.userData});
+            await dispatch({type: GET_USER_DATA, payload: data.userData});
+            console.log(data)
             if(data.orders) {
                 dispatch({type: SET_USER_ORDERS, payload: data.orders});
             }
@@ -57,7 +58,7 @@ export function getUserData(jwt) {
             if(data.total) {
                 dispatch({type: SET_CHECKOUT_SUBTOTAL, payload: data.total});
             }
-            if(data.paymentStatus.status === 'paid') {
+            if(data.paymentStatus?.status === 'paid') {
                 dispatch({type: CONFIRM_PAYMENT, payload: data.paymentStatus});
             }
             if(data.cart) {

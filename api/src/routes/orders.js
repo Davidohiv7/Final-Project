@@ -117,4 +117,40 @@ ordersRouter.post('/payment/stripe', async (req, res) => {
   }
 ); 
 
+ordersRouter.post('/products', passport.authenticate('jwt', {session: false}), async (req, res) => {
+
+    const user = req.user
+    const { order } = req.body
+
+    try {
+
+        const orderItems = await models.OrderItem.findAll({
+            where: {
+                OrderId: order.id,
+            },
+        })
+
+        const orderProductsIdArray = orderItems.map(p => p.ProductId)
+
+        const productData = await models.Product.findAll({ 
+            where: {id: orderProductsIdArray},
+            include: [{
+                model: models.Image,
+            }],
+        })
+
+        const orderData = productData.map(p => {
+            const orderProductData = orderItems.find(oi => oi.ProductId = p.id)
+            return {product: p, orderProductData}
+        })
+        
+        response.success(req, res, {orderData})
+
+    } catch (error) {
+        console.log(error)
+        response.error(req, res, {paymentStatus: false, message: 'Couldn`t find products'})
+    } 
+  }
+); 
+
 module.exports = ordersRouter

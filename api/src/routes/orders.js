@@ -138,6 +138,11 @@ router.post('/products', passport.authenticate('jwt', {session: false}), async (
             where: {id: orderProductsIdArray},
             include: [{
                 model: models.Image,
+            }, 
+            {
+                model: models.Review,
+                required: false,
+                where: { personId: user.id },
             }],
         })
 

@@ -13,7 +13,7 @@ import OrderProductReview from '../OrderProductReview/OrderProductReview'
 import { createArrayFromNumber } from '../../../../../../assets/utils/productCardFunctions'
 
 
-export default function OrderDetails( { productsData }) {
+export default function OrderDetails( { productsData, order, setProductsData }) {
 
     const classes = useStyles();
 
@@ -29,7 +29,6 @@ export default function OrderDetails( { productsData }) {
     function handleReview(productData) {
         setProductReviewModalState(true)
         setModalProduct(productData)
-        console.log(productData)
     }
 
     return (
@@ -47,16 +46,25 @@ export default function OrderDetails( { productsData }) {
                             <ListItemText primary={d.product.name} secondary={`Quantity x ${d.orderProductData.quantity} - Subotal: ${d.orderProductData.subtotal}`}/>
 
                             <ListItemSecondaryAction>
-                                <Button
-                                    size='small'
-                                    variant="contained"
-                                    color="primary"
-                                    className={classes.button}
-                                    endIcon={<RateReview/>}
-                                    onClick={() => handleReview(d)}
-                                >
-                                    review
-                                </Button>
+                                {
+                                    d.product.Reviews.length > 0 ?
+                                    <Box>
+                                        <Typography color="initial">Reviewed</Typography>
+                                    </Box>
+                                    :
+                                    <Button
+                                        size='small'
+                                        variant="contained"
+                                        color="primary"
+                                        className={classes.button}
+                                        endIcon={<RateReview/>}
+                                        onClick={() => handleReview(d)}
+                                        disabled={d.product.Reviews.length > 0}
+                                    >
+                                        review
+                                    </Button>
+
+                                }
                             </ListItemSecondaryAction>
                         </ListItem>
                         )
@@ -97,7 +105,7 @@ export default function OrderDetails( { productsData }) {
             >
                 <Fade in={productReviewModalState}>
                     <Box>
-                        <OrderProductReview productData={modalProduct}/>
+                        <OrderProductReview productData={modalProduct} order={order} setProductsData={setProductsData} setProductReviewModalState={setProductReviewModalState}/>
                     </Box>
                 </Fade>
             </Modal>

@@ -29,7 +29,7 @@ export default function AdminProfile() {
             <Button onClick={() => {displayHandler('products')}} size= 'small' className={classes.button}><Typography variant= 'button'>Products</Typography></Button>
             <Button onClick={(e) => {displayHandler('categories')}} size= 'small' className={classes.button}><Typography variant= 'button'>Categories</Typography></Button>
             <Button onClick={(e) => {displayHandler('orders')}}  size= 'small' className={classes.button}><Typography variant= 'button'>Orders</Typography></Button>
-            <Button  size= 'small' className={classes.button}><Typography variant= 'button'>Users</Typography></Button>
+            <Button onClick={(e) => {displayHandler('users')}} size= 'small' className={classes.button}><Typography variant= 'button'>Users</Typography></Button>
             <Button  size= 'small' className={classes.button}><Typography variant= 'button'>Log Out</Typography></Button>
 
           </CardContent>

@@ -1,4 +1,4 @@
-import { CREATE_CATEGORY, GET_CATEGORIES, ADD_URL_TO_DELETE, GET_ORDERS } from '../../actions_types/admin/admin_action_types'
+import { CREATE_CATEGORY, GET_CATEGORIES, ADD_URL_TO_DELETE, GET_ORDERS, GET_USERS } from '../../actions_types/admin/admin_action_types'
 
 const initialState = {
     categories: [],
@@ -7,6 +7,9 @@ const initialState = {
     orders: [],
     orderPages: '',
     orderPage: '',
+    users: [],
+    userPages: '',
+    userPage: '',
     imagesToDelete: []
 };
 
@@ -38,6 +41,14 @@ const adminReducer = (state = initialState, action = {}) => {
             orders: action.payload.data.orders,
             orderPage: action.payload.data.page,
             orderPages: action.payload.data.pages
+        }
+    }
+    case GET_USERS: {
+        return {
+            ...state,
+            users: action.payload.data.users,
+            userPage: action.payload.data.page,
+            userPages: action.payload.data.pages
         }
     }
         default:

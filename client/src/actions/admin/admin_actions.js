@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_CATEGORIES, CREATE_CATEGORY, ADD_URL_TO_DELETE, GET_ORDERS } from '../../actions_types/admin/admin_action_types'
+import { GET_CATEGORIES, CREATE_CATEGORY, ADD_URL_TO_DELETE, GET_ORDERS, GET_USERS } from '../../actions_types/admin/admin_action_types'
 
 
 export function getCategories(params) {
@@ -88,6 +88,25 @@ export function getOrders(params) {
 export function setStatus(order) {
   return (dispatch) => {
       axios.patch(`http://localhost:3001/orders`, order)
+      .catch(e => {console.error(e)})
+  }
+}
+
+export function getUsers(params) {
+  return (dispatch) => {
+      axios.get(`http://localhost:3001/user`, { params: params})
+      .then(res => {
+        dispatch({type: GET_USERS, payload: res.data})
+      })
+      .catch(e => {
+        console.error(e)
+      })
+  }
+}
+
+export function setRole(user) {
+  return (dispatch) => {
+      axios.patch(`http://localhost:3001/user`, user)
       .catch(e => {console.error(e)})
   }
 }

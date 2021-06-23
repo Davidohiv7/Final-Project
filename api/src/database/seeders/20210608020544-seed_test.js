@@ -5,8 +5,8 @@ module.exports = {
 
     const beerList = [
       {
-        name: 'Cerveza Bohemia Obscura Botella 6x355ml',
-        description: 'Es una cerveza estilo viena, ofrece el perfecto balance entre maltas caramelo y tostadas que desprenden notas de nuez y café.',
+        name: 'Bohemia Dark 6x355ml',
+        description: 'Vienna style beer, offers the perfect balance between roasted caramel malts and coffee notes.',
         price: 114.00,
         stock: 50,
         score: 5,
@@ -14,11 +14,11 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        name: 'Cerveza Dos Equis Lager Especial Botella 12x355m',
-        description: 'Cerveza Dos Equis lager especial. Ideal para una tarde de amigos o reunión familiar. Es una cerveza clara que dejará un toque suave y refrescante en tu paladar.',
+        name: 'Dos Equis Lager Special 12x355m',
+        description: 'Ideal for a friend or family gatherings. A light beer that leaves a smooth, refreshing feeling in your mouth.',
         price: 214.90,
         stock: 100,
-        score: 5,
+        score: 4,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -26,8 +26,8 @@ module.exports = {
 
     const coffeeList = [
       {
-        name: 'Cápsulas de Café Dolce Gusto Café con Leche 16 pzas',
-        description: 'Descubra NESCAFÉ® Dolce Gusto® Café au Lait, una combinación equilibrada de café intenso y leche en una cápsula, ideal para servir en una taza grande (180 ml).',
+        name: 'Dolce Gusto Coffee Pods 16 units',
+        description: 'Discover Nescafe Dolce Gusto Cafe au Lait, a balanced combination of intense coffee an and milk in a pod, perfect for serving in large cups.',
         price: 139.00,
         stock: 20,
         score: 5,
@@ -35,8 +35,8 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        name: 'Cápsulas de Café Starbucks Caramel Macchiato 12 pzas',
-        description: 'Inspirado en el Latte Macchiato de Starbucks que tanto te gusta: aterciopelado, intenso y deliciosamente familiar, hecho en casa con tu máquina Nescafé Dolce Gusto',
+        name: 'Starbucks Caramel Macchiato Pods 12 units',
+        description: 'Inspired by the Starbucks Latte Macchiato that everyone loves. Intense and deliciously familiar, you can now make it at home with your Dolce Gusto machine.',
         price: 135.00,
         stock: 40,
         score: 5,
@@ -44,8 +44,8 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        name: "Café Tostado y Molido Garat Gourmet Regular 1kg",
-        description: "Un café suave de molido medio, con delicioso aroma, una ligera espuma y de sabor de mediana intensidad que lo hace muy versátil para preparar cualquier bebida.",
+        name: "Garat Gourmet Regular Ground Coffee 1kg",
+        description: "A smooth coffee with delicious smell and light foam, not too intense, perfect for any occasion.",
         price: 210.00,
         stock: 70,
         score: 5,
@@ -56,8 +56,8 @@ module.exports = {
 
     const milkList = [
       {
-        name: 'Leche Alpura Selecta Deslactosada 1L',
-        description: 'Para mejorar tu digestión, además de probar un sabor delicioso, toma leche selecta, de Alpura. Esta bebida está deslactosada y posee una consistencia cremosa, además de estar ultrapasteurizada y adicionada con vitaminas A y D.',
+        name: 'Alpura Selecta Lactose Free Milk 1L',
+        description: 'Lactose free milk with a creamy texture and delicious flavor, enriched with A and D vitamins.',
         price: 24.00,
         stock: 140,
         score: 5,
@@ -65,8 +65,8 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        name: 'Leche Santa Clara Entera 1L',
-        description: "Leche 100% pura de vaca y tenemos un proceso de ultra pasteurización a base de vapor, único en el mercado que mantiene las propiedades naturales de la leche, además de darle esa cremosidad y sabor que nos vuelve extraordinarios.",
+        name: 'Santa Clara Milk 1L',
+        description: "100% cow milk. Classic creamy texture and full flavor.",
         price: 22.50,
         stock: 150,
         score: 5,
@@ -77,8 +77,8 @@ module.exports = {
 
     const cerealList = [
       {
-        name: "Cereal Kellogg's Corn Flakes Original 500g",
-        description: "Corn Flakes® de Kellogg’s® es un cereal hecho con granos de maíz de origen 100% natural, lo que lo hace una opción rica y nutritiva para el desayuno de tu familia.",
+        name: "Kellogg's Corn Flakes Original 500g",
+        description: "Kellogg’s Corn Flakes Original is made with 100% natural corn. A convenient, nutritive option for a family breakfast.",
         price: 47.99,
         stock: 200,
         score: 5,
@@ -86,8 +86,8 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        name: "Cereal Extra Arándano con Almendras 310g",
-        description: "Combinación de hojuelas de maíz con sabor a cacahuate mezcladas con arándanos y almendras",
+        name: "Extra Cereal with Almonds 310g",
+        description: "A great mix of roasted corn flakes, cranberries and almonds.",
         price: 52.99,
         stock: 200,
         score: 5,
@@ -95,8 +95,8 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        name: "Cereal Multigrano Fitness Miel y Almendras 390g",
-        description: "Inicia tus días con una rica fuente de energía y fibra con el cereal Fitness Miel y Alemendras de Nestlé, que tiene almendras y un toque de miel que seguro te encantará y que aportará a tu vida los nutrientes que necesitas para iniciar tus días",
+        name: "Fitness cereal with honey and almonds 390g",
+        description: "Jumpstart your day with a rich source of energy and fiber with the help of Fitness Honey and Almonds.",
         price: 46.90,
         stock: 180,
         score: 5,
@@ -107,8 +107,8 @@ module.exports = {
 
     const creamList = [
       {
-        name: "Crema de Avellana y Cacao Nutella 650g",
-        description: "Crema de avellana y cacao de 650 g. Untable e ideal para postres.Hecha con ingredientes naturales. No contiene colorantes ni conservadores artificiales.",
+        name: "Nutella Cocoa and Hazelnut 650g",
+        description: "Classic Nutella with hazelnuts and cocoa. All-natural ingredients, perfect pr any desserts.",
         price: 116.00,
         stock: 90,
         score: 5,
@@ -116,8 +116,8 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        name: "Crema de Cacahuate Mister Natural 320g",
-        description: "Deliciosa y saludable crema de cacahuate hecha con cacahuate tostado premium, sin conservadores. ",
+        name: "Mister Natural Peanut Butter 320g",
+        description: "Delicous and healthy peanut butter made with premium roasted peanuts and no conservatives.",
         price: 60.00,
         stock: 40,
         score: 5,
@@ -128,13 +128,13 @@ module.exports = {
 
 
     const categoryList = [ 
-      { name: "Cerveza" }, // 0
-      { name: "Cerveza Nacional" }, // 1
+      { name: "Beer" }, // 0
+      { name: "Mexican Beer" }, // 1
       { name: "Cereal" }, // 2
-      { name: "Leche" }, // 3
-      { name: "Café" }, // 4
-      { name: "Cápsulas de Café" }, // 5
-      { name: "Cremas" } // 6 
+      { name: "Milk" }, // 3
+      { name: "Coffee" }, // 4
+      { name: "Coffee Pods" }, // 5
+      { name: "Creams" } // 6 
     ];
 
 

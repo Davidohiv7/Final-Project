@@ -17,7 +17,6 @@ const mercadopagoConfirmation = require('./mercadopagoConfirmation');
 const reviews = require('./reviews');
 const shippingaddress = require('./shippingaddress');
 
-
 router.use('/confirm/mercadopago', mercadopagoConfirmation);
 router.use('/create_preference', mercadopago);
 router.use('/categories', categories);

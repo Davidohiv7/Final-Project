@@ -39,4 +39,39 @@ router.post('/add', passport.authenticate('jwt', {session: false}), async (req, 
     }
 })
 
+router.get('/getById', async (req, res, next) => {
+    const {
+        id
+    } = req.query;
+
+    const reviews = await models.Review.findAll({
+        where: {
+            productId: id
+        },
+        include: [{
+                    model: models.Person,
+                    required: false,
+                    attributes: {
+                        exclude: ['password', 'role', 'createdAt', 'updatedAt', 'email']
+                    },
+                }],
+    });
+
+    /*const reviewWithUserNames = await Promise.all(reviews.map(review => {
+        models.Person.findOne({
+                where: {
+                    id: review.personId
+                },
+            })
+            .then(resp => {
+                review,
+                resp.name
+            })
+
+    
+    }));*/
+
+    response.success(req, res, reviews);
+})
+
 module.exports = router

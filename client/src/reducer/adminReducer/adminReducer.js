@@ -2,10 +2,11 @@ import { CREATE_CATEGORY, GET_CATEGORIES, ADD_URL_TO_DELETE, GET_ORDERS } from '
 
 const initialState = {
     categories: [],
+    categoriesPages: '',
+    categoriesPage: '',
     orders: [],
-    nextPage: '',
-    pages: '',
-    page: '',
+    orderPages: '',
+    orderPage: '',
     imagesToDelete: []
 };
 
@@ -14,7 +15,9 @@ const adminReducer = (state = initialState, action = {}) => {
     case GET_CATEGORIES: {
         return {
             ...state,
-            categories: action.payload
+            categories: action.payload.categories,
+            categoriesPages: action.payload.pages,
+            categoriesPage: action.payload.page,
         }
     }
     case CREATE_CATEGORY: {
@@ -33,9 +36,8 @@ const adminReducer = (state = initialState, action = {}) => {
         return {
             ...state,
             orders: action.payload.data.orders,
-            nextPage: action.payload.data.nextPage ? action.payload.data.nextPage : '',
-            page: action.payload.data.page,
-            pages: action.payload.data.pages
+            orderPage: action.payload.data.page,
+            orderPages: action.payload.data.pages
         }
     }
         default:

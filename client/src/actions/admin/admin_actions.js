@@ -2,9 +2,9 @@ import axios from 'axios';
 import { GET_CATEGORIES, CREATE_CATEGORY, ADD_URL_TO_DELETE, GET_ORDERS } from '../../actions_types/admin/admin_action_types'
 
 
-export function getCategories() {
+export function getCategories(params) {
   return (dispatch) => {
-      return axios.get("http://localhost:3001/categories")
+      return axios.get("http://localhost:3001/categories", {params: params})
               .then(res => res.data)
               .then(res => {
                   dispatch({type: GET_CATEGORIES, payload: res.data})
@@ -19,6 +19,14 @@ export function createCategory(name) {
                   .then(res => {
                       dispatch({type: CREATE_CATEGORY, payload: {name: name} })
                   })
+                  .catch(e => console.error(e))
+  }
+}
+
+export function deleteCategory(name) {
+  console.log(name)
+  return (dispatch) => {
+      return axios.delete(`http://localhost:3001/categories/${name}`, )
                   .catch(e => console.error(e))
   }
 }

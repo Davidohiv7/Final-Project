@@ -83,7 +83,7 @@ export function setGoogleUserNewCart(jwt, cart) {
     return async (dispatch) => {
         try {
             const response = await axios.post("http://localhost:3001/googleAuth/setnewcart", data, { headers: { 'Authorization': jwt } })
-            if(response.data.data.cart) {
+            if(response) {
                 dispatch({type: GOOGLE_AUTH})
                 localStorage.removeItem('cart')
             }
@@ -97,8 +97,10 @@ export function getGoogleUserCart(jwt) {
     const localCart = JSON.parse(localStorage.getItem('cart'))
     return async (dispatch) => {
         try {
+            //CUANDO NO HAY UNA ORDEN CREADA NO RESPONDE AQUI
             const response = await axios.post("http://localhost:3001/googleAuth/getcart", {localCart}, { headers: { 'Authorization': jwt } })
-            if(response.data.data.cart) {
+            console.log(response.data)
+            if(response) {
                 dispatch({type: GOOGLE_AUTH})
                 localStorage.removeItem('cart')
             }

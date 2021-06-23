@@ -37,7 +37,8 @@ export default function GoogleAuth() {
                             cookies.remove('newUser')
                             if(localCart && localCart.length > 0) {
                                 dispatch(setGoogleUserNewCart(`Bearer ${jwt}`, localCart))
-                            }else {
+                            }
+                            if(!localCart) {
                                 dispatch(getUserData(`Bearer ${jwt}`))
                             }
                         }

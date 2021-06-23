@@ -1,4 +1,4 @@
-import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT, FAILED_SEARCH, GET_PRODUCTS_BY_CATEGORY, GET_PRODUCT_REVIEW } from '../../actions_types/home/home_actions_types'
+import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT, FAILED_SEARCH, GET_PRODUCTS_BY_CATEGORY } from '../../actions_types/home/home_actions_types'
 
 const initialState = {
     products: [],
@@ -73,12 +73,6 @@ const homeReducer = (state = initialState, action = {}) => {
                 page: '',
                 pages: '',
                 categories: '',
-            }
-        }
-        case GET_PRODUCT_REVIEW: {
-            return {
-                ...state,
-                review: action.payload,
             }
         }
         default:

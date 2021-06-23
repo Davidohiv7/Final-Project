@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import useStyles from "./styles";
 import { ListItem, Divider, ListItemText, Typography } from '@material-ui/core/';
 
 export default function UserReview({ review }) {
@@ -7,7 +7,7 @@ export default function UserReview({ review }) {
   
   return (
     <React.Fragment>
-      <ListItem alignItems="flex-start">
+      <ListItem className={classes.root} alignItems="flex-start">
         <ListItemText
         primary={`Score: ${review.score}`}
           secondary={
@@ -29,19 +29,3 @@ export default function UserReview({ review }) {
     </React.Fragment>
   );
 }
-
-// Styles 
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    maxWidth: '36ch',
-    backgroundColor: theme.palette.background.paper,
-  },
-  inline: {
-    display: 'inline',
-  },
-  divider: {
-    width: '100%',
-  },
-}));

@@ -69,6 +69,15 @@ export default function  CustomerInformation({activeStep, setActiveStep }) {
 
     function handleAddressSelectChange(e){
         setSelectedAddress(e.target.value)
+        if(!e.target.value) {
+            return setCustomerInformation({
+                street: '',
+                neighborhood: '',
+                city: '',
+                zip: '',
+            })
+        }
+        
         setCustomerInformation({
             street: e.target.value.street,
             neighborhood: e.target.value.neighborhood,

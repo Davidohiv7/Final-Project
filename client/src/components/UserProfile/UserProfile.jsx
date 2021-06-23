@@ -28,8 +28,11 @@ export default function Home() {
   //Route protection
   useEffect(() => {
       if(!logged) {
-          history.push("/authentication");
+        return history.push("/authentication");
       }
+      if(user.role !== 'customer') {
+        return history.push("/authentication");
+    }
   }, [logged])
 
   //function to display the different screens

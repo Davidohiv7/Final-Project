@@ -11,7 +11,7 @@ import { CONFIRM_STRIPE_PAYMENT, SET_CHECKOUT_CUSTOMER_INFORMATION } from '../..
 export default function NavBar() {
   let classes = useStyles();
 
-  const { logged } = useSelector((state) => ({ ...state.authenticationReducer }))
+  const { logged, user } = useSelector((state) => ({ ...state.authenticationReducer }))
   const { cart } = useSelector((state) => ({ ...state.cartReducer }))
   const dispatch = useDispatch();
 
@@ -68,15 +68,15 @@ export default function NavBar() {
             </Link>
 
               {
-                logged ? 
-                <Link to="/user">
+                logged && user ? 
+                <Link to={user.role === 'admin' || user.role === 'staff' ? '/admin' : '/user'}>
                   <Button
                     variant="contained"
                     color="secondary"
                     className={classes.buttonUser}
                     startIcon={<AccountCircle />}
                   >
-                    User
+                    {user.role === 'admin' || user.role === 'staff' ? 'Admin' : 'User'}
                   </Button>
                 </Link>
                 :

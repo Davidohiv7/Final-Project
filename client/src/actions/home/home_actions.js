@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT, FAILED_SEARCH, GET_PRODUCTS_BY_CATEGORY } from '../../actions_types/home/home_actions_types'
+import { GET_ALL_PRODUCTS, GET_PRODUCTS, UPDATE_SEARCHING, UPDATE_CATEOGRY, UPDATE_SORT, FAILED_SEARCH, GET_PRODUCTS_BY_CATEGORY, GET_PRODUCT_REVIEW } from '../../actions_types/home/home_actions_types'
 
 export function getAllProducts() {
     return (dispatch) => {
@@ -55,3 +55,14 @@ export const updateCategory = (category) => {
     }
 }
 
+/*
+export const getProductReviews = (productId) => {
+    return (dispatch) => {
+        return axios.get("http://localhost:3001/reviews/find", {params: productId})
+                .then(res => res.data)
+                .then(res => {
+                    dispatch({type: GET_PRODUCT_REVIEW, payload: res.data})
+                })
+                .catch(e => dispatch({type: GET_PRODUCT_REVIEW, payload: '',}))
+    }
+}*/

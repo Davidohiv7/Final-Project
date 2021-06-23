@@ -133,7 +133,7 @@ module.exports = {
       { name: "Cereal" }, // 2
       { name: "Leche" }, // 3
       { name: "Café" }, // 4
-      { name: "Cápsulas de Café " }, // 5
+      { name: "Cápsulas de Café" }, // 5
       { name: "Cremas" } // 6 
     ];
 

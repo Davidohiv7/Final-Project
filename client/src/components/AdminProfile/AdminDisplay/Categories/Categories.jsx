@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 //Imports Material UI components:
 import { TableContainer, Table, TableBody, TableCell, TableHead, TableRow, Paper, Button, Modal, Box, Backdrop, Fade}from '@material-ui/core'
 import useStyles from './styles';
-import edit from './edit.png'
-import { getCategories } from '../../../../actions/admin/admin_actions';
+import deleteIcon from './deleteIcon.png';
+import { getCategories, deleteCategory } from '../../../../actions/admin/admin_actions';
 
 export default function Categories() {
     const classes = useStyles();
@@ -21,7 +21,11 @@ export default function Categories() {
       return { name, edit };
     }
     
-    const rows = categories && categories.map((category) => createData(category.name,<Button onClick={() => {}}className= {classes.editButton}><img width='25px' src={edit}></img></Button>))
+    const rows = categories && categories.map((category) => createData(category.name,<Button onClick={() => {
+      dispatch(deleteCategory(category.name))
+      dispatch(getCategories())
+      dispatch(getCategories())
+    }}className= {classes.editButton}><img width='25px' src={deleteIcon}></img></Button>))
     return (
       <Box>
         <TableContainer component={Paper}>
@@ -29,7 +33,7 @@ export default function Categories() {
             <TableHead>
               <TableRow>
                 <TableCell className={classes.header} align= 'left'>Name</TableCell>
-                <TableCell className={classes.header} align="right">Edit</TableCell>
+                <TableCell className={classes.header} align="right">Delete</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

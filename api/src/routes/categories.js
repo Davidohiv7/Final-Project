@@ -66,5 +66,20 @@ router.post('/', async (req, res) => {
   return response.success(req, res, null, 200)
 })
 
+router.delete('/:name', async (req, res) => {
+  try {
+    const { name } = req.params;
+    console.log(name)
+		const category = await models.Category.findOne({ where: { name: name }});
+
+		if (!category) return response.success(req, res, { message: "Category not found." }, 200);
+
+		await category.destroy();
+		response.success(req, res, { message: "Category deleted successfully." });
+	} catch (error) {
+		response.error(req, res, error);
+	}
+})
+
 module.exports = router;
 

@@ -36,7 +36,7 @@ export default function UserInfo({ user }) {
     }
 
     return (
-        <Grid container spacing={3} className={classes.profile}>
+        <Box p={2} boxShadow={4} display='flex' alignItems='center' justifyContent='center' flexDirection='column' className={classes.container}>
             <Box width='100%' display='flex' alignItems='center' justifyContent='center' flexDirection='column' p={4}>
                 <Typography className={classes.name} variant="h3">{`${user?.name} ${user?.lastName}`}</Typography>
                 <Box width='100%' display='flex' alignItems='center' justifyContent='center' >
@@ -74,6 +74,6 @@ export default function UserInfo({ user }) {
                     <AddAddress setUserAddresses={setUserAddresses} setAddressModalState={setAddressModalState}/>
                 </Fade>
             </Modal> 
-        </Grid>
+        </Box>
     );
 }

@@ -22,7 +22,10 @@ export default function UserOrders() {
     const classes = useStyles();
 
     return (
-        <Box>
+        <Box className={classes.container} p={2} boxShadow={4}>
+            <Box my={2}>
+                <Typography variant="h3" color="initial">Orders history: </Typography>
+            </Box>
             {   
                 orders && orders.length > 0 ?
                 <Box>

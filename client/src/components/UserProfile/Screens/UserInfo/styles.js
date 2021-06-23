@@ -1,12 +1,9 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
-  profile: {
-    border: 'solid',
-    borderRadius: theme.spacing(5),
-    borderColor: theme.palette.primary.main,
-    alignItems: 'center',
-    justifyContent: 'center',
+  container: {
+    backgroundColor: theme.palette.secondary.main,
+    borderRadius: theme.shape.borderRadius,
   },
   profilePic: {
     width: theme.spacing(15),

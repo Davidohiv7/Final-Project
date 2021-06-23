@@ -1,13 +1,15 @@
 import React, { useState, useEffect }  from 'react';
 import { useSelector, useDispatch } from "react-redux";
 //Imports Material UI components:
-import {Box, Typography, Button, TextField, Popover} from '@material-ui/core'
+import {Box, Typography, Button, TextField, Popover, Select, MenuItem, FormControl, InputLabel} from '@material-ui/core'
 //Styles
 import useStyles from './styles';
 //Custom functions
 import { customerInformationValidation } from '../../../assets/utils/ordersInformationValidation'
 //Actions
 import { setShippingAdress } from '../../../actions/checkout/checkout_actions'
+//axios
+import axios from 'axios'
 
 export default function  CustomerInformation({activeStep, setActiveStep }) {
 
@@ -25,9 +27,26 @@ export default function  CustomerInformation({activeStep, setActiveStep }) {
         zip: '',
     });
 
+    const [savedAddresses, setSavedAddresses] = useState([]);
+    const [selectedAddress, setSelectedAddress] = useState('');
+
     const [errors, setErrors] = React.useState(['initial']);
     const [inputErrorsPopover, setInputErrorsPopover] = useState(false);
     const [inputErrorsPopoverAnchor, setInputErrorsPopoverAnchor] = useState(null);
+
+    useEffect(() => {
+        const getUserAddresses = async () => {
+            const jwt = localStorage.getItem('jwt')
+            try {
+                const response = await axios.get("http://localhost:3001/shippingaddress/", { headers: { 'Authorization': jwt }} )
+                const userAddresses = response.data.data.userAddresses
+                return setSavedAddresses(userAddresses)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getUserAddresses()
+    }, [])
 
     useEffect(() => {
         if(storeCustomerInformation.street) {
@@ -46,6 +65,16 @@ export default function  CustomerInformation({activeStep, setActiveStep }) {
             ...customerInformation,
             [e.target.name]: e.target.value
         });
+    }
+
+    function handleAddressSelectChange(e){
+        setSelectedAddress(e.target.value)
+        setCustomerInformation({
+            street: e.target.value.street,
+            neighborhood: e.target.value.neighborhood,
+            city: e.target.value.city,
+            zip: e.target.value.zip,
+        })
     }
 
     function handleSubmit(e) {
@@ -87,6 +116,7 @@ export default function  CustomerInformation({activeStep, setActiveStep }) {
                             value={customerInformation.street}
                             onChange={handleInputChange}
                             size='small'
+                            disabled={selectedAddress}
                         />
 
                         <TextField
@@ -96,6 +126,7 @@ export default function  CustomerInformation({activeStep, setActiveStep }) {
                                 value={customerInformation.zip}
                                 onChange={handleInputChange}
                                 size='small'
+                                disabled={selectedAddress}
                         />
 
                     </Box>
@@ -109,6 +140,7 @@ export default function  CustomerInformation({activeStep, setActiveStep }) {
                                 value={customerInformation.neighborhood}
                                 onChange={handleInputChange}
                                 size='small'
+                                disabled={selectedAddress}
                         />
                         <TextField
                                 // className={classes.input}
@@ -118,14 +150,37 @@ export default function  CustomerInformation({activeStep, setActiveStep }) {
                                 value={customerInformation.city}
                                 onChange={handleInputChange}
                                 size='small'
+                                disabled={selectedAddress}
                         />
                     </Box>
 
                 </Box>
-                <Box mt={3}>
+                <Box display="flex" justifyContent="center" alignItems="center" mt={3}>
                     <Button variant="contained" color="primary" type="submit">
                         Confirm Information
                     </Button>
+                    {
+                       savedAddresses.length > 0 &&  
+                        <FormControl variant="outlined" className={classes.formControl} size='small'>
+                            <InputLabel>Saved Addresses</InputLabel>
+                            <Select
+                                value={selectedAddress}
+                                onChange={handleAddressSelectChange}
+                                label="Saved addresses"
+                                >
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                {
+                                    savedAddresses.map( address => {
+                                        return (
+                                            <MenuItem value={address}>{address.street}</MenuItem>
+                                        )
+                                    })
+                                }
+                            </Select>
+                        </FormControl>
+                    }
                 </Box>
                 <Popover
                     open={inputErrorsPopover}

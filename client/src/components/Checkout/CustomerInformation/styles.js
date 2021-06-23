@@ -7,6 +7,10 @@ const useStyles = makeStyles((theme) => ({
     zip: {
       width: 120,
     },
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 250,
+    },
 }));
 
 export default useStyles;

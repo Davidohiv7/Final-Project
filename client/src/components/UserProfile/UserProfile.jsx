@@ -3,22 +3,13 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 // Material UI imports
-import {
-  Grid,
-  Container,
-  CardContent,
-  Typography,
-  Avatar,
-  Button,
-  Box,
-} from "@material-ui/core";
+import {Grid, Container, CardContent, Typography, Avatar, Button, Box} from "@material-ui/core";
 import useStyles from "./styles";
-
-//child components imports
+//Components imports
 import UserOrders from "./Screens/UserOrders/UserOrders";
-import UserInfo from "./Screens/UserInfo";
+import UserInfo from "./Screens/UserInfo/UserInfo";
 
-import { logOut } from '../..//actions/authentication/authentication_actions'
+import { logOut } from '../../actions/authentication/authentication_actions'
 
 
 
@@ -32,7 +23,7 @@ export default function Home() {
   const { logged, user } = useSelector((state) => ({ ...state.authenticationReducer }))
   
   //local state used for the different screen displays
-  const [screenDisplay, setScreenDisplay] = useState("orderHistory");
+  const [screenDisplay, setScreenDisplay] = useState("accountConfig");
 
   //Route protection
   useEffect(() => {
@@ -55,8 +46,8 @@ export default function Home() {
 
   return (
     <Container maxWidth="lg">
-      <Grid container spacing={5} className={classes.container}>
-        <Grid item xs={2} className={classes.filterGrid}>
+      <Grid container spacing={5} wrap='nowrap' className={classes.container}>
+        <Grid item xs={2} className={classes.filterGrid} wrap='nowrap'>
           <CardContent align="center">
             <Typography
               align="center"
@@ -74,7 +65,7 @@ export default function Home() {
             </Box>
           </CardContent>
         </Grid>
-        <Grid className={classes.screen} item xs={9}>
+        <Grid className={classes.screen} item xs={9} wrap='nowrap'>
             {displayScreens()}
         </Grid>
       </Grid>

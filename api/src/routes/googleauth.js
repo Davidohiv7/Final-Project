@@ -116,7 +116,6 @@ googleAuthRouter.post('/setnewcart', passport.authenticate('jwt', {session: fals
 googleAuthRouter.post('/getcart', passport.authenticate('jwt', {session: false}), async (req, res, next) => {
   const user = req.user
   const localCart = req.body.localCart
-  console.log(localCart)
 
     try {
       let orderValidation = await models.Cart.findOne({
@@ -182,6 +181,7 @@ googleAuthRouter.post('/getcart', passport.authenticate('jwt', {session: false})
                 })
             }
         })
+
         if(newProductsInCart.length > 0) {
             await models.CartItem.bulkCreate(newProductsInCart);
         }
@@ -193,6 +193,21 @@ googleAuthRouter.post('/getcart', passport.authenticate('jwt', {session: false})
       }
 
       if(orderItems.length === 0 && localCart?.length > 0) {
+        cartProductsIdArray = localCart.map(p => p.id)
+        const orderItemsArrayData = localCart.map(p => {
+            return {
+                ProductId: p.id,
+                CartId: orderValidation.id,
+                quantity: p.quantity,
+                subtotal: ((p.quantity * p.price).toFixed(2)),
+                createdAt: new Date(),
+                updatedAt: new Date() 
+            }
+        })
+        orderItems = await models.CartItem.bulkCreate(orderItemsArrayData);
+      }
+
+      if(!orderItems && localCart?.length > 0) {
         cartProductsIdArray = localCart.map(p => p.id)
         const orderItemsArrayData = localCart.map(p => {
             return {

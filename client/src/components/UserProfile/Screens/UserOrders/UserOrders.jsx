@@ -1,5 +1,5 @@
 //react imports
-import React, { useEffect, useState }from "react";
+import React, { useState }from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 //Components
@@ -16,6 +16,8 @@ export default function UserOrders() {
 
     const { orders } = useSelector((state) => ({ ...state.authenticationReducer }))
     let history = useHistory();
+
+    const [openOrder, setOpenOrder] = useState(false);
 
     const classes = useStyles();
 
@@ -48,7 +50,7 @@ export default function UserOrders() {
                             </TableHead>
                             <TableBody>
                                 {
-                                    orders && orders.map(order => <OrderRow order={order}/>)
+                                    orders && orders.map(order => <OrderRow order={order} openOrder={openOrder} setOpenOrder={setOpenOrder}/>)
                                 }   
                             </TableBody>
                         </Table>

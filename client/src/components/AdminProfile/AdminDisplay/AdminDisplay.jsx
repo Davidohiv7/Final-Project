@@ -5,25 +5,29 @@ import { CardContent, Button, Box, Paper, TextField} from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import useStyles from './styles';
 
+import Users from './Users/Users'
 import Orders from './Orders/Orders'
 import CreateCategory from './CreateCategory/CreateCategory';
 import Categories from '../AdminDisplay/Categories/Categories'
 import CreateProduct from './CreateProduct/CreateProduct';
 import Products from './Products/Products'
+import UsersPaginationBar from '../AdminDisplay/Users/PaginationBar/PaginationBar'
 import ProductsPaginationBar from '../../Catalogue/PaginationBar/PaginationBar';
 import OrdersPaginationBar from './Orders/PaginationBar/PaginationBar'
 import CategoriesPaginationBar from './Categories/PaginationBar/PaginationBar'
 import { getProducts } from '../../../actions/home/home_actions';
-import { getOrders, getCategories } from '../../../actions/admin/admin_actions';
+import { getOrders, getCategories, getUsers } from '../../../actions/admin/admin_actions';
 import OrderDetail from './OrderDetail/orderDetail';
+import UserDetail from './UserDetail/UserDetail';
 
 
 export default function AdminDisplay({displayStatus, setDisplayStatus}) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { searched, products, filter, order } = useSelector((state) => ({ ...state.homeReducer }))
-  const [editProduct, setEditProduct] = useState({})
-  const [editOrder, setEditOrder] = useState({})
+  const { searched, products, filter, order } = useSelector((state) => ({ ...state.homeReducer }));
+  const [editProduct, setEditProduct] = useState({});
+  const [editOrder, setEditOrder] = useState({});
+  const [editUser, setEditUser] = useState({});
 
   const handleProductSearch = event => {
     dispatch(getProducts({name: event.target.value, filter, order}))
@@ -94,7 +98,7 @@ export default function AdminDisplay({displayStatus, setDisplayStatus}) {
       <Autocomplete
         className = {classes.filter}
         id= 'statusSelector'
-        options={['All','Created', 'Paid', 'In progress', 'Cancelled', 'Completed']}
+        options={['All','Created', 'Paid', 'Progress', 'Cancelled', 'Completed']}
         getOptionLabel={(option) => option}
         renderInput={(params) => <TextField {...params} label="Status" variant="outlined" />}
         onChange={(e, v) => {
@@ -117,6 +121,40 @@ export default function AdminDisplay({displayStatus, setDisplayStatus}) {
     return (
         <CardContent className= {classes.display}>
           <OrderDetail editOrder={editOrder} setDisplayStatus={setDisplayStatus}/>
+        </CardContent>
+    )
+  }
+
+  if(displayStatus === 'users') {
+    return (
+      <Box className={classes.container}>
+      <CardContent className= {classes.upBar}>
+      <Autocomplete
+        className = {classes.filter}
+        id= 'statusSelector'
+        options={['All', 'Customer', 'Staff', 'Admin']}
+        getOptionLabel={(option) => option}
+        renderInput={(params) => <TextField {...params} label="Status" variant="outlined" />}
+        onChange={(e, v) => {
+          if (v === 'All') dispatch(getUsers())
+          else if(v){
+                dispatch(getUsers({role: v}))
+            }
+        }}
+      />
+      </CardContent>
+      <Paper elevation= '8' className= {classes.display}>
+        <Users setEditUser= {setEditUser} setDisplayStatus={setDisplayStatus}/>
+      </Paper>
+      <UsersPaginationBar/>
+    </Box>
+    )
+  }
+
+  if(displayStatus === 'userDetail') {
+    return (
+        <CardContent className= {classes.display}>
+          <UserDetail editUser={editUser} setDisplayStatus={setDisplayStatus}/>
         </CardContent>
     )
   }

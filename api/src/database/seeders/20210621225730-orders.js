@@ -34,12 +34,75 @@ module.exports = {
         role: "customer",
         createdAt: new Date(),
         updatedAt: new Date()
+      },
+      {
+        name: "Tony",
+        lastName: "Stark",
+        email: "ironman@gmail.com",
+        password: "12345",
+        role: "admin",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: "Anthony",
+        lastName: "Bourdain",
+        email: "tony.bourdain@gmail.com",
+        password: "12345",
+        role: "admin",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: "Gordon",
+        lastName: "Ramsey",
+        email: "gordon@gmail.com",
+        password: "12345",
+        role: "staff",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: "Taylor",
+        lastName: "Swift",
+        email: "taylor@gmail.com",
+        password: "12345",
+        role: "staff",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: "Elon",
+        lastName: "Musk",
+        email: "musk@gmail.com",
+        password: "12345",
+        role: "customer",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: "Rick",
+        lastName: "Sanchez",
+        email: "rick.sanchezo@gmail.com",
+        password: "12345",
+        role: "customer",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: "Bill",
+        lastName: "Gates",
+        email: "bill.gates@gmail.com",
+        password: "12345",
+        role: "customer",
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
     ]
 
 
     const customers = await queryInterface.bulkInsert('person', personList, { returning: ['id'] });
-    console.log("///////////// CUSTOMERS", customers);
+    //console.log("///////////// CUSTOMERS", customers);
 
 
     const cart01 = {

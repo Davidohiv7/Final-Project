@@ -220,7 +220,7 @@ router.patch('/', async (req, res) => {
         const order = await models.Cart.findOne({
             where: { id: id }
         });
-        if (!order) return response.suceess(req, res, { message: "Order not found."}, 200);
+        if (!order) return response.success(req, res, { message: "Order not found."}, 200);
 
         order.status = status.toLowerCase();
         await order.save();

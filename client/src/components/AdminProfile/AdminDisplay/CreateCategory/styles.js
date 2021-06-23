@@ -2,20 +2,37 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-
-  table: {
-    minWidth: 650,
-    marginTop: 10,
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
 
-  editButton: {
-    minWidth: 30,
-    borderRadius: 55,
-    color: 'white',
+  button: {
+    background: theme.palette.primary.main,
+    color: "white",
+    borderRadius: 5,
+    margin: '4%',
+    width: '40%',
     '&:hover': {
-      backgroundColor: 'lightGray',
-    },
+        background: theme.palette.primary.dark
+    }
   },
+
+  cancel: {
+    borderRadius: 5,
+    margin: '4%',
+    width: '40%',
+    background: theme.palette.secondary.main,
+  },
+
+  input: {
+    width: '40%'
+  },
+
+  buttonContainer: {
+    width: '50%'
+  }
   
 
 }));

@@ -54,4 +54,3 @@ export const updateCategory = (category) => {
         payload: category
     }
 }
-

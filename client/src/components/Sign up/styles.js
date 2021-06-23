@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
         height: '100%',
     },
     input: {
-        marginTop: 18,
+        marginTop: 10,
         width: 250,
     },
     button: {

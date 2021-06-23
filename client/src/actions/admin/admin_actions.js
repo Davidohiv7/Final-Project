@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { GET_CATEGORIES, CREATE_CATEGORY, ADD_URL_TO_DELETE } from '../../actions_types/admin/admin_action_types'
+import { GET_CATEGORIES, CREATE_CATEGORY, ADD_URL_TO_DELETE, GET_ORDERS, GET_USERS } from '../../actions_types/admin/admin_action_types'
 
 
-export function getCategories() {
+export function getCategories(params) {
   return (dispatch) => {
-      return axios.get("http://localhost:3001/categories")
+      return axios.get("http://localhost:3001/categories", {params: params})
               .then(res => res.data)
               .then(res => {
                   dispatch({type: GET_CATEGORIES, payload: res.data})
@@ -19,6 +19,14 @@ export function createCategory(name) {
                   .then(res => {
                       dispatch({type: CREATE_CATEGORY, payload: {name: name} })
                   })
+                  .catch(e => console.error(e))
+  }
+}
+
+export function deleteCategory(name) {
+  console.log(name)
+  return (dispatch) => {
+      return axios.delete(`http://localhost:3001/categories/${name}`, )
                   .catch(e => console.error(e))
   }
 }
@@ -62,5 +70,43 @@ export function deleteProduct(id) {
   return (dispatch) => {
     return axios.delete(`http://localhost:3001/products/${id}`)
                 .catch(e => console.error(e))
+  }
+}
+
+export function getOrders(params) {
+  return (dispatch) => {
+      axios.get(`http://localhost:3001/orders`, { params: params})
+      .then(res => {
+        dispatch({type: GET_ORDERS, payload: res.data})
+      })
+      .catch(e => {
+        console.error(e)
+      })
+  }
+}
+
+export function setStatus(order) {
+  return (dispatch) => {
+      axios.patch(`http://localhost:3001/orders`, order)
+      .catch(e => {console.error(e)})
+  }
+}
+
+export function getUsers(params) {
+  return (dispatch) => {
+      axios.get(`http://localhost:3001/user`, { params: params})
+      .then(res => {
+        dispatch({type: GET_USERS, payload: res.data})
+      })
+      .catch(e => {
+        console.error(e)
+      })
+  }
+}
+
+export function setRole(user) {
+  return (dispatch) => {
+      axios.patch(`http://localhost:3001/user`, user)
+      .catch(e => {console.error(e)})
   }
 }

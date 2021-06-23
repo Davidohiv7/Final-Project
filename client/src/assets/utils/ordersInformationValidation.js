@@ -19,6 +19,12 @@ function validateCity(city) {
     if(cityErrors.length > 0) return cityErrors
 }
 
+function validateNeighborhood(neighborhood) {
+    const neighborhoodErrors = []
+    if(!neighborhood) neighborhoodErrors.push('A neighborhood is required')
+    if(neighborhoodErrors.length > 0) return neighborhoodErrors
+}
+
 export function customerInformationValidation(obj) {
     const errors = {}
 
@@ -30,6 +36,24 @@ export function customerInformationValidation(obj) {
 
     const cityErrors = validateCity(obj.city)
     if (cityErrors) errors.city = cityErrors
+    
+    return errors
+}
+
+export function addressValidation(obj) {
+    const errors = {}
+
+    const streetErrors = validateAddress(obj.street)
+    if (streetErrors) errors.street = streetErrors
+
+    const zipErrors = validateZip(obj.zip)
+    if (zipErrors) errors.zip = zipErrors
+
+    const cityErrors = validateCity(obj.city)
+    if (cityErrors) errors.city = cityErrors
+
+    const neighborhoodErrors = validateNeighborhood(obj.neighborhood)
+    if (neighborhoodErrors) errors.neighborhood = neighborhoodErrors
     
     return errors
 }

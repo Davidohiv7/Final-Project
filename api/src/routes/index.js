@@ -14,8 +14,8 @@ const orders = require('./orders');
 const cart = require('./cart');
 const checkout = require('./checkout');
 const mercadopagoConfirmation = require('./mercadopagoConfirmation');
-
-
+const reviews = require('./reviews');
+const shippingaddress = require('./shippingaddress');
 
 router.use('/confirm/mercadopago', mercadopagoConfirmation);
 router.use('/create_preference', mercadopago);
@@ -30,6 +30,8 @@ router.use('/orders', orders);
 router.use('/cart', cart);
 router.use('/checkout', checkout);
 //router.use('/test', test);
+router.use('/reviews', reviews);
+router.use('/shippingaddress', shippingaddress);
 
 
 module.exports = router;

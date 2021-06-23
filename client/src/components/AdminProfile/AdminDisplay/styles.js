@@ -36,6 +36,10 @@ upBar: {
 
 searchBar: {
   width: '70%'
+},
+
+filter: {
+  width: '20%'
 }
 
 

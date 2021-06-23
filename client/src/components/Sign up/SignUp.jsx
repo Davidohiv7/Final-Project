@@ -26,6 +26,7 @@ export default function SignUp() {
         lastName: '',
         email: '',
         password: '',
+        confirmPassword: '',
     });
 
     const [errorsArray, setErrorsArray] = useState([]);
@@ -106,6 +107,16 @@ export default function SignUp() {
                         label="Password"
                         variant="outlined"
                         value={formInputs.password}
+                        onChange={handleInputChange}
+                        size='small'
+                        type='password'
+                    />
+                    <TextField
+                        className={classes.input}
+                        name="confirmPassword"
+                        label="Confirm Password"
+                        variant="outlined"
+                        value={formInputs.confirmPassword}
                         onChange={handleInputChange}
                         size='small'
                         type='password'

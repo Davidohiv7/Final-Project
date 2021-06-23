@@ -16,7 +16,10 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: 'lightGray',
     },
   },
-  
+
+  header: {
+    fontWeight: '600'
+  }
 
 }));
 

@@ -16,10 +16,10 @@ signInRouter.get('/', (req, res, next) => {
   
 signInRouter.post('/', async (req, res, next) => {
 
-    const { email, password} = req.body
+    const { email, password, localCart} = req.body
 
     try {
-        const userExistCheck = await models.User.findOne({ where: { email }})
+        const userExistCheck = await models.Person.findOne({ where: { email }})
         if(!userExistCheck || !userExistCheck.password) {
             return response.error(req, res, { message: 'The email or the password does not match' })
         }
@@ -30,37 +30,115 @@ signInRouter.post('/', async (req, res, next) => {
             return response.error(req, res, { message: 'The email or the password does not match' })
         }
 
-        const orderValidation = await models.Order.findOne({
+        let orderValidation = await models.Cart.findOne({
             where: {
                 status: 'created',
-                userId: userExistCheck.id,
+                personId: userExistCheck.id,
             },
         })
-        
+
+        let cartProductsIdArray = []
         let orderItems = false
 
         if(orderValidation) {
-            orderItems = await models.OrderItem.findAll({
+            orderItems = await models.CartItem.findAll({
                 where: {
-                    OrderId: orderValidation.id,
+                    CartId: orderValidation.id,
                 }, 
             })
         }
-        
-        let cart = false 
+
+        if(!orderValidation) {
+            orderValidation = await models.Cart.create({
+                personId: userExistCheck.id,
+                status: "created",
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                total: 0, 
+            })
+        }
 
         if(orderItems) {
-            const cartProductsIdArray = orderItems.map(p => p.ProductId)
+            cartProductsIdArray = orderItems.map(p => p.ProductId)
+        }
+
+        if(orderItems.length > 0 && localCart?.length > 0) {
+            const existingProductsId = []
+            const modifiedOrderItems = []
+         
+            orderItems.forEach((orderItem) => {
+                const validateProduct = localCart.find(p => p.id === orderItem.ProductId)
+                if(validateProduct) {
+                    existingProductsId.push(orderItem.ProductId)
+                    orderItem.quantity = (orderItem.quantity + validateProduct.quantity) > validateProduct.stock ? Number(validateProduct.stock) : orderItem.quantity + validateProduct.quantity
+                    orderItem.subtotal = orderItem.quantity * Number(validateProduct.price)
+                    modifiedOrderItems.push(orderItem)
+                }
+            })
+
+            modifiedOrderItemsPromiseArray = modifiedOrderItems.map(moi => moi.save())
+
+            await Promise.all(modifiedOrderItemsPromiseArray)
+
+            const newProductsInCart = []
+            localCart.forEach(p => {
+                if(!existingProductsId.includes(p.id)) {
+                    newProductsInCart.push({
+                        ProductId: p.id,
+                        CartId: orderValidation.id,
+                        quantity: p.quantity,
+                        subtotal: ((p.quantity * p.price).toFixed(2)),
+                        createdAt: new Date(),
+                        updatedAt: new Date() 
+                    })
+                }
+            })
+            if(newProductsInCart.length > 0) {
+                await models.CartItem.bulkCreate(newProductsInCart);
+            }
+            orderItems = await models.CartItem.findAll({
+                where: {
+                    CartId: orderValidation.id,
+                }, 
+            })
+        }
+
+        if(!orderItems) {
+            orderItems = []
+        }
+
+        if(orderItems.length === 0 && localCart?.length > 0) {
+            cartProductsIdArray = localCart.map(p => p.id)
+            console.log(cartProductsIdArray)
+            const orderItemsArrayData = localCart.map(p => {
+                return {
+                    ProductId: p.id,
+                    CartId: orderValidation.id,
+                    quantity: p.quantity,
+                    subtotal: ((p.quantity * p.price).toFixed(2)),
+                    createdAt: new Date(),
+                    updatedAt: new Date() 
+                }
+            })
+            orderItems = await models.CartItem.bulkCreate(orderItemsArrayData);
+        }
+
+        let cart = false
+
+        if(orderItems) {
+            orderValidation.total = orderItems.reduce((acc, oi) => acc + Number(oi.subtotal), 0)
+            await orderValidation.save()
             const cartData = await models.Product.findAll({ 
                 where: {id: cartProductsIdArray},
                 include: [{
-                    model: models.Order,
+                    model: models.Cart,
                     where: { id: userExistCheck.id }
                   },
                   {
                     model: models.Image,
                   }],
               })
+
             cart = cartData.map(p => {
                 return {
                     id: p.id,
@@ -69,7 +147,7 @@ signInRouter.post('/', async (req, res, next) => {
                     price: p.price,
                     stock: p.stock,
                     Images: p.Images,
-                    quantity: p.Orders[0].OrderItem.quantity,
+                    quantity: p.Carts[0].CartItem.quantity,
                 }
             })
         }
@@ -80,6 +158,7 @@ signInRouter.post('/', async (req, res, next) => {
         return response.success(req, res, {message: 'Successful log in', token: jasonWebToken, cart})
 
     } catch (error) {
+        console.log(error)
         response.error(req, res, error)
     }
     

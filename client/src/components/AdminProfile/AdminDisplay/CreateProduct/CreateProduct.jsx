@@ -6,6 +6,8 @@ import ImageWrapper from './ImageWrapper/ImageWrapper';
 
 //Imports Material UI components:
 import { Box, CardContent, TextField, InputAdornment, Button, Paper, Typography }from '@material-ui/core'
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import useStyles from './styles';
 
@@ -24,6 +26,12 @@ export default function CreateForm({ setDisplayStatus, editProduct }) {
         categories: editProduct? editProduct.Categories.map(c => c.name): [],
         images: editProduct? editProduct.Images.map(i => ({ secure_url:i.url, name: i.name})): []
     })
+
+    const [open, setOpen] = useState(false);
+
+    function Alert(props) {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
 
 
 
@@ -127,21 +135,22 @@ useEffect(() => {
             if(editProduct) {
                 dispatch(updateProduct(product))
                 dispatch(deleteImages(imagesToDelete))
+                setOpen(true)
             }
             else{
-                    dispatch(createProduct(product))
-                    dispatch(deleteImages(imagesToDelete))
-                    setProduct({
-                    name: '',
-                    price: '',
-                    stock: 1,
-                    description: '',
-                    categories: [],
-                    images: []
-                    })
-                    setSelectedCategories([])
-                    setUploadedFiles([])
-                    setDisplayStatus('products')
+                dispatch(createProduct(product))
+                dispatch(deleteImages(imagesToDelete))
+                setProduct({
+                name: '',
+                price: '',
+                stock: 1,
+                description: '',
+                categories: [],
+                images: []
+                })
+                setSelectedCategories([])
+                setUploadedFiles([])
+                setDisplayStatus('products')
                 }   
                 console.log(eName)
         }
@@ -260,6 +269,13 @@ useEffect(() => {
                 </form>
 
                 {editProduct && <Button onClick={()=> {handleDelete(editProduct.id)}} className= {classes.delete}>DELETE PRODUCT</Button>}
+                {editProduct && (
+                <Snackbar open={open} autoHideDuration={4000} onClose={()=> setOpen(false)}>
+                    <Alert onClose={()=> setOpen(false)} severity="success">
+                    The product has been updated succesfully!
+                    </Alert>
+                </Snackbar>
+                )}
             </CardContent>
     )
 }

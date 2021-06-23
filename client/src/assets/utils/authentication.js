@@ -24,12 +24,13 @@ function validateEmail(email) {
     if(emailErrors.length > 0) return emailErrors
 }
 
-function validatePassword(pasword) {
+function validatePassword(pasword, confirmPassword) {
     const passwordErrors = []
     if(!pasword) passwordErrors.push('A password is required')
     if(pasword && !(/^.{8,}$/.test(pasword))) passwordErrors.push('Password must be 8 characters long minimum')
     if(pasword && !(/\d/.test(pasword))) passwordErrors.push('Password must contain at least one number')
     if(pasword && !(/[A-Z]/.test(pasword))) passwordErrors.push('Password must contain at least an upper case')
+    if(pasword && (pasword !== confirmPassword)) passwordErrors.push('Passwords are different')
     if(passwordErrors.length > 0) return passwordErrors
 }
 
@@ -58,7 +59,7 @@ export function signUpValidation(obj) {
     const emailErrors = validateEmail(obj.email)
     if (emailErrors) errors.email = emailErrors
 
-    const passwordErrors = validatePassword(obj.password)
+    const passwordErrors = validatePassword(obj.password, obj.confirmPassword)
     if (passwordErrors) errors.password = passwordErrors
     
     return errors
@@ -69,6 +70,7 @@ export const resetSignUpInput = {
     lastName: '',
     email: '',
     password: '',
+    confirmPassword: '',
 }
 
 export function signInValidation(obj) {

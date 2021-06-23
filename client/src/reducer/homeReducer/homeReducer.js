@@ -9,7 +9,8 @@ const initialState = {
     order: 'ASC',
     filter: 'name',
     categories: [],
-    category: ''
+    category: '',
+    review: '',
 };
 
 const homeReducer = (state = initialState, action = {}) => {

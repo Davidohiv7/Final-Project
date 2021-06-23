@@ -24,7 +24,7 @@ signUpRouter.post('/', async (req, res, next) => {
     const newUserData = req.body
     const saltRounds = Number(SALT_ROUNDS)
     try {
-        const checkedUser = await models.User.findOne({where: {
+        const checkedUser = await models.Person.findOne({where: {
             email: newUserData.email
             }
         })
@@ -34,7 +34,7 @@ signUpRouter.post('/', async (req, res, next) => {
 
         const hashedPassword = bcrypt.hashSync(newUserData.password, saltRounds);
 
-        const newUser = await models.User.create({
+        const newUser = await models.Person.create({
             ...newUserData,
             password: hashedPassword,
             role: "customer",
@@ -42,8 +42,8 @@ signUpRouter.post('/', async (req, res, next) => {
             updatedAt: new Date() 
         })
 
-        const firstUserOrder = await models.Order.create({
-            userId: newUser.id,
+        const firstUserOrder = await models.Cart.create({
+            personId: newUser.id,
             status: "created",
             createdAt: new Date(),
             updatedAt: new Date(),
@@ -53,23 +53,23 @@ signUpRouter.post('/', async (req, res, next) => {
         let newCart = false
 
         if(newUserData.cart) {
-            console.log('ENTRO')
             const cartProductsIdArray = newUserData.cart.map(p => p.id)
             const orderItemsArrayData = newUserData.cart.map(p => {
                 return {
                     ProductId: p.id,
-                    OrderId: firstUserOrder.id,
+                    CartId: firstUserOrder.id,
                     quantity: p.quantity,
                     subtotal: ((p.quantity * p.price).toFixed(2)),
                     createdAt: new Date(),
                     updatedAt: new Date() 
                 }
             })
-            await models.OrderItem.bulkCreate(orderItemsArrayData);
+            console.log(orderItemsArrayData)
+            await models.CartItem.bulkCreate(orderItemsArrayData);
             const newCartData = await models.Product.findAll({ 
                 where: {id: cartProductsIdArray},
                 include: [{
-                    model: models.Order,
+                    model: models.Cart,
                     where: { id: firstUserOrder.id }
                   },
                   {
@@ -84,7 +84,7 @@ signUpRouter.post('/', async (req, res, next) => {
                     price: p.price,
                     stock: p.stock,
                     Images: p.Images,
-                    quantity: p.Orders[0].OrderItem.quantity,
+                    quantity: p.Carts[0].CartItem.quantity,
                 }
             })
             const newTotal = newCart.map(p => p.price * p.quantity).reduce((acc, v) => acc + v)

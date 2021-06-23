@@ -47,28 +47,14 @@ const useStyles = makeStyles((theme) => ({
   BoxLogOut: {
     marginTop: 100,
   },
-  tableContainer: {
-    marginBottom: 15,
-  },
-  title: {
-    color: theme.palette.secondary.main,
-    fontWeight: "bold",
-  },
-  productName: {
-    marginLeft: 15,
-  },
   quantityInput: {
     width: 75,
     borderRadius: 5,
     backgroundColor: theme.palette.common.white,
   },
-  head: {
-    backgroundColor: theme.palette.primary.main,
-  },
   screen: {
     marginLeft: theme.spacing(3),
     position: 'relative',
-    marginTop: theme.spacing(10),
   },
   profile: {
     border: 'solid',
@@ -81,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-  },
+  }
 }));
 
 export default useStyles;

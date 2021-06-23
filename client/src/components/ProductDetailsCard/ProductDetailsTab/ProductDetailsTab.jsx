@@ -6,7 +6,9 @@ import Box from '@material-ui/core/Box'
 import CardContent from '@material-ui/core/CardContent'
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
-import Typography from '@material-ui/core/Typography'
+import Typography from '@material-ui/core/Typography';
+
+import Reviews from './Reviews/Reviews';
 
 export default function ProductDetailsTab({ product }) {
 
@@ -31,7 +33,7 @@ export default function ProductDetailsTab({ product }) {
             }
 
             {selectedTab === 1 && <CardContent className={classes.tabContainer}>
-                <Typography className={classes.tabsTypography}>Ladsffasdfasfast consectetur adipiscing, elit interdum congue aptent nulla mus nullam, convallis in luctus taciti curae. Turpis nostra aliquam ut fringilla fusce non enim nullam.</Typography>
+                <Reviews product={product} />
             </CardContent>
             }
     

@@ -13,7 +13,7 @@ passport.use(
         secretOrKey: SECRET_KEY_JWT
     }, async (jwtPayload, done) => {
         try {
-            const user = await models.User.findOne({where: {id: jwtPayload.id}})
+            const user = await models.Person.findOne({where: {id: jwtPayload.id}})
             return done(null, user)
         } catch (error) {
             return done(error)

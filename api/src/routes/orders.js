@@ -23,7 +23,7 @@ const {
 
 router.post('/confirm_order', passport.authenticate('jwt', {session: false}), async (req, res) => {
     const user = req.user
-    const { subtotal, customerInformation, cart } = req.body
+    const { cart } = req.body
 
     const cartProductsIdArray = cart.map(p => p.id)
     
@@ -32,7 +32,7 @@ router.post('/confirm_order', passport.authenticate('jwt', {session: false}), as
         const order = await models.Cart.findOne({
             where: {
                 status: 'paid',
-                userId: user.id,
+                personId: user.id,
             },
         }) 
 
@@ -68,12 +68,11 @@ router.post('/confirm_order', passport.authenticate('jwt', {session: false}), as
 
         if(verifyOrder) {
             //send email confirmation
-
             transporter.sendMail({
                 from: `Onion Food Sup. <${GOOGLE_MAIL}>`,
                 to: user.email,
                 subject: 'Welcome to Onion Food Sup.',
-                html: mailBuy(user.name, order),
+                html: mailBuy(user.name, order, cart),
                 auth: authMailing,
             });
             return response.success(req, res, { 
@@ -118,8 +117,51 @@ router.post('/payment/stripe', async (req, res) => {
   }
 );
 
-router.get('/', async (req, res) => {
+router.post('/products', passport.authenticate('jwt', {session: false}), async (req, res) => {
 
+    const user = req.user
+    const { order } = req.body
+
+    try {
+
+        const orderItems = await models.CartItem.findAll({
+            where: {
+                CartId: order.id,
+            },
+        })
+
+        const orderProductsIdArray = orderItems.map(p => p.ProductId)
+
+
+        const productData = await models.Product.findAll({ 
+            where: {id: orderProductsIdArray},
+            include: [{
+                model: models.Image,
+            }, 
+            {
+                model: models.Review,
+                required: false,
+                where: { personId: user.id },
+            }],
+        })
+
+
+        const orderData = productData.map(p => {
+            const orderProductData = orderItems.find(oi => oi.ProductId === p.id)
+            return {product: p, orderProductData}
+        })
+        
+        response.success(req, res, {orderData})
+
+    } catch (error) {
+        console.log(error)
+        response.error(req, res, {paymentStatus: false, message: 'Couldn`t find products'})
+    } 
+  }
+); 
+
+
+router.get('/', async (req, res) => {
     try {
         let { status, page = 1, limit = 8 } = req.query;
 
@@ -128,7 +170,7 @@ router.get('/', async (req, res) => {
         if (!status) {
             const { count } = await models.Cart.findAndCountAll();
 
-            if (count === 0) return response.success(req, res, { message: "No orders found!" }, 404);
+            if (count === 0) return response.success(req, res,  {orders: []}, 200);
     
             const data = {};
             let pages = Math.ceil(count / limit);
@@ -146,12 +188,12 @@ router.get('/', async (req, res) => {
 
             return response.success(req, res, { ...data, count, pages, pageNumber, orders }, 200);
         }
-    
+        status = status.toLowerCase()
         const { count } = await models.Cart.findAndCountAll({
             where: { status: status }
         });
     
-        if (count === 0) return response.success(req, res, { message: "No orders found!" }, 404);
+        if (count === 0) return response.success(req, res, {orders: []}, 200);
     
         const data = {};
         let pages = Math.ceil(count / limit);
@@ -171,7 +213,7 @@ router.get('/', async (req, res) => {
         response.success(req, res, { ...data, count, pages, pageNumber, orders }, 200);
 
     } catch (error) {
-        response.error(req, res, error, 500);
+        response.error(req, res, {orders: []}, 500);
     }
 
 })
@@ -182,7 +224,7 @@ router.patch('/', async (req, res) => {
         const order = await models.Cart.findOne({
             where: { id: id }
         });
-        if (!order) return response.suceess(req, res, { message: "Order not found."}, 404);
+        if (!order) return response.success(req, res, { message: "Order not found."}, 200);
 
         order.status = status.toLowerCase();
         await order.save();
@@ -205,3 +247,4 @@ router.get('/:id', async (req, res) => {
 })
 
 module.exports = router;
+

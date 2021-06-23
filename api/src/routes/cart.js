@@ -11,18 +11,18 @@ router.post('/add', passport.authenticate('jwt', {session: false}), async (req, 
     const {product, quantity} = req.body
 
     try {
-        const orderValidation = await models.Order.findOne({
+        const orderValidation = await models.Cart.findOne({
             where: {
                 status: 'created',
-                userId: user.id,
+                personId: user.id,
             },
         }) 
 
         let cart = orderValidation
 
         if(!orderValidation) {
-            cart = await models.Order.create({
-                userId: user.id,
+            cart = await models.Cart.create({
+                personId: user.id,
                 status: "created",
                 createdAt: new Date(),
                 updatedAt: new Date(),
@@ -30,9 +30,9 @@ router.post('/add', passport.authenticate('jwt', {session: false}), async (req, 
             })
         }
 
-        const orderItemValidation = await models.OrderItem.findOne({
+        const orderItemValidation = await models.CartItem.findOne({
             where: {
-                OrderId: cart.id,
+                CartId: cart.id,
                 ProductId: product.id,
             },
         })
@@ -47,9 +47,9 @@ router.post('/add', passport.authenticate('jwt', {session: false}), async (req, 
         }
 
         if(!modifiedOrderItem) {
-            modifiedOrderItem = await models.OrderItem.create({
+            modifiedOrderItem = await models.CartItem.create({
                 ProductId: product.id,
-                OrderId: cart.id,
+                CartId: cart.id,
                 quantity,
                 subtotal: (Number(quantity) * Number(product.price)).toFixed(2),
                 createdAt: new Date(),
@@ -60,9 +60,9 @@ router.post('/add', passport.authenticate('jwt', {session: false}), async (req, 
         cart.total = (Number(cart.total) + (Number(quantity) * Number(product.price))).toFixed(2);
         await cart.save()
 
-        const orderItems = await models.OrderItem.findAll({
+        const orderItems = await models.CartItem.findAll({
             where: {
-                OrderId: cart.id,
+                CartId: cart.id,
             }, 
         })
 
@@ -74,7 +74,7 @@ router.post('/add', passport.authenticate('jwt', {session: false}), async (req, 
         const cartData = await models.Product.findAll({ 
             where: {id: cartProductsIdArray},
             include: [{
-                model: models.Order,
+                model: models.Cart,
                 where: { id: cart.id  }
               },
               {
@@ -91,7 +91,7 @@ router.post('/add', passport.authenticate('jwt', {session: false}), async (req, 
                 price: p.price,
                 stock: p.stock,
                 Images: p.Images,
-                quantity: p.Orders[0].OrderItem.quantity,
+                quantity: p.Carts[0].CartItem.quantity,
             }
         })
 
@@ -108,16 +108,16 @@ router.put('/modify', passport.authenticate('jwt', {session: false}), async (req
 
     try {
 
-        const cart = await models.Order.findOne({
+        const cart = await models.Cart.findOne({
             where: {
                 status: 'created',
-                userId: user.id,
+                personId: user.id,
             },
         }) 
 
-        const orderItemModified = await models.OrderItem.findOne({
+        const orderItemModified = await models.CartItem.findOne({
             where: {
-                OrderId: cart.id,
+                CartId: cart.id,
                 ProductId: product.id
             },
         }) 
@@ -130,9 +130,9 @@ router.put('/modify', passport.authenticate('jwt', {session: false}), async (req
         cart.total = (Number(cart.total) + Number(orderItemModified.subtotal) - previousSubtotal).toFixed(2);
         await cart.save()
 
-        const orderItems = await models.OrderItem.findAll({
+        const orderItems = await models.CartItem.findAll({
             where: {
-                OrderId: cart.id,
+                CartId: cart.id,
             },
             order: [
                 ['id', 'ASC'],
@@ -143,7 +143,7 @@ router.put('/modify', passport.authenticate('jwt', {session: false}), async (req
         const cartData = await models.Product.findAll({ 
             where: {id: cartProductsIdArray},
             include: [{
-                model: models.Order,
+                model: models.Cart,
                 where: { id: cart.id  }
               },
               {
@@ -160,7 +160,7 @@ router.put('/modify', passport.authenticate('jwt', {session: false}), async (req
                 price: p.price,
                 stock: p.stock,
                 Images: p.Images,
-                quantity: p.Orders[0].OrderItem.quantity,
+                quantity: p.Carts[0].CartItem.quantity,
             }
         })
 
@@ -177,25 +177,26 @@ router.put('/delete', passport.authenticate('jwt', {session: false}), async (req
 
     try {
 
-        const cart = await models.Order.findOne({
+        const cart = await models.Cart.findOne({
             where: {
                 status: 'created',
-                userId: user.id,
+                personId: user.id,
             },
         }) 
 
         cart.total = Number(cart.total) - (Number(product.price) * product.quantity)
         await cart.save()
 
-        await models.OrderItem.destroy({
+        await models.CartItem.destroy({
             where: {
+                CartId: cart.id,
                 ProductId: product.id,
             }
         });
 
-        const orderItems = await models.OrderItem.findAll({
+        const orderItems = await models.CartItem.findAll({
             where: {
-                OrderId: cart.id,
+                CartId: cart.id,
             },
             order: [
                 ['id', 'ASC'],
@@ -206,7 +207,7 @@ router.put('/delete', passport.authenticate('jwt', {session: false}), async (req
         const cartData = await models.Product.findAll({ 
             where: {id: cartProductsIdArray},
             include: [{
-                model: models.Order,
+                model: models.Cart,
                 where: { id: cart.id  }
               },
               {
@@ -222,7 +223,7 @@ router.put('/delete', passport.authenticate('jwt', {session: false}), async (req
                 price: p.price,
                 stock: p.stock,
                 Images: p.Images,
-                quantity: p.Orders[0].OrderItem.quantity,
+                quantity: p.Carts[0].CartItem.quantity,
             }
         })
 
@@ -239,33 +240,34 @@ router.delete('/clear', passport.authenticate('jwt', {session: false}), async (r
 
     try {
 
-        const cart = await models.Order.findOne({
+        const cart = await models.Cart.findOne({
             where: {
                 status: 'created',
-                userId: user.id,
+                personId: user.id,
             },
         }) 
 
         cart.total = 0
         await cart.save()
 
-        const orderItems = await models.OrderItem.findAll({
+        const orderItems = await models.CartItem.findAll({
             where: {
-                OrderId: cart.id,
+                CartId: cart.id,
             }, 
         })
 
         const orderItemsIdArray = orderItems.map(p => p.ProductId)
 
-        await models.OrderItem.destroy({
+        await models.CartItem.destroy({
             where: {
+                CartId: cart.id,
                 ProductId: orderItemsIdArray,
             }
         });
 
-        const newOrderItems = await models.OrderItem.findAll({
+        const newOrderItems = await models.CartItem.findAll({
             where: {
-                OrderId: cart.id,
+                CartId: cart.id,
             }, 
         })
 

@@ -68,12 +68,11 @@ router.post('/confirm_order', passport.authenticate('jwt', {session: false}), as
 
         if(verifyOrder) {
             //send email confirmation
-
             transporter.sendMail({
                 from: `Onion Food Sup. <${GOOGLE_MAIL}>`,
                 to: user.email,
                 subject: 'Welcome to Onion Food Sup.',
-                html: mailBuy(user.name, order),
+                html: mailBuy(user.name, order, cart),
                 auth: authMailing,
             });
             return response.success(req, res, { 
@@ -138,6 +137,11 @@ router.post('/products', passport.authenticate('jwt', {session: false}), async (
             where: {id: orderProductsIdArray},
             include: [{
                 model: models.Image,
+            }, 
+            {
+                model: models.Review,
+                required: false,
+                where: { personId: user.id },
             }],
         })
 

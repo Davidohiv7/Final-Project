@@ -8,24 +8,27 @@ import { RateReview } from '@material-ui/icons'
 import useStyles from "./styles";
 //Components
 import ProductDetailsCard from '../../../../../ProductDetailsCard/ProductDetailsCard'
+import OrderProductReview from '../OrderProductReview/OrderProductReview'
 //Custom functions
 import { createArrayFromNumber } from '../../../../../../assets/utils/productCardFunctions'
 
 
-export default function OrderDetails( { productsData }) {
+export default function OrderDetails( { productsData, order, setProductsData }) {
 
     const classes = useStyles();
 
     const [modalProduct, setModalProduct] = useState({});
-    const [modalState, setModalState] = useState(false);
+    const [productDetailModalState, setProductDetailModalState] = useState(false);
+    const [productReviewModalState, setProductReviewModalState] = useState(false);
 
-    function handleProductDetail(e, d) {
-        setModalProduct(d.product)
-        setModalState(true)
+    function handleProductDetail(e, productData) {
+        setModalProduct(productData)
+        setProductDetailModalState(true)
     }
 
-    function handleReview() {
-        console.log('Boton review')
+    function handleReview(productData) {
+        setProductReviewModalState(true)
+        setModalProduct(productData)
     }
 
     return (
@@ -43,16 +46,25 @@ export default function OrderDetails( { productsData }) {
                             <ListItemText primary={d.product.name} secondary={`Quantity x ${d.orderProductData.quantity} - Subotal: ${d.orderProductData.subtotal}`}/>
 
                             <ListItemSecondaryAction>
-                                <Button
-                                    size='small'
-                                    variant="contained"
-                                    color="primary"
-                                    className={classes.button}
-                                    endIcon={<RateReview/>}
-                                    onClick={() => handleReview()}
-                                >
-                                    review
-                                </Button>
+                                {
+                                    d.product.Reviews.length > 0 ?
+                                    <Box>
+                                        <Typography color="initial">Reviewed</Typography>
+                                    </Box>
+                                    :
+                                    <Button
+                                        size='small'
+                                        variant="contained"
+                                        color="primary"
+                                        className={classes.button}
+                                        endIcon={<RateReview/>}
+                                        onClick={() => handleReview(d)}
+                                        disabled={d.product.Reviews.length > 0}
+                                    >
+                                        review
+                                    </Button>
+
+                                }
                             </ListItemSecondaryAction>
                         </ListItem>
                         )
@@ -66,16 +78,35 @@ export default function OrderDetails( { productsData }) {
                 aria-labelledby="Product details"
                 aria-describedby="Product details"
                 className={classes.modal}
-                open={modalState}
-                onClose={() => setModalState(false)}
+                open={productDetailModalState}
+                onClose={() => setProductDetailModalState(false)}
                 closeAfterTransition
                 BackdropComponent={Backdrop}
                 BackdropProps={{
                     timeout: 500,
                 }}
             >
-                <Fade in={modalState}>
-                    <ProductDetailsCard scoreArray={createArrayFromNumber(modalProduct.score)} product={modalProduct} setModalState={setModalState}></ProductDetailsCard>
+                <Fade in={productDetailModalState}>
+                    <ProductDetailsCard scoreArray={createArrayFromNumber(modalProduct.score)} product={modalProduct.product} setModalState={setProductDetailModalState}></ProductDetailsCard>
+                </Fade>
+            </Modal>
+
+            <Modal
+                aria-labelledby="Product details"
+                aria-describedby="Product details"
+                className={classes.modal}
+                open={productReviewModalState}
+                onClose={() => setProductReviewModalState(false)}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                    timeout: 500,
+                }}
+            >
+                <Fade in={productReviewModalState}>
+                    <Box>
+                        <OrderProductReview productData={modalProduct} order={order} setProductsData={setProductsData} setProductReviewModalState={setProductReviewModalState}/>
+                    </Box>
                 </Fade>
             </Modal>
             

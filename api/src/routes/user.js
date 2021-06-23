@@ -100,6 +100,59 @@ router.get('/data', passport.authenticate('jwt', {session: false}), async (req, 
     }
     
 })
-  
+
+router.get('/', async (req, res) => {
+
+    try {
+        let { page = 1, limit = 8 } = req.query;
+        const { count } = await models.Person.findAndCountAll();
+    
+        if (count === 0) return response.success(req, res, { users: [] }, 200);
+
+        let nextPage;
+        let previousPage;
+        let pages = Math.ceil(count / limit);
+        if (page > pages) page = pages;
+        const pageNumber = parseInt(page)
+        let startIndex = (page - 1) * limit;
+        let endIndex = page * limit;
+        if (endIndex < count) nextPage = pageNumber + 1;
+        if (startIndex > 0) previousPage = pageNumber - 1;
+
+        const users = await models.Person.findAll({
+            limit: limit,
+            offset: (page * limit) - limit,
+        });
+
+        return response.success(req, res, { nextPage, previousPage, count, pages, pageNumber, users }, 200);
+    } catch (error) {
+        response.error(req, res, { users: [] }, 500);
+    }
+})
+
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const user = await models.Person.findOne({ where: { id: id } });
+        if (!user) return response.success(req, res, { message: "User not found." }, 200);
+
+        await user.destroy();
+        response.success(req, res, { message: "User deleted successfully." });
+    } catch (error) {
+        response.error(req, res, error);
+    }
+})
+
+router.get('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await models.Person.findOne({ where: { id: id } });
+        if (!user) return response.success(req, res, { message: "User not found." }, 200);
+        response.success(req, res, user);
+    } catch (error) {
+        response.error(req, res, error);
+    }
+})
 
 module.exports = router

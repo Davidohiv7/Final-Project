@@ -22,6 +22,7 @@ export default function AdminProfile() {
   const classes = useStyles();
 
     //Route protection
+  /* eslint-disable */
   useEffect(() => {
     if(!logged) {
       return history.push("/authentication");
@@ -36,7 +37,7 @@ export default function AdminProfile() {
     dispatch(logOut())
     history.push("/");
   }
-
+  /* eslint-enable */
   const displayHandler = (value) => {
     setDisplayStatus(value);
   }

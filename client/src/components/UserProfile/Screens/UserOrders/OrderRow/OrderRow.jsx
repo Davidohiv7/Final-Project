@@ -29,13 +29,13 @@ export default function OrderRow( { order, openOrder, setOpenOrder }) {
         }
         setOpen(!open)
     }
-
+    /* eslint-disable */
     useEffect(() => {
         if(openOrder !== order.id) {
             setOpen(false)
         }
       }, [openOrder])
-
+    /* eslint-enable */
     return (
 
         <React.Fragment>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 
+/* eslint-disable */
 //Imports Material UI components:
 import { Box, TextField, Button,}from '@material-ui/core'
 import Snackbar from '@material-ui/core/Snackbar';
@@ -17,7 +18,6 @@ export default function CreateCategory({ setDisplayStatus }) {
 
     const [openError, setOpenError] = useState(false);
     const [openCreated, setOpenCreated] = useState(false);
-
 
     function Alert(props) {
         return <MuiAlert elevation={6} variant="filled" {...props} />;

@@ -1,5 +1,5 @@
 import React from 'react';
-import NavBar from './Views/NavBar/NavBar'
+import NavBar from './Views/NavBar/NavBar.jsx'
 import UserProfile from './components/UserProfile/UserProfile'
 import AdminProfile from './components/AdminProfile/AdminProfile'
 import Home from './Views/Home/Home.jsx'

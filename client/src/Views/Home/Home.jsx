@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getAllProducts } from './../../actions/home/home_actions';
 
+/* eslint-disable */
 // Material UI imports
 import { Grid, Paper, Container  } from '@material-ui/core';
 import useStyles from './styles';
@@ -21,8 +22,6 @@ export default function Home() {
     dispatch(getAllProducts())
   }, []
   )
-
-  
 
   return (
     <Container maxWidth="lg">

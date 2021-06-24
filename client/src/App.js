@@ -11,6 +11,7 @@ import { Route } from 'react-router-dom';
 import Authentication from './Views/Authentication/Authentication';
 import GoogleAuthSuccess from '../src/components/GoogleAuth/GoogleAuthSuccess/GoogleAuthSuccess';
 import GoogleAuthError from '../src/components/GoogleAuth/GoogleAuthError/GoogleAuthError';
+import Contact from './Views/Contact/Contact'
 
 
 export default function App() {
@@ -47,6 +48,11 @@ export default function App() {
         render={() => <Authentication/>}
       />
 
+      <Route
+        path='/contact'
+        render={() => <Contact/>}
+      />
+      
       <Route
         path='/'
         render={() => <Footer/>}

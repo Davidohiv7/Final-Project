@@ -77,6 +77,14 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         margin: '15px',
         width: '100%'
+    },
+    autoCompleteList: {
+        position: 'absolute',
+        zIndex: 20,
+        backgroundColor: theme.palette.common.white,
+        width: '100%',
+        borderBottomRightRadius: '2px',
+        borderBottomLeftRadius: '2px',
     }
 }));
 

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { getProducts, updateSearching, updateCategory } from '../../actions/home/home_actions';
 import useStyles from './styles'
-import { Grid, Paper, InputBase, Typography } from '@material-ui/core';
+import { Grid, Paper, InputBase, Typography, List, ListItem, ListItemText } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import ProductCards from '../ProductCards/ProductCards.jsx'
 import PaginationBar from './PaginationBar/PaginationBar.jsx'
@@ -13,12 +13,18 @@ import SortSelect from './SortSelect/SortSelect.jsx'
 export default function Catalogue() {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const { searched, products, filter, order } = useSelector((state) => ({ ...state.homeReducer }))
+    const { searched, products, filter, order } = useSelector((state) => ({ ...state.homeReducer }));
+    const [autoComplete, setAutocomplete] = useState(false);
 
-    const handleSearchChange = event => {
-      dispatch(getProducts({name: event.target.value, filter, order}))
-      dispatch(updateSearching(event.target.value))
-      dispatch(updateCategory(''))
+    const handleSearchChange = value => {
+      dispatch(getProducts({name: value, filter, order}));
+      dispatch(updateSearching(value));
+      dispatch(updateCategory(''));
+      if (value.length > 0 && products) {
+        setAutocomplete(true);
+      } else {
+        setAutocomplete(false);
+      }
     };
 
 
@@ -29,6 +35,7 @@ export default function Catalogue() {
                 <div className={classes.searchIcon}>
                         <SearchIcon />
                     </div>
+                    <div className={classes.demo}>
                     <InputBase
                         placeholder="Search…"
                         classes={{
@@ -36,9 +43,25 @@ export default function Catalogue() {
                         input: classes.inputInput,
                         }}
                         inputProps={{ 'aria-label': 'search' }}
-                        onChange={handleSearchChange}
+                        onChange={(event) => handleSearchChange(event.target.value)}
                         value={searched}
                     />
+                        {
+                          autoComplete && products.length > 1 &&
+                          <List className={classes.autoCompleteList}>
+                           {
+                             products && products.map(product => {
+                               return (
+                                 <ListItem onClick={() => handleSearchChange(product.name)}>
+                                   <ListItemText primary={product.name} />
+                                 </ListItem>
+                               )
+                             })
+                           }
+                          </List>
+                        }
+                    </div>
+                    
 
                 </div>
                 <SortSelect/>

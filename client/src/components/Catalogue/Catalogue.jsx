@@ -50,7 +50,7 @@ export default function Catalogue() {
                           autoComplete && products.length > 1 &&
                           <List className={classes.autoCompleteList}>
                            {
-                             products && products.map(product => {
+                             products.map(product => {
                                return (
                                  <ListItem onClick={() => handleSearchChange(product.name)}>
                                    <ListItemText primary={product.name} />
@@ -61,8 +61,6 @@ export default function Catalogue() {
                           </List>
                         }
                     </div>
-                    
-
                 </div>
                 <SortSelect/>
             </div>

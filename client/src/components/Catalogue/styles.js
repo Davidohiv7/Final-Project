@@ -85,6 +85,9 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         borderBottomRightRadius: '2px',
         borderBottomLeftRadius: '2px',
+        maxHeight: 200,
+        overflow: 'auto',
+        boxShadow: '1px 3px 6px -2px rgba(0,0,0,0.77)',
     }
 }));
 

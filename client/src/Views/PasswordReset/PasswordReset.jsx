@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import {
     Box,
     Button,
@@ -15,9 +16,9 @@ function PasswordReset() {
     const [validationError, setValidationError] = useState(false);
     const [passwordRequested, setPasswordRequested] = useState(false);
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if(validate.isEmail(email)) {
-            // requestPasswordReset();
+            axios.post('http://localhost:3001/passwordReset/getKey', { email });
             setPasswordRequested(true);
             setValidationError(false);
         } else {

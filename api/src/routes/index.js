@@ -14,6 +14,7 @@ const orders = require('./orders');
 const cart = require('./cart');
 const checkout = require('./checkout');
 const mercadopagoConfirmation = require('./mercadopagoConfirmation');
+const passwordReset = require('./passwordReset');
 
 
 
@@ -29,6 +30,7 @@ router.use('/image', images);
 router.use('/orders', orders);
 router.use('/cart', cart);
 router.use('/checkout', checkout);
+router.use('/passwordReset', passwordReset);
 //router.use('/test', test);
 
 

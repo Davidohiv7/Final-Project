@@ -69,7 +69,6 @@ router.post('/', async (req, res) => {
 router.delete('/:name', async (req, res) => {
   try {
     const { name } = req.params;
-    console.log(name)
 		const category = await models.Category.findOne({ where: { name: name }});
 
 		if (!category) return response.success(req, res, { message: "Category not found." }, 200);

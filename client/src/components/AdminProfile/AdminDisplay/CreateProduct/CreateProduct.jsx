@@ -151,8 +151,7 @@ useEffect(() => {
                 setSelectedCategories([])
                 setUploadedFiles([])
                 setDisplayStatus('products')
-                }   
-                console.log(eName)
+                } 
         }
     }
 

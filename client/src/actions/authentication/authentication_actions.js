@@ -99,7 +99,6 @@ export function getGoogleUserCart(jwt) {
         try {
             //CUANDO NO HAY UNA ORDEN CREADA NO RESPONDE AQUI
             const response = await axios.post("http://localhost:3001/googleAuth/getcart", {localCart}, { headers: { 'Authorization': jwt } })
-            console.log(response.data)
             if(response) {
                 dispatch({type: GOOGLE_AUTH})
                 localStorage.removeItem('cart')

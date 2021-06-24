@@ -2,17 +2,7 @@ import React, { useEffect, useState } from 'react';
 import useStyles from './styles'
 
 //Imports Material UI components:
-import Card from '@material-ui/core/Card'
-import CardMedia from '@material-ui/core/CardMedia'
-import CardActionArea from '@material-ui/core/CardActionArea'
-import Typography from '@material-ui/core/Typography'
-import CardContent from '@material-ui/core/CardContent'
-import Box from '@material-ui/core/Box'
-import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button'
-import Modal from '@material-ui/core/Modal'
-import Fade from '@material-ui/core/Fade'
-import Backdrop from '@material-ui/core/Backdrop';
+import { Card, CardMedia, CardActionArea, Typography, CardContent, Box, IconButton, Button, Modal, Fade, Backdrop } from '@material-ui/core/'
 //Imports Material UI icons:
 import { FavoriteBorder, ShoppingCartOutlined, Star } from '@material-ui/icons';
 
@@ -20,8 +10,6 @@ import { FavoriteBorder, ShoppingCartOutlined, Star } from '@material-ui/icons';
 import { createArrayFromNumber, addToFavorites } from '../../assets/utils/productCardFunctions'
 //React components
 import ProductDetailsCard from '../ProductDetailsCard/ProductDetailsCard'
-
-
 
 export default function ProductCards({ product }) {
 

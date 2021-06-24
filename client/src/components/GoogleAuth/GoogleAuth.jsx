@@ -28,7 +28,6 @@ export default function GoogleAuth() {
                     const jwt = cookies.get('jwt')
                     const isNewUser = cookies.get('newUser')
                     const localCart = JSON.parse(localStorage.getItem('cart'))
-                    console.log('entra')
                     if(jwt) {
                         if(isNewUser) {
                             cookies.remove('newUser')

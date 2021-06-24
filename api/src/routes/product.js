@@ -2,7 +2,7 @@ const { Router } = require('express');
 const router = Router();
 const models = require('../database/models/');
 const response = require('../utils/response');
-const { Op } = require("sequelize");
+const { Op, col, fn } = require("sequelize");
 
 
 router.get('/', async (req, res) => {
@@ -379,6 +379,7 @@ router.post('/stockbyid', async (req, res) => {
     response.error(req, res, error, 500);
   }
 })
+
 
 
 module.exports = router;

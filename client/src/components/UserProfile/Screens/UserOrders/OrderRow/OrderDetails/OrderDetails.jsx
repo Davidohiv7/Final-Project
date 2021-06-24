@@ -87,7 +87,7 @@ export default function OrderDetails( { productsData, order, setProductsData }) 
                 }}
             >
                 <Fade in={productDetailModalState}>
-                    <ProductDetailsCard scoreArray={createArrayFromNumber(modalProduct.score)} product={modalProduct.product} setModalState={setProductDetailModalState}></ProductDetailsCard>
+                    <ProductDetailsCard scoreArray={createArrayFromNumber(modalProduct.product?.score)} product={modalProduct.product} setModalState={setProductDetailModalState}></ProductDetailsCard>
                 </Fade>
             </Modal>
 

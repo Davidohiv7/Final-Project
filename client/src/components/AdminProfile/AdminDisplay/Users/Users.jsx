@@ -12,11 +12,11 @@ export default function Users({ setDisplayStatus, setEditUser }) {
   
   const dispatch = useDispatch();
   
-  
+  /* eslint-disable */
   useEffect(() => {
     dispatch(getUsers())
   }, [])
-  
+  /* eslint-enable */
   const { users } = useSelector((state)=> state.adminReducer)
   
   function createData(id, name, role, edit) {

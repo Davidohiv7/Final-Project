@@ -12,11 +12,11 @@ export default function Categories() {
     
     const dispatch = useDispatch();
     const categories = useSelector((state)=> state.adminReducer.categories)
-
+    /* eslint-disable */
     useEffect(() => {
       dispatch(getCategories())
     }, [])
-
+    /* eslint-enable */
     function createData(name, edit) {
       return { name, edit };
     }

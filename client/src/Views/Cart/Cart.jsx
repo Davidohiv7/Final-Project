@@ -51,6 +51,8 @@ export default function Cart() {
 
     const parsed = queryString.parse(location.search);
 
+    /* eslint-disable */
+
     useEffect(() => {
         if(!logged) {
             return setCartProducts(readLocalStorageCart())
@@ -93,6 +95,8 @@ export default function Cart() {
             setSubtotal(0)
         }
     }, [cart])
+
+    /* eslint-enable */
 
     function handleQuantityChange(product, e) {
         if(payment.state) {

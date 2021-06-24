@@ -32,7 +32,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
     const [cartDisabledSnackbar, setDisabledCartSnackbar] = useState(false);
     const [favSnackbar, setFavSnackbar] = useState(false);
     const [alreadyFavSnackbar, setAlreadyFavSnackbar] = useState(false);
-
+    /* eslint-disable */
     useEffect(() => {
         const validateCartProduct = cart.find(p => p.id === product.id);
         if(validateCartProduct) {
@@ -46,6 +46,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
             setQuantityInCart(validateCartProduct.quantity)
         }
     }, [cart])
+    /* eslint-enable */
 
     function handleAddToCart(product, quantity, setQuantity) {
         if(payment.state) {

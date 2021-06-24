@@ -26,6 +26,7 @@ export default function Home() {
   const [screenDisplay, setScreenDisplay] = useState("accountConfig");
 
   //Route protection
+  /* eslint-disable */
   useEffect(() => {
       if(!logged) {
         return history.push("/authentication");
@@ -34,6 +35,7 @@ export default function Home() {
         return history.push("/authentication");
     }
   }, [logged])
+  /* eslint-enable */
 
   //function to display the different screens
   function displayScreens() {

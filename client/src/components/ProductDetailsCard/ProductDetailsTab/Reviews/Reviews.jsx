@@ -10,7 +10,7 @@ export default function Review({ product }) {
   const classes = useStyles();
 
   const [reviews, setReviews] = useState([]);
-
+  /* eslint-disable */
   useEffect(() => {
     const functionGetReviews = async() => {
       try {
@@ -23,7 +23,7 @@ export default function Review({ product }) {
     }
     functionGetReviews();
   }, []);
-
+  /* eslint-enable */
   return (
     <List className={classes.root}>
       {reviews.length > 0 ? reviews.map((review) => (

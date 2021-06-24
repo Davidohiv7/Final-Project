@@ -31,6 +31,17 @@ router.post('/add', passport.authenticate('jwt', {session: false}), async (req, 
             updatedAt: new Date(),
         })
 
+        const product = await models.Product.findOne({
+            where: { id: productId},
+            include: {
+              model: models.Review,
+              attributes: ['score']
+            }
+        });
+
+        product.score = Math.round((product.Reviews.reduce((accumulator, review) => accumulator + Number(review.score), 0)) /  (product.Reviews.length))
+        await product.save()
+
         response.success(req, res, {review: newReview, isNew: true} )
 
     } catch (error) {

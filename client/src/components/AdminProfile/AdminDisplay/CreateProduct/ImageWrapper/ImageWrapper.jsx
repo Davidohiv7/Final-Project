@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     const dispatch = useDispatch();
   return (
     <Paper className={classes.image} justify="space-between" alignItems="center">
-        <img width= '150px' src={file.secure_url} />
+        <img width= '150px' src={file.secure_url} alt="Product Avatar" />
         <button className={classes.delete} size="small" onClick={function(e){
           e.preventDefault()
           onDelete(file)

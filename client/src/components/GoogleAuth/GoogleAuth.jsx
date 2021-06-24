@@ -4,14 +4,11 @@ import { Box, Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import GoogleButton from 'react-google-button'
 import { useHistory } from "react-router-dom";
-import useStyles from './styles';
 import { Cookies } from 'react-cookie'
 
 import { setGoogleUserNewCart, getGoogleUserCart, getUserData } from '../../actions/authentication/authentication_actions'
 
 export default function GoogleAuth() {
-
-    let classes = useStyles();
 
     let history = useHistory();
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 // Material UI imports
 import { CardContent, Button, Box, Paper, TextField} from '@material-ui/core';
@@ -24,7 +24,7 @@ import UserDetail from './UserDetail/UserDetail';
 export default function AdminDisplay({displayStatus, setDisplayStatus}) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { searched, products, filter, order } = useSelector((state) => ({ ...state.homeReducer }));
+  const { filter, order } = useSelector((state) => ({ ...state.homeReducer }));
   const [editProduct, setEditProduct] = useState({});
   const [editOrder, setEditOrder] = useState({});
   const [editUser, setEditUser] = useState({});

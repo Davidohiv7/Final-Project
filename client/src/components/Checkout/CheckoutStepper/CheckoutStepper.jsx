@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 //Imports Material UI components:
-import {Box, Typography, Stepper, Step, StepLabel } from '@material-ui/core'
+import {Box, Stepper, Step, StepLabel } from '@material-ui/core'
 //Styles
 import useStyles from './styles';
 

@@ -5,10 +5,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import ProductDetailsTab from './ProductDetailsTab/ProductDetailsTab.jsx'
 import ProductDetailsPhotoSlider from './ProductDetailsPhotoSlider/ProductDetailsPhotoSlider.jsx'
 //Imports Material UI components:
-import {Paper, Card, CardMedia, CardContent, Box, Typography, TextField, Button, IconButton, Divider, Snackbar} from '@material-ui/core'
+import {Paper, Card, CardContent, Box, Typography, TextField, Button, IconButton, Divider, Snackbar} from '@material-ui/core'
 import { Alert } from '@material-ui/lab';
 //Imports Material UI icons:
-import { Star, ShoppingCartOutlined, FavoriteBorder, Close, CodeOutlined } from '@material-ui/icons';
+import { Star, ShoppingCartOutlined, FavoriteBorder, Close } from '@material-ui/icons';
 //Custom functions
 import { addToCart, addToFavorites } from '../../assets/utils/productCardFunctions'
 //actions

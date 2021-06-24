@@ -1,5 +1,6 @@
 //react imports
 import React, {useState} from "react";
+import { useDispatch } from 'react-redux';
 // Material UI imports
 import {Box, Typography, Avatar, TextField, Button, IconButton, Popover } from "@material-ui/core";
 //Styles
@@ -11,10 +12,14 @@ import { createArrayFromNumber } from '../../../../../../assets/utils/productCar
 import { reviewValidation } from '../../../../../../assets/utils/reviews'
 //axios
 import axios from 'axios'
+//actions
+import { getAllProducts } from '../../../../../../actions/home/home_actions';
 
 export default function OrderProductReview( { productData,  order, setProductsData, setProductReviewModalState }) {
 
     const classes = useStyles();
+
+    const dispatch = useDispatch();
 
     const scoreArray = createArrayFromNumber(5)
 
@@ -58,6 +63,7 @@ export default function OrderProductReview( { productData,  order, setProductsDa
                 const responseUpdate = await axios.post("http://localhost:3001/orders/products", { order }, { headers: { 'Authorization': jwt }} )
                 const orderDetailedData = responseUpdate.data.data.orderData
                 orderDetailedData && setProductsData(orderDetailedData)
+                dispatch(getAllProducts())
                 setProductReviewModalState(false)
             }
         }

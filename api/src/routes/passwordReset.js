@@ -8,9 +8,9 @@ const { SECRET_KEY_JWT } = process.env;
 router.post('/getKey', async (req, res, next) => {
     const { email } = req.body;
     try {
-        const user = await models.User.findOne({ where: { email }});
-        console.log(user);
-        if(!user) {
+        const person = await models.Person.findOne({ where: { email }});
+        console.log(person);
+        if(!person) {
             res.send('success');
         } else {
             const { id, email } = user;

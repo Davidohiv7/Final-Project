@@ -64,7 +64,6 @@ signUpRouter.post('/', async (req, res, next) => {
                     updatedAt: new Date() 
                 }
             })
-            console.log(orderItemsArrayData)
             await models.CartItem.bulkCreate(orderItemsArrayData);
             const newCartData = await models.Product.findAll({ 
                 where: {id: cartProductsIdArray},

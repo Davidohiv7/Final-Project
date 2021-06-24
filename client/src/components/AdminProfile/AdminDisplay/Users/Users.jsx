@@ -27,7 +27,7 @@ export default function Users({ setDisplayStatus, setEditUser }) {
     setEditUser(user)
     setDisplayStatus('userDetail')
   }}
-  className= {classes.editButton}><img width='25px' src={edit}></img></Button>))
+  className= {classes.editButton}><img width='25px' src={edit} alt="edit button"></img></Button>))
   return (
     <Box className= {classes.container}>
       <TableContainer component={Paper}>

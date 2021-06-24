@@ -24,7 +24,6 @@ export function createCategory(name) {
 }
 
 export function deleteCategory(name) {
-  console.log(name)
   return (dispatch) => {
       return axios.delete(`http://localhost:3001/categories/${name}`, )
                   .catch(e => console.error(e))

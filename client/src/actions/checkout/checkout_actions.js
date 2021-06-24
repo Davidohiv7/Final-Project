@@ -90,7 +90,6 @@ export const setMercadoPagoOrder = (order) => {
             axios.post("http://localhost:3001/create_preference", {params: order})
                 .then(res => res.data)
                 .then(res => {
-                    console.log(res);
                     dispatch({type: SET_MERCADOPAGO_ORDER, payload: { id: res.response.id, url: res.response.init_point}})
                 })
         } catch(err) {

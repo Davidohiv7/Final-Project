@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { makeStyles } from '@material-ui/core/styles';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
+//Import styles
+import useStyles from './styles';
 //Imports Material UI components:
 import { Snackbar, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Avatar, TextField, IconButton, Divider, Button, Popover, Modal, Fade, Backdrop} from '@material-ui/core/'
 import { Alert } from '@material-ui/lab';
@@ -351,44 +352,3 @@ export default function Cart() {
         </Box>
     )
 }
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        borderRadius: theme.shape.borderRadius,
-    },
-    head: {
-        backgroundColor: theme.palette.primary.main,
-    },
-    title: {
-        color: theme.palette.secondary.main,
-        fontWeight: 'bold',
-    },
-    body: {
-        backgroundColor: theme.palette.secondary.main,
-    },
-    tableContainer: {
-        marginBottom: 15,
-    },
-    productName: {
-        marginLeft: 15,
-    },
-    divider: {
-        color: theme.palette.secondary.dark,
-    },
-    quantityInput: {
-        width: 75,
-        borderRadius: 5,
-        backgroundColor: theme.palette.common.white,
-      },
-    subtotal: {
-        margin: 25,
-    },
-    checkout: {
-        margin: 5,
-    },
-    modal: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-}));

@@ -1,18 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import useStyles from './styles'
 
-import { makeStyles } from '@material-ui/core/styles';
 //Imports Material UI components:
-import Card from '@material-ui/core/Card'
-import CardMedia from '@material-ui/core/CardMedia'
-import CardActionArea from '@material-ui/core/CardActionArea'
-import Typography from '@material-ui/core/Typography'
-import CardContent from '@material-ui/core/CardContent'
-import Box from '@material-ui/core/Box'
-import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button'
-import Modal from '@material-ui/core/Modal'
-import Fade from '@material-ui/core/Fade'
-import Backdrop from '@material-ui/core/Backdrop';
+import { Card, CardMedia, CardActionArea, Typography, CardContent, Box, IconButton, Button, Modal, Fade, Backdrop } from '@material-ui/core/'
 //Imports Material UI icons:
 import { FavoriteBorder, ShoppingCartOutlined, Star } from '@material-ui/icons';
 
@@ -20,8 +10,6 @@ import { FavoriteBorder, ShoppingCartOutlined, Star } from '@material-ui/icons';
 import { createArrayFromNumber, addToFavorites } from '../../assets/utils/productCardFunctions'
 //React components
 import ProductDetailsCard from '../ProductDetailsCard/ProductDetailsCard'
-
-
 
 export default function ProductCards({ product }) {
 
@@ -101,34 +89,3 @@ export default function ProductCards({ product }) {
     );
 }
 
-//Custom styles
-const useStyles = makeStyles((theme) => ({
-    body: {
-      boxShadow: '1px 1px 8px -1px rgba(0,0,0,0.6)',
-      width: 220,
-      height: 300,
-      backgroundColor: theme.palette.primary.main,
-      borderRadius: theme.shape.borderRadius,
-    },
-    image: {
-      height: 150,
-    },
-    cardContent: {
-      padding: 8,
-    },
-    quantityInput: {
-      width: 65,
-      borderRadius: 5,
-      backgroundColor: theme.palette.common.white,
-    },
-    favButton: {
-      position: 'absolute',
-      zIndex: 2,
-      transform: 'translate(60px, 0px);'
-    },
-    modal: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      },
-    }));

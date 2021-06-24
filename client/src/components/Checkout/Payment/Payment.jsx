@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 //Imports Material UI components:
 import {Box, Typography, Button, Tab, Tabs, Divider, CircularProgress} from '@material-ui/core'
 //Styles

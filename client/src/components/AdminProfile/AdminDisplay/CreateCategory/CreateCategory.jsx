@@ -34,7 +34,7 @@ export default function CreateCategory({ setDisplayStatus }) {
                 <Button 
                     onClick= {() => {
                         for (let category of categories) {
-                            if(category.name == document.getElementById('nameOfCategory').value){
+                            if(category.name === document.getElementById('nameOfCategory').value){
                                 return setOpenError(true)
                             }
                         }

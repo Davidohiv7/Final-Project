@@ -24,7 +24,6 @@ export default function OrderRow( { order, openOrder, setOpenOrder }) {
             const jwt = localStorage.getItem('jwt')
             const response = await axios.post("http://localhost:3001/orders/products", { order }, { headers: { 'Authorization': jwt }} )
             const orderDetailedData = response.data.data.orderData
-            console.log(orderDetailedData)
             setOpenOrder(order.id)
             orderDetailedData && setProductsData(orderDetailedData)
         }
@@ -32,7 +31,7 @@ export default function OrderRow( { order, openOrder, setOpenOrder }) {
     }
 
     useEffect(() => {
-        if(openOrder != order.id) {
+        if(openOrder !== order.id) {
             setOpen(false)
         }
       }, [openOrder])
@@ -72,7 +71,7 @@ export default function OrderRow( { order, openOrder, setOpenOrder }) {
 
             <TableRow>
                 <TableCell className={classes.collapseTableCell} colSpan={6}>
-                    <Collapse in={open && (openOrder == order.id)} timeout="auto" unmountOnExit>
+                    <Collapse in={open && (openOrder === order.id)} timeout="auto" unmountOnExit>
                         <OrderDetails order={order} productsData={productsData} setProductsData={setProductsData}/>
                     </Collapse>
                 </TableCell>

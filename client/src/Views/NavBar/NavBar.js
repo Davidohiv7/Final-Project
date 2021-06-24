@@ -5,8 +5,6 @@ import { Eco, ShoppingCart, AccountCircle } from '@material-ui/icons';
 import useStyles from './NavBarStyles';
 import { Link } from 'react-router-dom';
 import { getUserData } from '../../actions/authentication/authentication_actions'
-import { SIGN_IN } from '../../actions_types/authentication/authentication_actions_types';
-import { CONFIRM_STRIPE_PAYMENT, SET_CHECKOUT_CUSTOMER_INFORMATION } from '../../actions_types/checkout/checkout_actions_types';
 
 export default function NavBar() {
   let classes = useStyles();

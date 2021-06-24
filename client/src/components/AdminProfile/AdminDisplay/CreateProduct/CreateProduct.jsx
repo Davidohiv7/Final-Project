@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { useDropzone } from "react-dropzone";
 import ImageWrapper from './ImageWrapper/ImageWrapper';
@@ -151,8 +151,7 @@ useEffect(() => {
                 setSelectedCategories([])
                 setUploadedFiles([])
                 setDisplayStatus('products')
-                }   
-                console.log(eName)
+                } 
         }
     }
 

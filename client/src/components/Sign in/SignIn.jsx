@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import useStyles from './styles';
-import { Box, Typography, TextField, Button, Snackbar, Popover } from '@material-ui/core';
+import { Box, Link, Typography, TextField, Button, Snackbar, Popover } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { VpnKey } from '@material-ui/icons';
 import GoogleAuth from '../GoogleAuth/GoogleAuth'
@@ -61,6 +61,10 @@ export default function SignIn() {
         return setSuccesErrorsPopoverAnchor(e.currentTarget)
     }
 
+    function resetPassword(e) {
+        e.preventDefault();
+        history.push("/passwordReset");
+    }
 
     return (
         <Box display='flex' flexDirection='column' alignItems='center' className={classes.root}>
@@ -87,6 +91,13 @@ export default function SignIn() {
                         size='small'
                         type='password'
                     />
+                    <Link
+                        className={classes.forgotPassAnchor}
+                        href="#"
+                        onClick={resetPassword}
+                    >
+                        Forgot password?
+                    </Link>
                     <Button
                         type="submit"
                         className={classes.button}

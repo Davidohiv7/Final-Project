@@ -1,10 +1,14 @@
-import { SIGN_UP, SIGN_IN, GOOGLE_AUTH, AUTH_ERROR, LOG_OUT, GET_USER_DATA, SET_USER_ORDERS } from '../../actions_types/authentication/authentication_actions_types'
+import { SIGN_UP, SIGN_IN, GOOGLE_AUTH, AUTH_ERROR, LOG_OUT, GET_USER_DATA, SET_USER_ORDERS, 
+ } from '../../actions_types/authentication/authentication_actions_types'
 
 const initialState = {
     logged: false,
     authMessage: '',
     user: null,
     orders: [],
+    twofa: {
+        status: false,
+    },
 };
 
 const authenticationReducer = (state = initialState, action = {}) => {
@@ -51,6 +55,15 @@ const authenticationReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 orders: action.payload
+            }
+        }
+        case INIT_TWOFA: {
+            return {
+                ...state,
+                twofa: {
+                    ...state.twofa,
+                    status: true
+                }
             }
         }
         default:

@@ -1,8 +1,19 @@
 import axios from 'axios';
-import { SIGN_UP, SIGN_IN, LOG_OUT, AUTH_ERROR, GET_USER_DATA, SET_USER_ORDERS, GOOGLE_AUTH } from '../../actions_types/authentication/authentication_actions_types'
+import { SIGN_UP, SIGN_IN, LOG_OUT, AUTH_ERROR, GET_USER_DATA, SET_USER_ORDERS, GOOGLE_AUTH, INIT_TWOFA } from '../../actions_types/authentication/authentication_actions_types'
 import { SET_CART, } from '../../actions_types/cart/cart_actions_types'
 import { SET_CHECKOUT_CUSTOMER_INFORMATION, CONFIRM_PAYMENT, SET_CHECKOUT_SUBTOTAL} from '../../actions_types/checkout/checkout_actions_types'
 
+export function twofaSignIn(obj) {
+    return async (dispatch) => {
+        try {
+            // const response = await axios.post("http://localhost:3001/signin/twofa", {...obj})
+            dispatch({type: INIT_TWOFA});
+        } catch (error) {
+            dispatch({type: AUTH_ERROR, payload: error.response.data.data.message});
+            setTimeout(() => dispatch({type: AUTH_ERROR, payload: ''}), 5000)
+        }
+    }
+}
 
 export function signIn(obj) {
     const cart = JSON.parse(localStorage.getItem('cart'))

@@ -6,6 +6,8 @@ import { Alert } from '@material-ui/lab';
 //Styles and utils
 import useStyles from './styles';
 import { messageValidation, resetMessage } from '../../assets/utils/contactValidations'
+//axios
+import axios from 'axios'
 
 const Contact = () => {
     const classes = useStyles();
@@ -33,7 +35,7 @@ const Contact = () => {
         e.preventDefault()
         const inputErrors = messageValidation(formInputs)
         if (Object.keys(inputErrors).length === 0) {
-            
+            axios.post("http://localhost:3001/reviews/message", { ...formInputs })
             return setFormInputs(resetMessage)
         }
         setErrorsArray(Object.values(inputErrors).reduce((acc, v) => [...acc, ...v], []))

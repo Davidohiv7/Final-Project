@@ -23,6 +23,17 @@ const useStyles = makeStyles(theme => ({
     description: {
         marginTop: 16,
         marginLeft: 10
+    },
+    passwordForm: {
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    newPassInput: {
+        width: '30ch'
+    },
+    submitBtn: {
+        width: '25ch',
+        marginTop: 8
     }
 }));
 

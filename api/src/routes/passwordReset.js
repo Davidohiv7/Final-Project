@@ -1,10 +1,11 @@
 const router = require('express').Router();
 const { authMailing, transporter } = require('../mailingMid/NodemailerGoogleMid');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const models = require('../database/models');
 const response = require('../utils/response');
 
-const { SECRET_KEY_JWT, GOOGLE_MAIL } = process.env;
+const { SECRET_KEY_JWT, GOOGLE_MAIL, SALT_ROUNDS } = process.env;
 
 router.post('/getKey', async (req, res, next) => {
     const { email } = req.body;
@@ -42,6 +43,20 @@ router.post('/verifyKey', (req, res, next) => {
                 response.error(null, res, error);
             }
         });
+    }
+});
+
+router.put('/updatePass', async (req, res, next) => {
+    const { userId, newPass } = req.body;
+    const saltRounds = Number(SALT_ROUNDS);
+    console.log(userId, newPass);
+    const person = await models.Person.findOne({ where: { id: userId }});
+    if(!person) {
+        response.error(null, res);
+    } else {
+        person.password = bcrypt.hashSync(newPass, saltRounds);
+        person.save();
+        response.success(null, res);
     }
 });
 

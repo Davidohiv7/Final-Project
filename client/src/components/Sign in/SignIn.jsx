@@ -7,10 +7,12 @@ import useStyles from './styles';
 import { Box, Typography, TextField, Button, Snackbar, Popover } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { VpnKey } from '@material-ui/icons';
+//Components
 import GoogleAuth from '../GoogleAuth/GoogleAuth'
-
+import TwoFA from './TwoFA/TwoFA'
+//Actions
 import { signIn, twofaSignIn } from '../../actions/authentication/authentication_actions'
-
+//Custom functions
 import { signInValidation, resetSignInInput } from '../../assets/utils/authentication'
 
 export default function SignIn() {
@@ -44,27 +46,30 @@ export default function SignIn() {
         }
     }, [authMessage])
     /* eslint-enable */
+
     const handleInputChange = function(e) {
         setFormInputs({
             ...formInputs,
             [e.target.name]: e.target.value
             });
         }
-    
-    function handleSubmit(e) {
-        e.preventDefault()
-        const inputErrors = signInValidation(formInputs)
-        if(Object.keys(inputErrors).length === 0) {
-            dispatch(signIn(formInputs))
-            return setFormInputs(resetSignInInput)
-        }
-        setErrorsArray(Object.values(inputErrors).reduce((acc, v) => [...acc, ...v], []))
-        setSuccesErrorsPopover(true)
-        return setSuccesErrorsPopoverAnchor(e.currentTarget)
-    }
+
+    //EL ANTIGUO HANDLE SUBMIT, QUE SEGURAMENTE DEBERA IR A TWOFA
+    // function handleSubmit(e) {
+    //     e.preventDefault()
+    //     const inputErrors = signInValidation(formInputs)
+    //     if(Object.keys(inputErrors).length === 0) {
+    //         dispatch(signIn(formInputs))
+    //         return setFormInputs(resetSignInInput)
+    //     }
+    //     setErrorsArray(Object.values(inputErrors).reduce((acc, v) => [...acc, ...v], []))
+    //     setSuccesErrorsPopover(true)
+    //     return setSuccesErrorsPopoverAnchor(e.currentTarget)
+    // }
     
 
-    function handleTwoFaAuth(e) {
+    function handleSubmit(e) {
+        e.preventDefault()
         dispatch(twofaSignIn(formInputs))
     }
 
@@ -72,7 +77,7 @@ export default function SignIn() {
         <React.Fragment>
             {
                 twofa.status ? 
-                <Typography>AQUI VA LO DEL CODIGO</Typography> :
+                <TwoFA formInputs={formInputs}/> :
                 <Box display='flex' flexDirection='column' alignItems='center' className={classes.root}>
                     <Typography variant="h4" color="initial">Sign in</Typography>
                     <form onSubmit={e => handleSubmit(e)}>
@@ -110,15 +115,6 @@ export default function SignIn() {
                             <Typography variant="body1" > or </Typography>
 
                             <GoogleAuth/>
-                            <Button
-                                onClick={e => handleTwoFaAuth(e)}
-                                className={classes.button}
-                                variant="contained"
-                                color="primary"
-                                startIcon={<VpnKey />}
-                            >
-                                2FA
-                            </Button>
                         </Box>
                     </form>
                         

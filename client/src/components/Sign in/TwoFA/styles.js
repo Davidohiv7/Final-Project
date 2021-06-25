@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme) => ({
         marginTop: 40,
         width: 120,
     },
+    popover: {
+        marginTop: 10,
+    },
 }));
 
 export default useStyles;

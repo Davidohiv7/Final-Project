@@ -54,7 +54,7 @@ export default function SignIn() {
             });
         }
 
-    //EL ANTIGUO HANDLE SUBMIT, QUE SEGURAMENTE DEBERA IR A TWOFA
+    // EL ANTIGUO HANDLE SUBMIT, QUE SEGURAMENTE DEBERA IR A TWOFA
     // function handleSubmit(e) {
     //     e.preventDefault()
     //     const inputErrors = signInValidation(formInputs)
@@ -70,14 +70,20 @@ export default function SignIn() {
 
     function handleSubmit(e) {
         e.preventDefault()
-        dispatch(twofaSignIn(formInputs))
+        const inputErrors = signInValidation(formInputs)
+        if(Object.keys(inputErrors).length === 0) {
+            return dispatch(twofaSignIn(formInputs))
+        }
+        setErrorsArray(Object.values(inputErrors).reduce((acc, v) => [...acc, ...v], []))
+        setSuccesErrorsPopover(true)
+        return setSuccesErrorsPopoverAnchor(e.currentTarget)
     }
 
     return (
         <React.Fragment>
             {
                 twofa.status ? 
-                <TwoFA formInputs={formInputs}/> :
+                <TwoFA formInputs={formInputs} setFormInputs={setFormInputs} setSuccesErrorsPopover={setSuccesErrorsPopover} setErrorsArray={setErrorsArray} setSuccesErrorsPopoverAnchor={setSuccesErrorsPopoverAnchor}/> :
                 <Box display='flex' flexDirection='column' alignItems='center' className={classes.root}>
                     <Typography variant="h4" color="initial">Sign in</Typography>
                     <form onSubmit={e => handleSubmit(e)}>

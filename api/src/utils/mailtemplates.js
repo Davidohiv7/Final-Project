@@ -213,7 +213,7 @@ exports.mailDispatched = function (name, lastName, order) {
     )
 };
 
-exports.twoFAEmailMail = function (name, toker) {
+exports.twoFAEmailMail = function (name, token) {
   return (
       `<!DOCTYPE html>
   <html>
@@ -303,10 +303,10 @@ exports.twoFAEmailMail = function (name, toker) {
       <div align='center' class='root' >
         <div class='container' align='center'>
           <h2> Hello ${name}!</h2>
-          <h3> Please use the following code to continue yo your account</h3>
+          <h3> Please use the following code to continue your authentication process</h3>
           <h4> Code: <span class="code" > ${token} </span> </h4>
           <span class="contact">
-            <a href="https://localhost:3000" class="button">Continue!</a>
+            <a href="https://localhost:3000/authentication" class="button">Continue!</a>
           </span>
           <footer>
             <h5>You are more than welcome to write us at <span class="contact">

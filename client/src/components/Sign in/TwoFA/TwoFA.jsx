@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from "react-redux";
 //Material UI Styles
 import useStyles from './styles';
 //Material UI Components
-import { Box, Typography, TextField, Button } from '@material-ui/core';
+import { Box, Typography, TextField, Button, Popover } from '@material-ui/core';
 import { VpnLock } from '@material-ui/icons'
+//actions
+import { twofaSignIn2 } from '../../../actions/authentication/authentication_actions'
+//Custom functions
+import { resetSignInInput } from '../../../assets/utils/authentication'
 
 
-export default function TwoFA( { formInputs } ) {
+export default function TwoFA( { formInputs, setFormInputs } ) {
     let classes = useStyles();
 
+    const dispatch = useDispatch();
 
     const [codeTwoFa, setCodeTwoFa] = useState({
         code1: '',
@@ -18,6 +24,9 @@ export default function TwoFA( { formInputs } ) {
         code5: '',
         code6: '',
     });
+    const [error, setError] = useState('');
+    const [errorPopover, setErrorsPopover] = useState(false);
+    const [errorPopoverAnchor, setErrorPopoverAnchor] = useState(null);
 
     const handleInputChange = function(e) {
         const regex = /^(?:[1-9]\d*|\d)$/;
@@ -34,9 +43,12 @@ export default function TwoFA( { formInputs } ) {
         e.preventDefault()
         const code = Object.values(codeTwoFa).join('')
         if(code.length === 6) {
-            return console.log(code)
+            return dispatch(twofaSignIn2(formInputs, code)) 
         }
-        console.log('falta')
+        console.log('entro')
+        setError('The code is not complete')
+        setErrorsPopover(true)
+        return setErrorPopoverAnchor(e.currentTarget)
     }
 
     return (
@@ -88,6 +100,29 @@ export default function TwoFA( { formInputs } ) {
                         
                     </Box>
                 </form>
+
+                <Popover
+                    open={errorPopover}
+                    className={classes.popover}
+                    anchorEl={errorPopoverAnchor}
+                    onClose={() => setErrorsPopover(false)}
+                    anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                    }}
+                    transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                    }}
+                >
+
+                    <Box p={2}>
+                        {
+                            error &&  <Typography color='primary' >{error}</Typography>
+                        }
+                    </Box>
+                    
+                </Popover>
             </Box>
         </React.Fragment>
     )

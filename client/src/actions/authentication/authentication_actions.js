@@ -1,13 +1,38 @@
 import axios from 'axios';
-import { SIGN_UP, SIGN_IN, LOG_OUT, AUTH_ERROR, GET_USER_DATA, SET_USER_ORDERS, GOOGLE_AUTH, INIT_TWOFA } from '../../actions_types/authentication/authentication_actions_types'
+import { SIGN_UP, SIGN_IN, LOG_OUT, AUTH_ERROR, GET_USER_DATA, SET_USER_ORDERS, GOOGLE_AUTH, INIT_TWOFA, FINISH_TWOFA } from '../../actions_types/authentication/authentication_actions_types'
 import { SET_CART, } from '../../actions_types/cart/cart_actions_types'
 import { SET_CHECKOUT_CUSTOMER_INFORMATION, CONFIRM_PAYMENT, SET_CHECKOUT_SUBTOTAL} from '../../actions_types/checkout/checkout_actions_types'
 
 export function twofaSignIn(obj) {
     return async (dispatch) => {
         try {
-            // const response = await axios.post("http://localhost:3001/signin/twofa", {...obj})
-            dispatch({type: INIT_TWOFA});
+            const response = await axios.post("http://localhost:3001/signin/twofa/email", {...obj})
+            const data = response.data.data
+            console.log(data) 
+            if(data) {
+                dispatch({type: INIT_TWOFA});
+            }
+        } catch (error) {
+            dispatch({type: AUTH_ERROR, payload: error.response.data.data.message});
+            setTimeout(() => dispatch({type: AUTH_ERROR, payload: ''}), 5000)
+        }
+    }
+}
+
+export function twofaSignIn2(obj, code) {
+    const cart = JSON.parse(localStorage.getItem('cart'))
+    return async (dispatch) => {
+        try {
+            const response = await axios.post("http://localhost:3001/signin/twofa/email/confirm", {...obj, localCart: cart, code})
+            if(response.data.data.token) {
+                localStorage.removeItem('cart')
+                localStorage.setItem('jwt', `Bearer ${response.data.data.token}`)
+                dispatch({type: SIGN_IN});
+                dispatch({type: FINISH_TWOFA});
+                if(response.data.data.cart) {
+                    dispatch({type: SET_CART, payload: response.data.data.cart});
+                }
+            }
         } catch (error) {
             dispatch({type: AUTH_ERROR, payload: error.response.data.data.message});
             setTimeout(() => dispatch({type: AUTH_ERROR, payload: ''}), 5000)

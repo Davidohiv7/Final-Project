@@ -12,6 +12,7 @@ import Authentication from './Views/Authentication/Authentication';
 import GoogleAuthSuccess from '../src/components/GoogleAuth/GoogleAuthSuccess/GoogleAuthSuccess';
 import GoogleAuthError from '../src/components/GoogleAuth/GoogleAuthError/GoogleAuthError';
 import Contact from './Views/Contact/Contact'
+import Devs from './components/Devs/Devs'
 
 
 export default function App() {
@@ -51,6 +52,11 @@ export default function App() {
       <Route
         path='/contact'
         render={() => <Contact/>}
+      />
+
+      <Route
+        path='/devs'
+        render={() => <Devs/>}
       />
       
       <Route

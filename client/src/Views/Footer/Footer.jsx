@@ -23,7 +23,7 @@ const Footer = () => {
           </Grid>
           <Grid item xs={12} sm={5}>
             <Box borderBottom={1} align="center">
-              <Link href="/developers" className={classes.link}>
+              <Link href="/devs" className={classes.link}>
                 Developers
               </Link>
             </Box>

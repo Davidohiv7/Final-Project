@@ -24,7 +24,6 @@ export default function ProductCards({ product }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-
     return (
         <Box>
             <Card className={classes.body}>

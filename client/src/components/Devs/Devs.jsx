@@ -1,47 +1,33 @@
 import React from 'react';
-import useStyles from './DevCards/styles';
+import useStyles from './styles';
 //import clsx from 'clsx';
-import { Grid, Typography } from '@material-ui/core/';
+import { Grid, Typography, Box } from '@material-ui/core/';
 //import { ExpandMore } from '@material-ui/icons/';
 //import argflag from './../../assets/img/ArgFlag.png'
 import DevCards from './DevCards/DevCards'
+import devs from './../../assets/utils/devsData'
 
 export default function Devs() {
     const classes = useStyles();
-    const devs = [{
-        id: 1
-    },
-    {
-        id: 2
-    },
-    {
-        id: 3
-    }]
-    //const [expanded, setExpanded] = React.useState(false);
-
-    /*
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };*/
 
     return (
-        <Grid container spacing={1} className={classes.gridContainer} >
-            {
-                devs ?
-                    devs.map(dev => {
-                        return (
-                            <Typography>Hello</Typography>
-                            /*
-                            <Grid key={dev.id} item>
-                                <DevCards className={classes.devsCard} title="title" devs={} />
-                            </Grid>*/
-                        )
-                    }) :
-                    <Grid>
-                        <Typography variant="h5" color="primary">No Devs availables</Typography>
-                    </Grid>
-            }
-        </Grid>
+        <Box bgcolor='secondary.main' className={classes.root}>
+            <Grid container spacing={5} className={classes.gridContainer}>
+                {
+                    devs ?
+                        devs.map(dev => {
+                            return (
+                                <Grid key={dev.id} item xs={12} sm={(12/devs.length)} className={classes.devsCard}>
+                                    <DevCards props={dev.data}/>
+                                </Grid>
+                            )
+                        }) :
+                        <Grid item>
+                            <Typography variant="h5" color="primary">No Devs availables</Typography>
+                        </Grid>
+                }
+            </Grid>
+        </Box>
 
         /*
         <Card className={classes.root}>

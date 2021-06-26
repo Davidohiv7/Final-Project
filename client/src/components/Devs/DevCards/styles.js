@@ -4,7 +4,7 @@ import {
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        maxWidth: 345,
+        maxWidth: 800,
     },
     media: {
         height: 0,

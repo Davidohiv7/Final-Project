@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const response = require('../utils/response')
 const {transporter, authMailing } = require('../mailingMid/NodemailerGoogleMid')
 const { twoFAEmailMail } = require('../utils/mailtemplates');
-const twofactor = require("node-2fa");
+const speakeasy = require("speakeasy");
 
 const signInRouter = express.Router();
 
@@ -183,20 +183,26 @@ signInRouter.post('/twofa/email', async (req, res, next) => {
         }
 
         //Generate token
-        const newSecret = twofactor.generateSecret({ name: "Onion food", account: email} );
-        const newToken = twofactor.generateToken(newSecret.secret);
+        const newSecret = speakeasy.generateSecret();
 
-        //Save secret (Lasts 4min)
-        userExistCheck.twofapassword = newSecret.secret
-        console.log(newSecret.secret)
+        const newToken = speakeasy.totp({
+            secret: newSecret.base32,
+            encoding: 'base32'
+          });
+
+        console.log(newSecret)
+        console.log(newToken)
+
+        //Save secret
+        userExistCheck.twofapassword = newSecret.base32
         await userExistCheck.save()
 
         //Send token to user mail
         transporter.sendMail({
             from: `Onion Food Sup. <${GOOGLE_MAIL}>`,
             to: email,
-            subject: 'Welcome to Onion Food Sup.',
-            html: twoFAEmailMail(userExistCheck.name, newToken.token),
+            subject: 'Your sign in code for Onion is..',
+            html: twoFAEmailMail(userExistCheck.name, newToken),
             auth: authMailing,
         });
        
@@ -222,18 +228,23 @@ signInRouter.post('/twofa/email/confirm', async (req, res, next) => {
             return response.error(req, res, { message: 'There was an internal problem' })
         }
 
-        console.log(code)
         console.log(user2FA.twofapassword)
-        const match = twofactor.verifyToken(user2FA.twofapassword, code, 1);
+        console.log(code)
+        const match = speakeasy.totp.verify({
+            secret: user2FA.twofapassword,
+            encoding: 'base32',
+            token: code,
+            window: 6
+        });
         console.log(match)
 
         if(!match) {
             return response.error(req, res, { message: 'The code doesn`t match' })
         }
 
-        if(match.delta == 1 || match.delta == -1) {
-            return response.error(req, res, { message: 'The code has expired' })
-        }
+        // if(match.delta == 1 || match.delta == -1) {
+        //     return response.error(req, res, { message: 'The code has expired' })
+        // }
 
         user2FA.twofapassword = null
         await user2FA.save()

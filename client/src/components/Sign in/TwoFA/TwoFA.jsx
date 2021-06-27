@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 //Material UI Styles
 import useStyles from './styles';
@@ -16,7 +16,10 @@ import { resetSignInInput, secsToTimer } from '../../../assets/utils/authenticat
 export default function TwoFA( { formInputs, setFormInputs } ) {
     let classes = useStyles();
 
+    const inputRefs = useRef({})
+
     const dispatch = useDispatch();
+
     const { authMessage, twofa } = useSelector((state) => ({ ...state.authenticationReducer }))
 
     const [codeTwoFa, setCodeTwoFa] = useState({
@@ -43,7 +46,10 @@ export default function TwoFA( { formInputs, setFormInputs } ) {
     const [verifying, setVerifying] = useState(false);
     const [resendButtondStatus, setResendButtonStatus] = useState(false);
 
-    
+    useEffect(() => {
+        inputRefs.current['1'].children[0].children[0].focus()
+    }, [])
+
     useEffect(() => {
         let time = 0
         function timerOn() {
@@ -84,12 +90,21 @@ export default function TwoFA( { formInputs, setFormInputs } ) {
     }, [twofa.attempts])
 
     const handleInputChange = function(e) {
+        const i = e.target.name[e.target.name.length - 1]
         const regex = /^(?:[1-9]\d*|\d)$/;
-        if (e.target.value === '' || regex.test(e.target.value)) {
+        if (e.target.value === '') {
             setCodeTwoFa({
                 ...codeTwoFa,
                 [e.target.name]: e.target.value
             });
+            if(i > 1) inputRefs.current[`${Number(i) - 1}`].children[0].children[0].focus()
+        }
+        if (regex.test(e.target.value)) {
+            setCodeTwoFa({
+                ...codeTwoFa,
+                [e.target.name]: e.target.value
+            });
+            if(i < 6) inputRefs.current[`${Number(i) + 1}`].children[0].children[0].focus()
         }
     }
 
@@ -149,22 +164,14 @@ export default function TwoFA( { formInputs, setFormInputs } ) {
                                 Object.values(codeTwoFa).map((code, i) => {
                                     return (
                                         <TextField
+                                            ref={element => inputRefs.current[i + 1] = element}
                                             className={classes.input}
                                             name={`code${i + 1}`}
                                             variant="outlined"
                                             value={codeTwoFa[`code${i + 1}`]}
                                             onChange={handleInputChange}
                                             size='small'
-                                            inputProps={{ 
-                                                maxLength: 1,
-                                                inputMode: 'numeric', 
-                                                pattern: '[0-9]*'
-                                            }}
-                                            inputRef={(input) => {
-                                                if((i + 1) === 1 ? codeTwoFa[`code${i + 1}`] : codeTwoFa[`code${i}`]) {
-                                                    input && input.focus();
-                                                }
-                                            }}
+                                            inputProps={{ maxLength: 1 }}
                                         />
                                     )
                                 })

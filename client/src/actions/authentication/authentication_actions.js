@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SIGN_UP, SIGN_IN, LOG_OUT, AUTH_ERROR, GET_USER_DATA, SET_USER_ORDERS, GOOGLE_AUTH, INIT_TWOFA, FINISH_TWOFA } from '../../actions_types/authentication/authentication_actions_types'
+import { SIGN_UP, SIGN_IN, LOG_OUT, AUTH_ERROR, GET_USER_DATA, SET_USER_ORDERS, GOOGLE_AUTH, INIT_TWOFA, FINISH_TWOFA, FAIL_TWOFA_ATTEMPT } from '../../actions_types/authentication/authentication_actions_types'
 import { SET_CART, } from '../../actions_types/cart/cart_actions_types'
 import { SET_CHECKOUT_CUSTOMER_INFORMATION, CONFIRM_PAYMENT, SET_CHECKOUT_SUBTOTAL} from '../../actions_types/checkout/checkout_actions_types'
 
@@ -13,8 +13,12 @@ export function twofaSignIn(obj) {
                 dispatch({type: INIT_TWOFA});
             }
         } catch (error) {
-            dispatch({type: AUTH_ERROR, payload: error.response.data.data.message});
-            setTimeout(() => dispatch({type: AUTH_ERROR, payload: ''}), 5000)
+            if(error.response && error.response.data.data.message) {
+                dispatch({type: AUTH_ERROR, payload: error.response.data.data.message});
+                return setTimeout(() => dispatch({type: AUTH_ERROR, payload: ''}), 4000)
+            }
+            dispatch({type: AUTH_ERROR, payload: 'Sorry, we couldn`t connect to the server'});
+            return setTimeout(() => dispatch({type: AUTH_ERROR, payload: ''}), 4000)
         }
     }
 }
@@ -34,31 +38,38 @@ export function twofaSignIn2(obj, code) {
                 }
             }
         } catch (error) {
-            dispatch({type: AUTH_ERROR, payload: error.response.data.data.message});
-            setTimeout(() => dispatch({type: AUTH_ERROR, payload: ''}), 5000)
+            if(error.response && error.response.data.data.message) {
+                dispatch({type: AUTH_ERROR, payload: error.response.data.data.message});
+                dispatch({type: FAIL_TWOFA_ATTEMPT});
+                return setTimeout(() => dispatch({type: AUTH_ERROR, payload: ''}), 3000)
+            }
+            dispatch({type: AUTH_ERROR, payload: 'Sorry, we couldn`t connect to the server'});
+            return setTimeout(() => dispatch({type: AUTH_ERROR, payload: ''}), 3000)
+            
         }
     }
 }
 
-export function signIn(obj) {
-    const cart = JSON.parse(localStorage.getItem('cart'))
-    return async (dispatch) => {
-        try {
-            const response = await axios.post("http://localhost:3001/signin", {...obj, localCart: cart})
-            if(response.data.data.token) {
-                localStorage.removeItem('cart')
-                localStorage.setItem('jwt', `Bearer ${response.data.data.token}`)
-                dispatch({type: SIGN_IN});
-                if(response.data.data.cart) {
-                    dispatch({type: SET_CART, payload: response.data.data.cart});
-                }
-            }
-        } catch (error) {
-            dispatch({type: AUTH_ERROR, payload: error.response.data.data.message});
-            setTimeout(() => dispatch({type: AUTH_ERROR, payload: ''}), 5000)
-        }
-    }
-}
+//REEMPLAZADO POR EL 2FA, NO BORRAR POR SI SE LE AGREGA EL FEATURE DE SER OPCIONAL EL 2FA
+// export function signIn(obj) {
+//     const cart = JSON.parse(localStorage.getItem('cart'))
+//     return async (dispatch) => {
+//         try {
+//             const response = await axios.post("http://localhost:3001/signin", {...obj, localCart: cart})
+//             if(response.data.data.token) {
+//                 localStorage.removeItem('cart')
+//                 localStorage.setItem('jwt', `Bearer ${response.data.data.token}`)
+//                 dispatch({type: SIGN_IN});
+//                 if(response.data.data.cart) {
+//                     dispatch({type: SET_CART, payload: response.data.data.cart});
+//                 }
+//             }
+//         } catch (error) {
+//             dispatch({type: AUTH_ERROR, payload: error.response.data.data.message});
+//             setTimeout(() => dispatch({type: AUTH_ERROR, payload: ''}), 5000)
+//         }
+//     }
+// }
 
 export function signUp(obj) {
     return async (dispatch) => {
@@ -73,8 +84,12 @@ export function signUp(obj) {
                 }
             }
         } catch (error) {
-            dispatch({type: AUTH_ERROR, payload: error.response.data.data.message});
-            setTimeout(() => dispatch({type: AUTH_ERROR, payload: ''}), 5000)
+            if(error.response && error.response.data.data.message) {
+                dispatch({type: AUTH_ERROR, payload: error.response.data.data.message});
+                return setTimeout(() => dispatch({type: AUTH_ERROR, payload: ''}), 4000)
+            }
+            dispatch({type: AUTH_ERROR, payload: 'Sorry, we couldn`t connect to the server'});
+            return setTimeout(() => dispatch({type: AUTH_ERROR, payload: ''}), 4000)
         }
     }
 }

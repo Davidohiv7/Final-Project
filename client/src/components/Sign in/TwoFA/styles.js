@@ -11,9 +11,16 @@ const useStyles = makeStyles((theme) => ({
         width: 37,
         marginLeft: 5,
     },
-    button: {
+    verifyButton: {
         marginTop: 40,
-        width: 120,
+        width: 165,
+    },
+    resendButon: {
+        marginTop: 5,
+        width: 165,
+    },
+    backButton: {
+        marginTop: 24,
     },
     popover: {
         marginTop: 10,

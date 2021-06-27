@@ -44,6 +44,9 @@ export default function SignIn() {
         if(authMessage) {
             return setErrorSignInSnackbar(true);
         }
+        if(!authMessage) {
+            return setErrorSignInSnackbar(false);
+        }
     }, [authMessage])
     /* eslint-enable */
 

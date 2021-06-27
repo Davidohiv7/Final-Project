@@ -89,3 +89,11 @@ export const resetSignInInput = {
     email: '',
     password: '',
 }
+
+export function secsToTimer(seconds) {
+    let min = Math.floor(seconds / 60)
+    let sec = Math.floor(seconds % 60)
+    sec = sec < 10 ? `0${sec}` : sec
+    
+    return `${min}:${sec}`
+}

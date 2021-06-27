@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { authMailing, transporter } = require('../mailingMid/NodemailerGoogleMid');
+const { mailResetPass } = require('../utils/mailtemplates');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const models = require('../database/models');
@@ -14,19 +15,20 @@ router.post('/getKey', async (req, res, next) => {
         if(!person) {
             response.success(null, res);
         } else {
-            const { id, email } = person;
+            const { id, email, name, lastName } = person;
             const token = jwt.sign({ id, email }, SECRET_KEY_JWT, { expiresIn: 300 });
             transporter.sendMail({
                 from: `Onion Food Sup. <${GOOGLE_MAIL}>`,
                 to: person.email,
                 subject: 'Password reset requested',
-                html: `<a href='http://localhost:3000/passwordReset?token=${token}'>Reset password</a>`,
+                html: mailResetPass(name, lastName, email, token),
                 auth: authMailing
             });
             response.success(null, res);
         }
     } catch (error) {
-        response.error(null, res);
+        console.log(error);
+        response.error(null, res, error);
     }
 });
 

@@ -145,6 +145,7 @@ function PasswordReset() {
                                     color='primary'
                                     className={styles.inputBtn}
                                     onClick={handleSubmit}
+                                    disabled={passwordRequested}
                                 >
                                     {passwordRequested ? 'Email sent!' : 'Reset Password'}
                                 </Button>

@@ -35,6 +35,12 @@ module.exports = {
         allowNull: true
       }
     })
+
+    await queryInterface.addConstraint('wishlist_item', {
+      fields:  ['ProductId', 'PersonId'],
+      type: 'unique',
+      name: 'wishlist_item_unique_constraint'
+    });
     
   },
 

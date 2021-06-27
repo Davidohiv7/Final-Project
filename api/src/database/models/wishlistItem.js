@@ -10,14 +10,16 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'person',
         key: 'id'
-      }
+      },
+      unique: 'wishlist_item_unique_constraint'
     },
     ProductId: {
       type: DataTypes.INTEGER,
       references: {
         model: 'product',
         key: 'id'
-      }
+      },
+      unique: 'wishlist_item_unique_constraint'
     },
     createdAt: {
       type: DataTypes.DATE,

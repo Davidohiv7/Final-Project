@@ -72,7 +72,7 @@ router.post('/confirm_order', passport.authenticate('jwt', {session: false}), as
             transporter.sendMail({
                 from: `Onion Food Sup. <${GOOGLE_MAIL}>`,
                 to: user.email,
-                subject: 'Welcome to Onion Food Sup.',
+                subject: 'Your order is in process',
                 html: mailBuy(user.name, order, cart),
                 auth: authMailing,
             });

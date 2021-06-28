@@ -4,10 +4,11 @@ const models = require('../database/models/');
 const response = require('../utils/response');
 const cloudinary = require("../utils/cloudinary");
 const { Op } = require("sequelize");
+const passport = require('passport');
 
 
 
-router.delete("/cloudinary/:id", async (req, res) => {
+router.delete("/cloudinary/:id", passport.authenticate('jwt', {session: false}), async (req, res) => {
   const imageId = req.params.id;
   try {
     await cloudinary.uploader.destroy(imageId);
@@ -17,7 +18,7 @@ router.delete("/cloudinary/:id", async (req, res) => {
   }
 })
 
-router.post("/", async (req, res) => {
+router.post("/", passport.authenticate('jwt', {session: false}), async (req, res) => {
   const { images } = req.body
   
   try {

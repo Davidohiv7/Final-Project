@@ -219,7 +219,7 @@ router.get('/', async (req, res) => {
 
 })
 
-router.patch('/', async (req, res) => {
+router.patch('/', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try {
         let { id, status } = req.body;
         const order = await models.Cart.findOne({

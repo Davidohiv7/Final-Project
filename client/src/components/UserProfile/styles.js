@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
   button: {
     background: theme.palette.primary.dark,
+    width: 200,
     variant: "contained",
     color: "white",
     borderRadius: 5,

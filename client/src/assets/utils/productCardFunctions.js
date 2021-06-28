@@ -27,22 +27,3 @@ export function addToCart(product, quantity, setQuantity) {
     setQuantity(1)
 }
 
-export function addToFavorites(product) {
-    const favouriteString = localStorage.getItem('favourites')
-    let newFavourites
-    if(!favouriteString) {
-        newFavourites = [product]
-    }
-    if(favouriteString) {
-        newFavourites = JSON.parse(favouriteString)
-        const validateIfProductExists = newFavourites.filter(p => p.id === product.id)
-        if(validateIfProductExists.length === 0) {
-            newFavourites.push(product)
-        }else {
-            return false
-        }
-    }
-    const favouritesData = JSON.stringify(newFavourites)
-    localStorage.setItem('favourites', favouritesData)
-    return true
-}

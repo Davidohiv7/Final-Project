@@ -54,6 +54,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'personId'
     })
 
+    Person.belongsToMany(models.Product, {
+      through: 'WishlistItem'
+    })
+
     
   }
 

@@ -34,7 +34,7 @@ export default function Home() {
         <Grid item xs={2} className={classes.filterGrid}>
           <HomeLeftBar />
         </Grid>
-        <Grid item xs={10} className={classes.catalogueContainer}>
+        <Grid item xs={9} className={classes.catalogueContainer}>
           <Paper elevation={3}>
             <Catalogue />
           </Paper>

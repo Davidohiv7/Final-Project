@@ -13,19 +13,16 @@ export default function  MercadoPagoIntegration() {
     const dispatch = useDispatch();
     const { url, subtotal, payment } = useSelector((state) => ({ ...state.checkoutReducer }))
     const { cart } = useSelector((state) => ({ ...state.cartReducer }))
-
+    /* eslint-disable */
     useEffect(() => {
         if (url && url !== '') {
             const Mercadopago = window.open(url);
         }
     }, [url])
-
+    /* eslint-enable */
     function getMercadoPagoOrder() {
         dispatch(setMercadoPagoOrder(cart));
     }
-  
-
-
 
     return (
         <> 

@@ -12,10 +12,11 @@ export default function Orders({ setDisplayStatus, setEditOrder }) {
   
   const dispatch = useDispatch();
   
-  
+  /* eslint-disable */
   useEffect(() => {
     dispatch(getOrders())
   }, [])
+  /* eslint-enable */
   
   const { orders } = useSelector((state)=> state.adminReducer)
   

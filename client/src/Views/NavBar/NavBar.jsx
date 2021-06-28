@@ -15,6 +15,7 @@ export default function NavBar() {
 
   const [cartLength, setCartLength] = useState(0);
 
+  /* eslint-disable */
   useEffect(() => {
     setCartLength(cart.length)
     if(logged) {
@@ -41,7 +42,7 @@ export default function NavBar() {
       dispatch(getUserData(jwt))
     }
   }, [logged])
-
+  /* eslint-enable */
   
   return (
     <div className={classes.root}>

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useDropzone } from "react-dropzone";
 import ImageWrapper from './ImageWrapper/ImageWrapper';
 
-
 //Imports Material UI components:
 import { Box, CardContent, TextField, InputAdornment, Button, Paper, Typography }from '@material-ui/core'
 import Snackbar from '@material-ui/core/Snackbar';
@@ -62,6 +61,7 @@ export default function CreateForm({ setDisplayStatus, editProduct }) {
         if(product.name.length<2) return setEname("The name cannot be that short.")
         else setEname("")
     }
+    /* eslint-disable */
     useEffect(()=> {
         nameValidator()
     },[product.name])
@@ -166,6 +166,7 @@ useEffect(() => {
     useEffect(() => {
         dispatch(getCategories())
     },[])
+    /* eslint-enable */
 
     const classes = useStyles();
 

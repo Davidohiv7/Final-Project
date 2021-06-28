@@ -12,11 +12,11 @@ export default function Products({ setDisplayStatus, setEditProduct  }) {
     
     const dispatch = useDispatch();
     const products = useSelector((state)=> state.homeReducer.products)
-
+  /* eslint-disable */
     useEffect(() => {
       dispatch(getAllProducts())
     }, [])
-
+  /* eslint-enable */
     function createData(photo, name, price, stock, edit) {
       return { photo, name, price, stock, edit };
     }

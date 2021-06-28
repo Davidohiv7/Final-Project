@@ -14,7 +14,8 @@ const {
     authMailing
 } = require('../mailingMid/NodemailerGoogleMid')
 const {
-    mailBuy
+    mailBuy,
+    mailDispatched
 } = require('../utils/mailtemplates');
 const {
     GOOGLE_MAIL,
@@ -222,12 +223,34 @@ router.patch('/', passport.authenticate('jwt', {session: false}), async (req, re
     try {
         let { id, status } = req.body;
         const order = await models.Cart.findOne({
-            where: { id: id }
+            where: { id: id },
+            include: {
+                model: models.Person,
+                attributes: ['name', 'lastName', 'email']
+            }
         });
         if (!order) return response.success(req, res, { message: "Order not found."}, 200);
-
+        if (order.status === status.toLowerCase()) return response.success(req, res, {message: "Order is already in this status."}, 200);
+        
         order.status = status.toLowerCase();
         await order.save();
+        //Mailing when dispatched
+        if(order.status === 'completed') {
+            const {
+                name,
+                lastName,
+                email
+            } = order.Person.dataValues;
+
+            transporter.sendMail({
+                from: `Onion Food Sup. <${GOOGLE_MAIL}>`,
+                to: email,
+                subject: `Your order ${order.dataValues.id} has been dispatched`,
+                html: mailDispatched(name, lastName, order.dataValues),
+                auth: authMailing,
+            });
+
+        }
         response.success(req, res, { message: "Order updated successfully." });
 
     } catch (error) {

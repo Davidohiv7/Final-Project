@@ -1,4 +1,4 @@
-import { GET_FAVORITES } from '../../actions_types/favorites/favorites_action_types';
+import { GET_FAVORITES, ADD_TO_FAVORITES, DELETE_FAVORITE } from '../../actions_types/favorites/favorites_action_types';
 
 const initialState = {
     favorites: [],
@@ -10,6 +10,18 @@ const wishlistReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 favorites: action.payload,
+            }
+        }
+        case ADD_TO_FAVORITES: {
+            return {
+                ...state,
+                favorites: [...state.favorites, action.payload],
+            }
+        }
+        case DELETE_FAVORITE: {
+            return {
+                ...state,
+                favorites: state.favorites.filter(favorite => favorite.id != action.payload),
             }
         }
         default:

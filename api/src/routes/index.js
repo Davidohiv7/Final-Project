@@ -19,7 +19,7 @@ const shippingaddress = require('./shippingaddress');
 const favorites = require ('./favorites');
 
 
-router.use('/add_favorite', favorites);
+router.use('/favorites', favorites);
 router.use('/confirm/mercadopago', mercadopagoConfirmation);
 router.use('/create_preference', mercadopago);
 router.use('/categories', categories);

@@ -8,14 +8,25 @@ router.post("/", (req, res) => {
   const { product, userEmail } = req.body.params; 
   
   models.Person.findOne({
-      where: {email: userEmail}
+    where: {email: userEmail}
   })
   .then(person => {
-      models.wishlist_item.create({
-        ProductId: product.id,
-        PersonId: person.id,
-      })
-  })
+    models.wishlist_item.create({
+      PersonId: person.id,
+      ProductId: product.id
+    })
+    .then(items => {
+        models.Product.findOne({
+            where: { id: product.id },
+            include: [{
+                model: models.Image,
+              }]
+        })
+        .then(resp => {
+            response.success(req, res, resp, 200)
+        })
+    })
+})
 
 });
 
@@ -44,6 +55,22 @@ router.get("/", (req, res) => {
         })
     })
   
-  })
+  });
+
+  router.delete("/", (req, res) => {
+    const { id, userEmail } = req.query; 
+    
+    models.Person.findOne({
+      where: {email: userEmail}
+    })
+    .then(person => {
+      models.wishlist_item.destroy({
+        where: {PersonId: person.id, ProductId: id}
+      })
+    })
+    .then(resp => {
+      response.success(req, res, id, 200)
+    })
+  });
 
 module.exports = router;

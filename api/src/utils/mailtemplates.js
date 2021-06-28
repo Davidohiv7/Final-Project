@@ -214,3 +214,49 @@ exports.mailDispatched = function (name, lastName, order) {
 `
     )
 };
+
+exports.messageMail = function (name, lastName, email, message) {
+  return (
+    `<!DOCTYPE html>
+    <html>
+    <head>
+    <style>
+    body{
+        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      }
+    h1 {
+      background-color: #CE1212;
+      border-radius: 0.5rem;
+      color: #1B1717;
+    }
+    div {
+      background-color: #EEEBDD;
+      border-radius: 0.5rem;
+    }
+    h3 {
+      color: #1B1717;
+    }
+    footer {
+      background-color: #CE1212;
+      border-radius: 0.5rem;
+    }
+    </style>
+    </head>
+    <body>
+      <div align='center'>
+        <h1>New Message from ${name} ${lastName} - ${email}</h1>
+        <form>
+            <h3>Name: ${name} ${lastName} </h3>
+            <h3>E-Mail: ${email} </h3>
+            <p>Message: ${message} </p>
+        </form>
+        <footer>
+          <p>Delivered by NodeMailer</p>
+        </footer>
+      </div>
+    </body>
+    </html>
+
+`
+  )
+};

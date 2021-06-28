@@ -1,15 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import React, { useState} from 'react';
-import { Box, Button, Grid, Divider}from '@material-ui/core';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import { Box, Button, Grid, Dialog, DialogActions, DialogContent, DialogTitle, InputLabel, Input, FormControl, Select }from '@material-ui/core';
 import { Home } from '@material-ui/icons'
 import useStyles from './styles'
 
@@ -20,8 +11,7 @@ export default function HomeLeftBar() {
     const { searched, order, filter, categories } = useSelector((state) => ({ ...state.homeReducer }))
 
     const [open, setOpen] = useState(false);
-    const [responsiveCtgry, setResponsiveCtgry] = useState("")
-
+    
     const classes = useStyles();  
     const dispatch = useDispatch();
 
@@ -45,9 +35,6 @@ export default function HomeLeftBar() {
     const handleClose = () => {
         setOpen(false);
     };
-    const handleResponsiveCategory = (category) =>{
-        setResponsiveCtgry(category);
-    }
 
     //--------------
 
@@ -81,7 +68,7 @@ export default function HomeLeftBar() {
                 native
                 input={<Input id="demo-dialog-native" />}
               >
-                <option onClick={() => handleGetAllClick()}>All</option>}
+                <option onClick={() => handleGetAllClick()}>All</option>
                 {categories ? 
                 categories.map(category => 
                 <option value={category} onClick={() => handleClick(category)}>{category}</option>) :

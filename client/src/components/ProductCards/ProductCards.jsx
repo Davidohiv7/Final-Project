@@ -34,6 +34,8 @@ export default function ProductCards({ product }) {
     return (
         <Box>
             <Card className={classes.body}>
+                {
+                user ? 
                 <IconButton 
                     color="primary" 
                     aria-label="upload picture" 
@@ -43,6 +45,18 @@ export default function ProductCards({ product }) {
                 >
                     <FavoriteBorder/>
                 </IconButton>
+                :
+                <IconButton 
+                    color="primary" 
+                    aria-label="upload picture" 
+                    component="span" 
+                    className={classes.favButton}
+                >
+                    <FavoriteBorder/>
+                </IconButton>
+                    
+                }
+                
                 <CardActionArea onClick={() => setModalState(true)}>
                     <CardMedia
                         className={classes.image}

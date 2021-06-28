@@ -15,7 +15,11 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'space-evenly',
     },
-    
+    carousel:{
+        [theme.breakpoints.down('xs')]: {
+          display: "none"
+        },
+    },
     button: {
         background: theme.palette.primary.dark,
         variant: "contained",
@@ -28,6 +32,11 @@ const useStyles = makeStyles((theme) => ({
         marginTop: 11,
         marginBottom: 11,
         boxShadow: '1px 1px 8px -1px rgba(0,0,0,0.6)',
+
+        [theme.breakpoints.down('xs')]: {
+          marginTop: 3,
+          marginBottom: 3,
+        },
     },
     catalogueContainer: {
         height: "57%",

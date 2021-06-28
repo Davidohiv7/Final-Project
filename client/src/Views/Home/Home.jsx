@@ -27,15 +27,15 @@ export default function Home() {
   return (
     <Container maxWidth="lg">
       <Grid container spacing={3} className={classes.grid_container}>
-        <Grid item xs={12}>
+        <Grid item sm={12} className={classes.carousel}>
           <Paper className={classes.slide} elevation={3}>
             <Carousel />
           </Paper>
         </Grid>
-        <Grid item xs={2} className={classes.filterGrid}>
+        <Grid item xs={12} sm={2} className={classes.filterGrid}>
           <HomeLeftBar />
         </Grid>
-        <Grid item xs={10} className={classes.catalogueContainer}>
+        <Grid item xs={12} sm={10} className={classes.catalogueContainer}>
           <Paper elevation={3}>
             <Catalogue />
           </Paper>

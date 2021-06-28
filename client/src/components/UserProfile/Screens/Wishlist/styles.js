@@ -10,20 +10,9 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 650,
     marginTop: 10,
   },
-
-  editButton: {
-    minWidth: 30,
-    borderRadius: 55,
-    color: 'white',
-    '&:hover': {
-      backgroundColor: 'lightGray',
-    },
-  },
-
   header: {
     fontWeight: '600'
-  }
-  
+  },
 
 }));
 

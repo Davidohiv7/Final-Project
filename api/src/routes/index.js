@@ -16,6 +16,7 @@ const checkout = require('./checkout');
 const mercadopagoConfirmation = require('./mercadopagoConfirmation');
 const reviews = require('./reviews');
 const shippingaddress = require('./shippingaddress');
+const passwordReset = require('./passwordReset');
 const favorites = require ('./favorites');
 
 
@@ -32,6 +33,7 @@ router.use('/image', images);
 router.use('/orders', orders);
 router.use('/cart', cart);
 router.use('/checkout', checkout);
+router.use('/passwordReset', passwordReset);
 //router.use('/test', test);
 router.use('/reviews', reviews);
 router.use('/shippingaddress', shippingaddress);

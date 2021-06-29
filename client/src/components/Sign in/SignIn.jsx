@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 //Material UI Imports
 import useStyles from './styles';
-import { Box, Typography, TextField, Button, Snackbar, Popover } from '@material-ui/core';
+import { Box, Link, Typography, TextField, Button, Snackbar, Popover } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { VpnKey } from '@material-ui/icons';
 //Components
@@ -82,6 +82,11 @@ export default function SignIn() {
         return setSuccesErrorsPopoverAnchor(e.currentTarget)
     }
 
+    function resetPassword(e) {
+        e.preventDefault();
+        history.push("/passwordReset");
+    }
+
     return (
         <React.Fragment>
             {
@@ -111,6 +116,15 @@ export default function SignIn() {
                                 size='small'
                                 type='password'
                             />
+                                  
+                            <Link
+                                className={classes.forgotPassAnchor}
+                                href="#"
+                                onClick={resetPassword}
+                            >
+                                Forgot password?
+                            </Link>
+                                  
                             <Button
                                 type="submit"
                                 className={classes.button}

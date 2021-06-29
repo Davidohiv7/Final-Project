@@ -29,13 +29,13 @@ export default function OrderRow( { order, openOrder, setOpenOrder }) {
         }
         setOpen(!open)
     }
-
+    /* eslint-disable */
     useEffect(() => {
-        if(openOrder != order.id) {
+        if(openOrder !== order.id) {
             setOpen(false)
         }
       }, [openOrder])
-
+    /* eslint-enable */
     return (
 
         <React.Fragment>
@@ -71,7 +71,7 @@ export default function OrderRow( { order, openOrder, setOpenOrder }) {
 
             <TableRow>
                 <TableCell className={classes.collapseTableCell} colSpan={6}>
-                    <Collapse in={open && (openOrder == order.id)} timeout="auto" unmountOnExit>
+                    <Collapse in={open && (openOrder === order.id)} timeout="auto" unmountOnExit>
                         <OrderDetails order={order} productsData={productsData} setProductsData={setProductsData}/>
                     </Collapse>
                 </TableCell>

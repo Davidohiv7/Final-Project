@@ -5,18 +5,17 @@ import { Eco, ShoppingCart, AccountCircle } from '@material-ui/icons';
 import useStyles from './NavBarStyles';
 import { Link } from 'react-router-dom';
 import { getUserData } from '../../actions/authentication/authentication_actions'
-import { SIGN_IN } from '../../actions_types/authentication/authentication_actions_types';
-import { CONFIRM_STRIPE_PAYMENT, SET_CHECKOUT_CUSTOMER_INFORMATION } from '../../actions_types/checkout/checkout_actions_types';
 
 export default function NavBar() {
   let classes = useStyles();
 
-  const { logged } = useSelector((state) => ({ ...state.authenticationReducer }))
+  const { logged, user } = useSelector((state) => ({ ...state.authenticationReducer }))
   const { cart } = useSelector((state) => ({ ...state.cartReducer }))
   const dispatch = useDispatch();
 
   const [cartLength, setCartLength] = useState(0);
 
+  /* eslint-disable */
   useEffect(() => {
     setCartLength(cart.length)
     if(logged) {
@@ -43,7 +42,7 @@ export default function NavBar() {
       dispatch(getUserData(jwt))
     }
   }, [logged])
-
+  /* eslint-enable */
   
   return (
     <div className={classes.root}>
@@ -68,15 +67,15 @@ export default function NavBar() {
             </Link>
 
               {
-                logged ? 
-                <Link to="/user">
+                logged && user ? 
+                <Link to={user.role === 'admin' || user.role === 'staff' ? '/admin' : '/user'}>
                   <Button
                     variant="contained"
                     color="secondary"
                     className={classes.buttonUser}
                     startIcon={<AccountCircle />}
                   >
-                    User
+                    {user.role === 'admin' || user.role === 'staff' ? 'Admin' : 'User'}
                   </Button>
                 </Link>
                 :

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 
 //Imports Material UI components:
-import { TableContainer, Table, TableBody, TableCell, TableHead, TableRow, Paper, Button, Modal, Box, Backdrop, Fade}from '@material-ui/core'
+import { TableContainer, Table, TableBody, TableCell, TableHead, TableRow, Paper, Button, Box }from '@material-ui/core'
 import useStyles from './styles';
 import deleteIcon from './deleteIcon.png';
 import { getCategories, deleteCategory } from '../../../../actions/admin/admin_actions';
@@ -12,11 +12,11 @@ export default function Categories() {
     
     const dispatch = useDispatch();
     const categories = useSelector((state)=> state.adminReducer.categories)
-
+    /* eslint-disable */
     useEffect(() => {
       dispatch(getCategories())
     }, [])
-
+    /* eslint-enable */
     function createData(name, edit) {
       return { name, edit };
     }
@@ -25,7 +25,7 @@ export default function Categories() {
       dispatch(deleteCategory(category.name))
       dispatch(getCategories())
       dispatch(getCategories())
-    }}className= {classes.editButton}><img width='25px' src={deleteIcon}></img></Button>))
+    }}className= {classes.editButton}><img width='25px' src={deleteIcon} alt="Delete Icon"></img></Button>))
     return (
       <Box>
         <TableContainer component={Paper}>

@@ -34,7 +34,7 @@ export default function SignUp() {
     const [errorSignInSnackbar, setErrorSignInSnackbar] = useState(false);
     const [errorsPopover, setSuccesErrorsPopover] = useState(false);
     const [errorsPopoverAnchor, setSuccesErrorsPopoverAnchor] = useState(null);
-
+    /* eslint-disable */
     useEffect(() => {
         if(logged) {
             history.push("/");
@@ -46,6 +46,7 @@ export default function SignUp() {
             return setErrorSignInSnackbar(true);
         }
     }, [authMessage])
+    /* eslint-enable */
 
     const handleInputChange = function(e) {
         setFormInputs({

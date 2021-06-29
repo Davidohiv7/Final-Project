@@ -13,7 +13,6 @@ export const useStyles = makeStyles((theme) => ({
       display: 'block',
       width: '100%',
       overflow: 'hidden',
-      width: '100%',
     },
     stepper: {
         backgroundColor: 'rgba(0, 0, 0, 0.7)',

@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { useDropzone } from "react-dropzone";
 import ImageWrapper from './ImageWrapper/ImageWrapper';
-
 
 //Imports Material UI components:
 import { Box, CardContent, TextField, InputAdornment, Button, Paper, Typography }from '@material-ui/core'
@@ -62,6 +61,7 @@ export default function CreateForm({ setDisplayStatus, editProduct }) {
         if(product.name.length<2) return setEname("The name cannot be that short.")
         else setEname("")
     }
+    /* eslint-disable */
     useEffect(()=> {
         nameValidator()
     },[product.name])
@@ -151,8 +151,7 @@ useEffect(() => {
                 setSelectedCategories([])
                 setUploadedFiles([])
                 setDisplayStatus('products')
-                }   
-                console.log(eName)
+                } 
         }
     }
 
@@ -167,6 +166,7 @@ useEffect(() => {
     useEffect(() => {
         dispatch(getCategories())
     },[])
+    /* eslint-enable */
 
     const classes = useStyles();
 

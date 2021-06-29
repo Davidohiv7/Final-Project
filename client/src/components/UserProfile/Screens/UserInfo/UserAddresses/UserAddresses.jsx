@@ -1,6 +1,6 @@
-import React, { useEffect }from "react";
+import React from "react";
 // Material UI imports
-import { Box, Typography, TableContainer, Table, TableHead, TableBody, TableCell, Paper, TableRow, IconButton } from "@material-ui/core";
+import { Box, TableContainer, Table, TableHead, TableBody, TableCell, Paper, TableRow, IconButton } from "@material-ui/core";
 //
 import { Delete } from '@material-ui/icons';
 //Styles

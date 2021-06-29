@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Button }from '@material-ui/core';
 import { Home } from '@material-ui/icons'
-import { makeStyles } from '@material-ui/core/styles';
+import useStyles from './styles'
 
 import { getProductsByCategory, getAllProducts, updateCategory, updateSearching } from '../../actions/home/home_actions'
 
@@ -42,13 +42,3 @@ export default function HomeLeftBar() {
     );
 }
 
-const useStyles = makeStyles((theme) => ({
-    filter: {
-        backgroundColor: theme.palette.primary.main,
-        paddingBottom: theme.spacing(40),
-        paddingTop: theme.spacing(3),
-    },
-    links: {
-        color: theme.palette.secondary.main,
-    },
-  }));

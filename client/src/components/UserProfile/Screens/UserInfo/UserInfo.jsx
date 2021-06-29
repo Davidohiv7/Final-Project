@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 // Material UI imports
-import { Grid, Typography, Box, Button, Modal, Backdrop, Fade } from "@material-ui/core";
+import { Typography, Box, Button, Modal, Backdrop, Fade } from "@material-ui/core";
 import useStyles from "./styles";
-//Material UI icons
-import { Add } from '@material-ui/icons'
 //Components
 import UserAddresses from './UserAddresses/UserAddresses'
 import AddAddress from './UserAddresses/AddAddress/AddAddress'

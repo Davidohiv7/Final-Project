@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getAllProducts } from './../../actions/home/home_actions';
 
+/* eslint-disable */
 // Material UI imports
 import { Grid, Paper, Container  } from '@material-ui/core';
 import useStyles from './styles';
@@ -22,8 +23,6 @@ export default function Home() {
   }, []
   )
 
-  
-
   return (
     <Container maxWidth="lg">
       <Grid container spacing={3} className={classes.grid_container}>
@@ -35,7 +34,7 @@ export default function Home() {
         <Grid item xs={2} className={classes.filterGrid}>
           <HomeLeftBar />
         </Grid>
-        <Grid item xs={10} className={classes.catalogueContainer}>
+        <Grid item xs={9} className={classes.catalogueContainer}>
           <Paper elevation={3}>
             <Catalogue />
           </Paper>

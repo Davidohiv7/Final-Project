@@ -1,17 +1,19 @@
-import React from 'react';
-import NavBar from './Views/NavBar/NavBar'
-import UserProfile from './components/UserProfile/UserProfile'
-import AdminProfile from './components/AdminProfile/AdminProfile'
-import Home from './Views/Home/Home.jsx'
-import Cart from './Views/Cart/Cart.jsx'
-import { ThemeProvider } from '@material-ui/core/styles'
-import theme from './themeConfig';
+import React from "react";
+import NavBar from "./Views/NavBar/NavBar.jsx";
+import UserProfile from "./components/UserProfile/UserProfile";
+import AdminProfile from "./components/AdminProfile/AdminProfile";
+import Home from "./Views/Home/Home.jsx";
+import Cart from "./Views/Cart/Cart.jsx";
+import { ThemeProvider } from "@material-ui/core/styles";
+import theme from "./themeConfig";
 import Footer from "./Views/Footer/Footer";
 import { Route } from 'react-router-dom';
 import Authentication from './Views/Authentication/Authentication';
 import GoogleAuthSuccess from '../src/components/GoogleAuth/GoogleAuthSuccess/GoogleAuthSuccess';
 import GoogleAuthError from '../src/components/GoogleAuth/GoogleAuthError/GoogleAuthError';
 import PasswordReset from './Views/PasswordReset/PasswordReset';
+import Contact from './Views/Contact/Contact'
+import Devs from './components/Devs/Devs'
 
 
 export default function App() {
@@ -53,6 +55,16 @@ export default function App() {
         render={() => <PasswordReset/>}
       />
       
+      <Route
+        exact path='/contact'
+        render={() => <Contact/>}
+      />
+      
+      <Route
+        exact path='/devs'
+        render={() => <Devs/>}
+      />
+
       <Route
         path='/'
         render={() => <Footer/>}

@@ -13,13 +13,11 @@ module.exports = {
         name: { [Op.iLike]: `%coffee%` }, 
       },
     })
-    //console.log("////////// PRODUCTS: ", products)
-    //await admin.setProducts(products);
-    //await elon.setProducts(products);
+    
     await queryInterface.bulkInsert('wishlist_item', [
       { ProductId: products[0].id, PersonId: elon.id, createdAt: new Date(), updatedAt: new Date() },
-      { ProductId: products[0].id, PersonId: elon.id, createdAt: new Date(), updatedAt: new Date() },
-      { ProductId: products[1].id, PersonId: admin.id, createdAt: new Date(), updatedAt: new Date() },
+      { ProductId: products[1].id, PersonId: elon.id, createdAt: new Date(), updatedAt: new Date() },
+      { ProductId: products[0].id, PersonId: admin.id, createdAt: new Date(), updatedAt: new Date() },
       { ProductId: products[1].id, PersonId: admin.id, createdAt: new Date(), updatedAt: new Date() },
     ]);
   

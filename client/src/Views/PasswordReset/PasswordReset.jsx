@@ -41,7 +41,8 @@ function PasswordReset() {
         return history.push('/');
     }
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault()
         if(validate.isEmail(email)) {
             axios.post('http://localhost:3001/passwordReset/getKey', { email });
             setPasswordRequested(true);
@@ -127,7 +128,7 @@ function PasswordReset() {
                         <Typography className={styles.description}>
                             {passwordRequested ? "If an account exists for this email, we'll send you a link to restore your password." : "Please enter the account's e-mail address you want to password reset."}
                         </Typography>
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <Box>
                                 <TextField
                                     label="Your account's email address"
@@ -144,8 +145,8 @@ function PasswordReset() {
                                     variant='contained'
                                     color='primary'
                                     className={styles.inputBtn}
-                                    onClick={handleSubmit}
                                     disabled={passwordRequested}
+                                    type='submit'
                                 >
                                     {passwordRequested ? 'Email sent!' : 'Reset Password'}
                                 </Button>

@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 5,
         [theme.breakpoints.down('sm')]: {
             margin: 0,
+            marginLeft: theme.spacing(1),
         },
     },
     buttonUser: {

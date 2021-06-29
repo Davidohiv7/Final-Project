@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import React, { useState} from 'react';
+<<<<<<< HEAD
 import { Box, Button, Grid}from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -11,6 +12,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+=======
+import { Box, Button, Grid, Dialog, DialogActions, DialogContent, DialogTitle, InputLabel, Input, FormControl, Select }from '@material-ui/core';
+>>>>>>> c601e41ec2845990d1b1a9ffc79ebbfbb77e998f
 import { Home } from '@material-ui/icons'
 import useStyles from './styles'
 
@@ -21,7 +25,11 @@ export default function HomeLeftBar() {
     const { searched, order, filter, categories } = useSelector((state) => ({ ...state.homeReducer }))
 
     const [open, setOpen] = useState(false);
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> c601e41ec2845990d1b1a9ffc79ebbfbb77e998f
     const classes = useStyles();  
     const dispatch = useDispatch();
 
@@ -82,7 +90,7 @@ export default function HomeLeftBar() {
                 native
                 input={<Input id="demo-dialog-native" />}
               >
-                <option onClick={() => handleGetAllClick()}>All</option>}
+                <option onClick={() => handleGetAllClick()}>All</option>
                 {categories ? 
                 categories.map(category => 
                 <option value={category} onClick={() => handleClick(category)}>{category}</option>) :

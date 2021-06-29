@@ -5,6 +5,7 @@ import useStyles from "./styles";
 //Components
 import UserAddresses from './UserAddresses/UserAddresses'
 import AddAddress from './UserAddresses/AddAddress/AddAddress'
+import ChangePassword from './UserAddresses/ChangePassword/ChangePassword'
 //axios
 import axios from 'axios'
 
@@ -12,8 +13,10 @@ export default function UserInfo({ user }) {
 
     const classes = useStyles();
 
+    const [modalState, setModalState] = useState(false);
+    const [modalType, setModalType] = useState('');
     const [userAddresses, setUserAddresses] = useState([]);
-    const [addressModalState, setAddressModalState] = useState(false);
+    
 
     useEffect(() => {
         const getUserAddresses = async () => {
@@ -29,8 +32,22 @@ export default function UserInfo({ user }) {
         getUserAddresses()
     }, [])
 
-    function handleAddAddress(e) {
-        setAddressModalState(true)
+    
+
+    function handleOpenModal(type) {
+        setModalType(type)
+        setModalState(true)
+    }
+
+    function handleCloseModal() {
+        setModalState(false)
+        setModalType('')
+    }
+
+    function setModalComponent() {
+        if(modalType === 'address') return <AddAddress setUserAddresses={setUserAddresses} handleCloseModal={handleCloseModal}/>
+        if(modalType === 'password') return <ChangePassword handleCloseModal={handleCloseModal}/>
+        return <Box/>
     }
 
     return (
@@ -41,6 +58,14 @@ export default function UserInfo({ user }) {
                     <Typography className={classes.title} variant="h6">email:</Typography>
                     <Typography className={classes.titleContent} variant="h6" color="initial">{`${user?.email}`}</Typography>
                 </Box>
+                <Button
+                    className={classes.changePassword}
+                    variant="contained"
+                    color="primary"
+                    onClick={e => handleOpenModal('password')}
+                >
+                    change password
+                </Button>
                 <Typography className={classes.title} variant="h6">Saved addresses:</Typography>
                 <Box width='100%' display='flex' alignItems='center' justifyContent='center' flexDirection='column'>
                     {
@@ -53,23 +78,24 @@ export default function UserInfo({ user }) {
                     className={classes.addAddresButton}
                     variant="contained"
                     color="primary"
-                    onClick={e => handleAddAddress(e)}
+                    onClick={() => handleOpenModal('address')}
                 >
                     add address
                 </Button>
             </Box>
+            {/* Add address modal */}
             <Modal
                 className={classes.modal}
-                open={addressModalState}
-                onClose={() => setAddressModalState(false)}
+                open={modalState}
+                onClose={() => handleCloseModal()}
                 closeAfterTransition
                 BackdropComponent={Backdrop}
                 BackdropProps={{
                     timeout: 500,
                 }}
             >
-                <Fade in={addressModalState}>
-                    <AddAddress setUserAddresses={setUserAddresses} setAddressModalState={setAddressModalState}/>
+                <Fade in={modalState}>
+                    {setModalComponent() || <Typography> Close </Typography>}
                 </Fade>
             </Modal> 
         </Box>

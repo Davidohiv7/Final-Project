@@ -98,3 +98,31 @@ export function secsToTimer(seconds) {
     return `${min}:${sec}`
 }
 
+//Change password validation
+function validatePasswordChange(pasword) {
+    const passwordErrors = []
+    if(!pasword) passwordErrors.push('The current password is required')
+    if(passwordErrors.length > 0) return passwordErrors
+}
+
+function validateNewPassword(pasword, confirmPassword) {
+    const passwordErrors = []
+    if(!pasword) passwordErrors.push('A new password is required')
+    if(pasword && !(/^.{8,}$/.test(pasword))) passwordErrors.push('Password must be 8 characters long minimum')
+    if(pasword && !(/\d/.test(pasword))) passwordErrors.push('Password must contain at least one number')
+    if(pasword && !(/[A-Z]/.test(pasword))) passwordErrors.push('Password must contain at least an upper case')
+    if(pasword && (pasword !== confirmPassword)) passwordErrors.push('Passwords are different')
+    if(passwordErrors.length > 0) return passwordErrors
+}
+
+export function changePasswordValidation(obj) {
+    const errors = {}
+
+    const oldPasswordErrors = validatePasswordChange(obj.oldPassword)
+    if (oldPasswordErrors) errors.oldPassword = oldPasswordErrors
+
+    const newPasswordErrors = validateNewPassword(obj.newPassword, obj.confirmNewPassword)
+    if (newPasswordErrors) errors.newPassword = newPasswordErrors
+    
+    return errors
+}

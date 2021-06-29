@@ -3,6 +3,11 @@ const response = require('../utils/response')
 const passport = require('passport')
 const models = require('../database/models/');
 const { Op } = require("sequelize");
+const bcrypt = require('bcrypt')
+const {transporter, authMailing } = require('../mailingMid/NodemailerGoogleMid')
+const { changePasswordMail } = require('../utils/mailtemplates');
+
+const { SALT_ROUNDS, GOOGLE_MAIL } = process.env
 
 const router = express.Router();
 
@@ -202,6 +207,41 @@ router.patch('/', async (req, res) => {
 
     } catch (error) {
         response.error(req, res, error);
+    }
+})
+
+router.post('/change_password', passport.authenticate('jwt', {session: false}), async (req, res) => {
+
+    const { passwords } = req.body
+    const user = req.user
+
+    try {
+        const verifyUser = await models.Person.findOne({
+            where: { id: user.id }
+        });
+
+        const match = await bcrypt.compare(passwords.oldPassword, verifyUser.password);
+
+        if(!match) {
+            return response.error(req, res, { message: 'The current password does not match' })
+        }
+
+        const hashedPassword = bcrypt.hashSync(passwords.newPassword, Number(SALT_ROUNDS));
+        verifyUser.password= hashedPassword
+        verifyUser.save()
+
+        transporter.sendMail({
+            from: `Onion Food Sup. <${GOOGLE_MAIL}>`,
+            to: verifyUser.email,
+            subject: 'Your user`s password was updated',
+            html: changePasswordMail(verifyUser.name),
+            auth: authMailing,
+        });
+
+        response.success(req, res, { message: 'The password was successfully updated', success: true});
+    } catch (error) {
+        console.log(error)
+        response.error(req, res, {message: 'There was a problem, please try again'});
     }
 })
 

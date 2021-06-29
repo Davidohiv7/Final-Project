@@ -5,7 +5,7 @@ import useStyles from "./styles";
 //Components
 import UserAddresses from './UserAddresses/UserAddresses'
 import AddAddress from './UserAddresses/AddAddress/AddAddress'
-import ChangePassword from './UserAddresses/ChangePassword/ChangePassword'
+import ChangePassword from './ChangePassword/ChangePassword'
 //axios
 import axios from 'axios'
 

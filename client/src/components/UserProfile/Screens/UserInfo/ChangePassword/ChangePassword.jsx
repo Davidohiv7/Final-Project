@@ -1,10 +1,11 @@
 import React, { useState }from "react";
 // Material UI imports
-import { Box, Typography, Button, Popover, TextField } from "@material-ui/core";
+import { Box, Typography, Button, Popover, TextField, Snackbar } from "@material-ui/core";
+import { Alert } from '@material-ui/lab';
 //Styles
 import useStyles from "./styles";
 //Custom functions
-import { changePasswordValidation }  from '../../../../../../assets/utils/authentication'
+import { changePasswordValidation }  from '../../../../../assets/utils/authentication'
 //axios
 import axios from 'axios'
 
@@ -23,6 +24,10 @@ export default function ChangePassword( { handleCloseModal } ) {
     const [inputErrorsPopover, setInputErrorsPopover] = useState(false);
     const [inputErrorsPopoverAnchor, setInputErrorsPopoverAnchor] = useState(null);
 
+    const [updateMessage, setUpdateMessage] = useState('');
+    const [updateSuccessSnackBar, setUpdateSuccessSnackBar] = useState(false);
+    const [updateErrorSnackBar, setUpdateErrorSnackBar] = useState(false);
+
     const handleInputChange = function(e) {
         setChangePasswordInput({
             ...changePasswordInput,
@@ -35,14 +40,31 @@ export default function ChangePassword( { handleCloseModal } ) {
         const inputErrors = changePasswordValidation(changePasswordInput)
         if(Object.keys(inputErrors).length === 0) {
             const jwt = localStorage.getItem('jwt')
-            return console.log(changePasswordInput)
-            // try {
-            //     // const response = await axios.post("http://localhost:3001/shippingaddress/add", { ...shippingAddress }, { headers: { 'Authorization': jwt }} )
-            //     // const userAddresses = response.data.data.userAddresses
-            //     // return handleCloseModal()
-            // } catch (error) {
-            //     console.log(error)
-            // }
+            try {
+                const response = await axios.post("http://localhost:3001/user/change_password", { passwords: {...changePasswordInput} }, { headers: { 'Authorization': jwt }} )
+                const data = response.data.data
+                if(data.success) {
+                    setUpdateMessage(data.message)
+                    setUpdateSuccessSnackBar(true)
+                    return setTimeout(() => handleCloseModal(), 3000)
+                }
+            } catch (error) {
+                if(error.response.data.data.message) {
+                    setChangePasswordInput({
+                        oldPassword: '',
+                        newPassword: '',
+                        confirmNewPassword: '',     
+                    })
+                    setUpdateMessage(error.response.data.data.message)
+                    return setUpdateErrorSnackBar(true)
+                }
+                setChangePasswordInput({
+                    oldPassword: '',
+                    newPassword: '',
+                    confirmNewPassword: '',     
+                })
+                return setUpdateMessage('Sorry, we couldn`t connect the server')
+            }
         }
         setErrors(Object.values(inputErrors).reduce((acc, v) => [...acc, ...v], []))
         setInputErrorsPopover(true)
@@ -58,7 +80,7 @@ export default function ChangePassword( { handleCloseModal } ) {
                     </Box>
 
                     <Box display='flex' width="100%" justifyContent='flex-start' ml={5}>
-                        <Typography variant="h6" color="initial">Don't forget your new password in the nex sign in </Typography>
+                        <Typography variant="h6" color="initial">Don't forget your new password in the next sign in </Typography>
                     </Box>
 
                     <Box display="flex" flexDirection='column' justifyContent="center" alignItems="center" width="100%">
@@ -124,7 +146,19 @@ export default function ChangePassword( { handleCloseModal } ) {
                         </Box>
                     </Popover>
                     </Box>  
-            </form>  
+            </form>
+
+            <Snackbar open={updateSuccessSnackBar} autoHideDuration={3000} onClose={() => setUpdateSuccessSnackBar(true)} variant="filled">
+                <Alert onClose={() => setUpdateSuccessSnackBar(true)} severity="success">
+                    {updateMessage}
+                </Alert>
+            </Snackbar>
+
+            <Snackbar open={updateErrorSnackBar} autoHideDuration={3000} onClose={() => setUpdateErrorSnackBar(false)} variant="filled">
+                <Alert onClose={() => setUpdateErrorSnackBar(false)} severity="error">
+                    {updateMessage}
+                </Alert>
+            </Snackbar>
         </Box>
     )
 }

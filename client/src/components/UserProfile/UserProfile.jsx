@@ -64,7 +64,7 @@ export default function Home() {
 
   return (
     <Container maxWidth="lg">
-      <Grid container spacing={{ xs: 0, sm: 3 }} className={classes.container}>
+      <Grid container spacing={{ xs: 0, sm: 4 }} className={classes.container}>
         <Grid item sm={2} className={classes.filterGrid}>
           <CardContent align="center">
             <Typography

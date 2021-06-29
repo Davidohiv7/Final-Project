@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 //Material UI imports
-import { Backdrop, Dialog, DialogTitle, List, ListItem, ListItemText, ListItemSecondaryAction, Box, Typography, Button, Modal, Fade, Divider, ListItemAvatar, Avatar } from '@material-ui/core';
+import { Backdrop, Dialog, DialogTitle, List, ListItem, ListItemText, Box, Typography, Button, Modal, Fade, Divider, ListItemAvatar, Avatar } from '@material-ui/core';
 import useStyles from './styles';
 import { RateReview } from '@material-ui/icons';
 //Components imports

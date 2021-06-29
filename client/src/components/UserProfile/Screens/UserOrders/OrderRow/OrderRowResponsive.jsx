@@ -1,10 +1,9 @@
 //react imports
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 //Components 
-import OrderDetails from './OrderDetails/OrderDetails'
 import ModalReviewResponsive from './ModalReviewResponsive/ModalReviewResponsive'
 // Material UI imports
-import { Typography, Box, TableRow, TableCell, IconButton, Collapse } from "@material-ui/core";
+import { Typography, Box, TableRow, TableCell } from "@material-ui/core";
 import useStyles from "./styles";
 //Custom functions
 import { capitalize } from '../../../../../assets/utils/stringFunctions'

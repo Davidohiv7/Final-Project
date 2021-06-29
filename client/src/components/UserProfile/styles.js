@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   filterGrid: {
     backgroundColor: theme.palette.primary.main,
     borderRadius: theme.shape.borderRadius,
-    marginLeft: theme.spacing(3),
+    marginRight: theme.spacing(2),
     boxShadow: "1px 1px 8px -1px rgba(0,0,0,0.6)",
     maxWidth: "70%",
     [theme.breakpoints.down('sm')]: {

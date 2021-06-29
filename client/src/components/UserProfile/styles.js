@@ -5,23 +5,19 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "3%",
     marginBottom: "3%",
     height: theme.spacing(100),
+    [theme.breakpoints.down('sm')]: {
+      margin: 0,
+      marginTop: theme.spacing(1),
+      height: theme.spacing(80),
+    },
   },
   slide: {
     padding: theme.spacing(50),
     marginLeft: "5%",
     backgroundColor: theme.palette.secondary.main,
   },
-
-  grid_container: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-    borderRadius: 5,
-    color: theme.palette.secondary.main,
-    textAlign: "center",
-  },
-
   button: {
-    background: theme.palette.primary.dark,
+    background: theme.palette.secondary.dark,
     variant: "contained",
     color: "white",
     borderRadius: 5,
@@ -33,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(3),
     boxShadow: "1px 1px 8px -1px rgba(0,0,0,0.6)",
     maxWidth: "70%",
+    [theme.breakpoints.down('sm')]: {
+      display: "none"
+    },
   },
   catalogueContainer: {
     marginLeft: theme.spacing(5),
@@ -52,10 +51,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 5,
     backgroundColor: theme.palette.common.white,
   },
-  screen: {
-    marginLeft: theme.spacing(3),
-    position: 'relative',
-  },
   profile: {
     border: 'solid',
     borderRadius: theme.spacing(5),
@@ -67,7 +62,28 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
+  filter_responsive: {
+    height: "1%",
+    [theme.breakpoints.up('sm')]: {
+      display: "none"
+    },
+  },
+  responsive_container: {
+      display: 'flex',
+      flexWrap: 'wrap',
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  box_responsive: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundColor: theme.palette.secondary.main,
+    borderRadius: theme.shape.borderRadius,
+  },
 }));
 
 export default useStyles;

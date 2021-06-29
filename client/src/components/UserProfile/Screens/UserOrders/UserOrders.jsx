@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 //Components
 import OrderRow from './OrderRow/OrderRow'
+import OrderRowResponsive from './OrderRow/OrderRowResponsive'
 // Material UI imports
 import {Paper, Typography, Box, TableContainer, Table, TableHead, TableRow, TableCell,
     TableBody, Button } from "@material-ui/core";
@@ -22,9 +23,9 @@ export default function UserOrders() {
     const classes = useStyles();
 
     return (
-        <Box className={classes.container} p={2} boxShadow={4}>
-            <Box my={2}>
-                <Typography variant="h3" color="initial">Orders history: </Typography>
+        <Box className={classes.container} p={{xs:0, sm:2}} boxShadow={4}>
+            <Box my={{xs:0, sm:2}}>
+                <Typography variant={{xs:"p", sm:"h3"}} color="initial">Orders history: </Typography>
             </Box>
             {   
                 orders && orders.length > 0 ?
@@ -58,6 +59,34 @@ export default function UserOrders() {
                             </TableBody>
                         </Table>
                     </TableContainer>
+
+                    {/*This displays only in mobile*/}
+                    <TableContainer
+                        component={Paper}
+                        className={classes.tableContainerResponsive}
+                    >
+                        <Table>
+                            <TableHead className={classes.head}>
+                                <TableRow className={classes.headRow}>
+                                    <TableCell align="center" className={classes.title}>
+                                        Order number
+                                    </TableCell>
+                                    <TableCell align="center" className={classes.title}>
+                                        Status
+                                    </TableCell>
+                                    <TableCell align="center" className={classes.title}>
+                                        Order total
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {
+                                    orders && orders.map(order => <OrderRowResponsive order={order} openOrder={openOrder} setOpenOrder={setOpenOrder}/>)
+                                }   
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    {/*This displays only in mobile*/}
                 </Box>
                 :
                 <Box display='flex' flexDirection='column' alignItems='center' justifyContent='center'>

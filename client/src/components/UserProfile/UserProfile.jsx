@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 // Material UI imports
-import {Grid, Container, CardContent, Typography, Avatar, Button, Box} from "@material-ui/core";
+import {Grid, Container, CardContent, Typography, Avatar, Button, Box, Dialog, DialogTitle, DialogContent, FormControl, Select, Input, DialogActions} from "@material-ui/core";
 import useStyles from "./styles";
 //Components imports
 import UserOrders from "./Screens/UserOrders/UserOrders";
@@ -24,6 +24,7 @@ export default function Home() {
   
   //local state used for the different screen displays
   const [screenDisplay, setScreenDisplay] = useState("accountConfig");
+  const [open, setOpen] = useState(false);
 
   //Route protection
   /* eslint-disable */
@@ -49,16 +50,26 @@ export default function Home() {
     history.push("/");
   }
 
+  //RESPONSIVE SECTOR -------
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+    //--------------
+
+
   return (
     <Container maxWidth="lg">
-      <Grid container spacing={5} wrap='nowrap' className={classes.container}>
-        <Grid item xs={2} className={classes.filterGrid} wrap='nowrap'>
+      <Grid container spacing={{ xs: 0, sm: 3 }} className={classes.container}>
+        <Grid item sm={2} className={classes.filterGrid}>
           <CardContent align="center">
             <Typography
-              align="center"
               variant="h5"
-              color="secondary"
-              display="inline"
+              className={classes.title}
             >
               {`${user && user.name} ${user && user.lastName}`}
             </Typography>
@@ -70,7 +81,38 @@ export default function Home() {
             </Box>
           </CardContent>
         </Grid>
-        <Grid className={classes.screen} item xs={9} wrap='nowrap'>
+
+        {/*This displays only in mobile*/}
+        <Grid item xs={12} className={classes.filter_responsive} >
+          <Box className={classes.box_responsive} boxShadow={4}>
+            <Button onClick={() => handleClickOpen()} className={classes.button}>Select Screen</Button>
+            <Dialog disableBackdropClick disableEscapeKeyDown open={open} onClose={() => handleClose()}>
+              <DialogTitle>Select Screen</DialogTitle>
+              <DialogContent>
+                <form className={classes.responsive_container}>
+                  <FormControl className={classes.formControl}>
+                    <Select
+                      native
+                      input={<Input id="demo-dialog-native" />}
+                    >
+                      <option onClick={() => setScreenDisplay('accountConfig')}> Account Information</option>) :
+                      <option onClick={() => setScreenDisplay('orderHistory')}> Order History </option>) :
+                    </Select>
+                  </FormControl>
+                </form>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => handleClose()} color="primary">
+                  Ok
+                </Button>
+              </DialogActions>
+            </Dialog>
+            <Button className={classes.button} onClick={() => handleLogOut()}> Log Out </Button>
+          </Box>
+        </Grid>
+        {/*This displays only in mobile*/}
+        
+        <Grid item xs={12} sm={9}>
             {displayScreens()}
         </Grid>
       </Grid>

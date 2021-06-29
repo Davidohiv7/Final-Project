@@ -34,8 +34,8 @@ export default function UserInfo({ user }) {
     }
 
     return (
-        <Box p={2} boxShadow={4} display='flex' alignItems='center' justifyContent='center' flexDirection='column' className={classes.container}>
-            <Box width='100%' display='flex' alignItems='center' justifyContent='center' flexDirection='column' p={4}>
+        <Box p={{ xs: 0, sm: 2 }} boxShadow={4} display='flex' alignItems='center' justifyContent='center' flexDirection='column' className={classes.container}>
+            <Box width='100%' display='flex' alignItems='center' justifyContent='center' flexDirection='column' p={{ xs: 0, sm: 4 }}>
                 <Typography className={classes.name} variant="h3">{`${user?.name} ${user?.lastName}`}</Typography>
                 <Box width='100%' display='flex' alignItems='center' justifyContent='center' >
                     <Typography className={classes.title} variant="h6">email:</Typography>

@@ -4,6 +4,14 @@ const useStyles = makeStyles((theme) => ({
     tableContainer: {
         marginBottom: 15,
         maxHeight: 200,
+        [theme.breakpoints.down('sm')]: {
+            display: 'none',
+        },
+    },
+    tableContainerResponsive: {
+        [theme.breakpoints.up('sm')]: {
+            display: 'none',
+        },
     },
     title: {
         color: theme.palette.secondary.main,

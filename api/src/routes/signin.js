@@ -190,9 +190,6 @@ signInRouter.post('/twofa/email', async (req, res, next) => {
             encoding: 'base32'
           });
 
-        console.log(newSecret)
-        console.log(newToken)
-
         //Save secret
         userExistCheck.twofapassword = newSecret.base32
         await userExistCheck.save()
@@ -228,23 +225,16 @@ signInRouter.post('/twofa/email/confirm', async (req, res, next) => {
             return response.error(req, res, { message: 'There was an internal problem' })
         }
 
-        console.log(user2FA.twofapassword)
-        console.log(code)
         const match = speakeasy.totp.verify({
             secret: user2FA.twofapassword,
             encoding: 'base32',
             token: code,
             window: 6
         });
-        console.log(match)
 
         if(!match) {
             return response.error(req, res, { message: 'The code doesn`t match' })
         }
-
-        // if(match.delta == 1 || match.delta == -1) {
-        //     return response.error(req, res, { message: 'The code has expired' })
-        // }
 
         user2FA.twofapassword = null
         await user2FA.save()
@@ -376,22 +366,10 @@ signInRouter.post('/twofa/email/confirm', async (req, res, next) => {
         return response.success(req, res, {message: 'Successful log in', token: jasonWebToken, cart})
 
     } catch (error) {
-        console.log(error)
         response.error(req, res, error)
     }
     
 })
 
-
-
-// signInRouter.post('/2fa/email', (req, res, next) => {
-//     const { email } = req.body 
-
-//     const newSecret = twofactor.generateSecret({ name: "Onion food", account: email} );
-//     const newToken = twofactor.generateToken(newSecret.secret);
-//     const verification = twofactor.verifyToken(newSecret.secret, newToken.token);
-
-//     response.success(req, res, {newSecret, newToken, verification})
-// })
 
 module.exports = signInRouter

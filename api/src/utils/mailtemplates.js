@@ -138,7 +138,7 @@ img{
   <h4>You requested a password reset for <span class="contact">${email}</span></h4>
   <span class="contact"><a href='http://localhost:3000/passwordReset?token=${token}'>Reset password</a></span>
   <footer>
-    <h5>You are more than welcome to write us at <span class="contact"><a href='https://localhost/3000/contact'>Contact</a></span></h5>
+    <h5>You are more than welcome to write us at <span class="contact"><a href='http://localhost:3000/contact'>Contact</a></span></h5>
   </footer>
   </div>
 
@@ -205,9 +205,9 @@ exports.mailBuy = function (name, order, cart) {
             ${cart.map((prod)=>"<li>" + prod.name + " Subtotal: " + prod.price*prod.quantity + "</li>")}
           </ul>
           <h2>Total: $${order.total}</h2>
-          <a href="https://localhost:3000/user" class="button">Give us a review!</a>
+          <a href="http://localhost:3000/user" class="button">Give us a review!</a>
           <footer>
-            <h5>You are more than welcome to write us at <span class="contact"><a href='https://localhost/3000/contact'>Contact</a></span></h5>
+            <h5>You are more than welcome to write us at <span class="contact"><a href='http://localhost:3000/contact'>Contact</a></span></h5>
           </footer>
           </div>
       </body>
@@ -276,9 +276,9 @@ exports.mailDispatched = function (name, lastName, order) {
     <h2> 
       Your order ${order.id} is now dispatched,</h2> <h2> it will arrive promptly to ${order.street} in ${order.city}</h2>
       
-        <a href="https://localhost:3000/user" class="button">See your Orders</a>
+        <a href="http://localhost:3000/user" class="button">See your Orders</a>
         <footer>
-          <h5>You are more than welcome to write us at <span class="contact"><a href='https://localhost/3000/contact'>Contact</a></span></h5>
+          <h5>You are more than welcome to write us at <span class="contact"><a href='http://localhost:3000/contact'>Contact</a></span></h5>
         </footer>
         </div>
 
@@ -381,11 +381,11 @@ exports.twoFAEmailMail = function (name, token) {
             <h3> Please use the following code to continue your authentication process</h3>
             <h4> Code: <span class="code" > ${token} </span> </h4>
             <span class="contact">
-              <a href="https://localhost:3000/authentication" class="button">Continue!</a>
+              <a href="http://localhost:3000/authentication" class="button">Continue!</a>
             </span>
             <footer>
               <h5>You are more than welcome to write us at <span class="contact">
-                <a href='https://localhost/3000/contact'>Contact</a></span>
+                <a href='http://localhost:3000/contact'>Contact</a></span>
               </h5>
             </footer>
           </div>
@@ -440,4 +440,106 @@ exports.messageMail = function (name, lastName, email, message) {
     </html>
 `
   )
+};
+
+exports.changePasswordMail = function (name) {
+  return (
+        `<!DOCTYPE html>
+    <html>
+    <head>
+
+    <style>
+
+      body {
+        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      }
+
+      a {
+          text-decoration: none;
+          color: #EEEBDD;
+      }
+
+      .container {
+        background-color: #EEEBDD;
+        border-radius: 0.5rem;
+        width: 75%;
+        box-shadow: 6px 6px 6px -1.2px rgba(102, 87, 87, 0.73);
+      }
+
+      h2 {
+        background-color: #CE1212;
+        border-radius: 0.5rem  0.5rem  0rem  0rem;
+        color: #EEEBDD;
+        padding: 16px;
+      }
+
+      p, h3, h4, h5 {
+        color: #1B1717;
+      }
+
+      .button{
+          color: #EEEBDD;
+          background-color: #CE1212;
+          font-size: 16px;
+          border: none;
+          border-radius: 0.2rem;
+          margin: 1rem;
+          padding: 0.5rem;
+          box-shadow: 0 0 6px -1.6px #1B1717;
+        }
+
+      .button:hover {
+          background-color: #a90f0f;
+          font-size: 16px;
+          border: none;
+          border-radius: 0.2rem;
+          margin: 1rem;
+          padding: 0.5rem;
+        }
+
+      footer {
+        background-color: #CE1212;
+        border-radius:  0rem  0rem 0.5rem  0.5rem;
+      }
+
+      footer h5{
+        padding: 8px;
+      }
+
+      footer a {
+        text-decoration:none!important;
+      }
+
+      
+      h5 {
+        color: #EEEBDD;
+        font-weight: 100;
+        }
+
+      h5 a {
+        font-weight: bold;
+        }
+
+    </style>
+
+    </head>
+    <body id='body'>
+      <div align='center' class='root' >
+        <div class='container' align='center'>
+          <h2> Hello ${name}!</h2>
+          <h3> Your password was successfully updated. If it wasn't you, please contact us through the web</h3>
+          <span class="contact">
+            <a href="http://localhost:3000/" class="button">Continue to our Web</a>
+          </span>
+          <footer>
+            <h5>You are more than welcome to write us at <span class="contact">
+              <a href='http://localhost:3000/contact'>Contact</a></span>
+            </h5>
+          </footer>
+        </div>
+      </div>     
+    </body>
+  </html>
+  `
+     )
 };

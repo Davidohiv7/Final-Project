@@ -3,7 +3,6 @@ const router = Router();
 const models = require('../database/models/');
 const response = require('../utils/response');
 const { Op } = require("sequelize");
-const passport = require('passport');
 
 router.get('/', async (req, res) => {
   try {
@@ -62,12 +61,12 @@ router.get('/', async (req, res) => {
 
 })
 
-router.post('/', passport.authenticate('jwt', {session: false}), async (req, res) => {
+router.post('/', async (req, res) => {
   models.Category.create({name:req.body.name})
   return response.success(req, res, null, 200)
 })
 
-router.delete('/:name', passport.authenticate('jwt', {session: false}), async (req, res) => {
+router.delete('/:name', async (req, res) => {
   try {
     const { name } = req.params;
 		const category = await models.Category.findOne({ where: { name: name }});

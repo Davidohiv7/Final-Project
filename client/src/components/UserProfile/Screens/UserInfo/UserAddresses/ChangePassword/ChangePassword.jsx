@@ -4,20 +4,19 @@ import { Box, Typography, Button, Popover, TextField } from "@material-ui/core";
 //Styles
 import useStyles from "./styles";
 //Custom functions
-import { addressValidation }  from '../../../../../../assets/utils/ordersInformationValidation'
+import { changePasswordValidation }  from '../../../../../../assets/utils/authentication'
 //axios
 import axios from 'axios'
 
 
-export default function AddAddress( { setUserAddresses, handleCloseModal } ) {
+export default function ChangePassword( { handleCloseModal } ) {
 
     const classes = useStyles();
 
-    const [shippingAddress, setShippingAddress] = useState({
-        street: '',
-        neighborhood: '',
-        city: '',
-        zip: '',
+    const [changePasswordInput, setChangePasswordInput] = useState({
+        oldPassword: '',
+        newPassword: '',
+        confirmNewPassword: '',
     });
 
     const [errors, setErrors] = React.useState(['initial']);
@@ -25,25 +24,25 @@ export default function AddAddress( { setUserAddresses, handleCloseModal } ) {
     const [inputErrorsPopoverAnchor, setInputErrorsPopoverAnchor] = useState(null);
 
     const handleInputChange = function(e) {
-        setShippingAddress({
-            ...shippingAddress,
+        setChangePasswordInput({
+            ...changePasswordInput,
             [e.target.name]: e.target.value
         });
     }
 
     async function handleSubmit(e) {
         e.preventDefault()
-        const inputErrors = addressValidation(shippingAddress)
+        const inputErrors = changePasswordValidation(changePasswordInput)
         if(Object.keys(inputErrors).length === 0) {
             const jwt = localStorage.getItem('jwt')
-            try {
-                const response = await axios.post("http://localhost:3001/shippingaddress/add", { ...shippingAddress }, { headers: { 'Authorization': jwt }} )
-                const userAddresses = response.data.data.userAddresses
-                setUserAddresses(userAddresses)
-                return handleCloseModal()
-            } catch (error) {
-                console.log(error)
-            }
+            return console.log(changePasswordInput)
+            // try {
+            //     // const response = await axios.post("http://localhost:3001/shippingaddress/add", { ...shippingAddress }, { headers: { 'Authorization': jwt }} )
+            //     // const userAddresses = response.data.data.userAddresses
+            //     // return handleCloseModal()
+            // } catch (error) {
+            //     console.log(error)
+            // }
         }
         setErrors(Object.values(inputErrors).reduce((acc, v) => [...acc, ...v], []))
         setInputErrorsPopover(true)
@@ -55,61 +54,52 @@ export default function AddAddress( { setUserAddresses, handleCloseModal } ) {
             <form onSubmit={e => handleSubmit(e)}>
                 <Box display="flex" justifyContent="center" alignItems="center" flexDirection='column' m={2}>
                     <Box mb={4}>
-                        <Typography variant="h3" color="primary">Add a new addres:</Typography>
+                        <Typography variant="h3" color="primary">Change your password: </Typography>
                     </Box>
 
                     <Box display='flex' width="100%" justifyContent='flex-start' ml={5}>
-                        <Typography variant="h6" color="initial">Please complete all the fields </Typography>
+                        <Typography variant="h6" color="initial">Don't forget your new password in the nex sign in </Typography>
                     </Box>
 
                     <Box display="flex" flexDirection='column' justifyContent="center" alignItems="center" width="100%">
-                        <Box display="flex" justifyContent="space-between" alignItems="center" width="93%" mb={2} mt={3}>
+
                             <TextField
-                                className={classes.address}
-                                name="street"
-                                label="Address"
+                                className={classes.input}
+                                name="oldPassword"
+                                label="Current password"
                                 variant="outlined"
-                                value={shippingAddress.street}
+                                value={changePasswordInput.oldPassword}
                                 onChange={handleInputChange}
                                 size='small'
+                                type='password'
                             />
 
                             <TextField
-                                    name="zip"
-                                    label="Postal code"
-                                    variant="outlined"
-                                    value={shippingAddress.zip}
-                                    onChange={handleInputChange}
-                                    size='small'
+                                className={classes.input}
+                                name="newPassword"
+                                label="New password"
+                                variant="outlined"
+                                value={changePasswordInput.newPassword}
+                                onChange={handleInputChange}
+                                size='small'
+                                type='password'
                             />
 
-                        </Box>
-
-                        <Box display="flex" justifyContent="space-between" alignItems="center" width="93%" my={1}>
                             <TextField
-                                    // className={classes.input}
-                                    name="neighborhood"
-                                    label="Neighborhood"
-                                    variant="outlined"
-                                    value={shippingAddress.neighborhood}
-                                    onChange={handleInputChange}
-                                    size='small'
+                                className={classes.input}
+                                name="confirmNewPassword"
+                                label="Confirm new password"
+                                variant="outlined"
+                                value={changePasswordInput.confirmNewPassword}
+                                onChange={handleInputChange}
+                                size='small'
+                                type='password'
                             />
-                            <TextField
-                                    // className={classes.input}
-                                    name="city"
-                                    label="City"
-                                    variant="outlined"
-                                    value={shippingAddress.city}
-                                    onChange={handleInputChange}
-                                    size='small'
-                            />
-                        </Box>
 
                     </Box>
                     <Box mt={4}>
                         <Button variant="contained" color="primary" type="submit">
-                            submit address
+                            Change password
                         </Button>
                     </Box>
                     <Popover

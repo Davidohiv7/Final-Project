@@ -8,6 +8,7 @@ import useStyles from "./styles";
 //Components imports
 import UserOrders from "./Screens/UserOrders/UserOrders";
 import UserInfo from "./Screens/UserInfo/UserInfo";
+import Wishlist from './Screens/Wishlist/Wishlist';
 
 import { logOut } from '../../actions/authentication/authentication_actions'
 
@@ -42,6 +43,7 @@ export default function Home() {
   function displayScreens() {
     if(screenDisplay==='orderHistory') return (<UserOrders/>)
     if(screenDisplay==='accountConfig') return (<UserInfo user={user} />)
+    if(screenDisplay==='wishlist') return (<Wishlist/>)
   }
 
   function handleLogOut() {
@@ -76,6 +78,7 @@ export default function Home() {
             <Avatar className={classes.profilePic}></Avatar>
             <Button className={classes.button} onClick={() => setScreenDisplay('accountConfig')}> Account Information</Button>
             <Button className={classes.button} onClick={() => setScreenDisplay('orderHistory')}> Order History </Button>
+            <Button className={classes.button} onClick={() => setScreenDisplay('wishlist')}> Wishlist </Button>
             <Box className={classes.BoxLogOut}>
               <Button className={classes.button} onClick={() => handleLogOut()}> Log Out </Button>
             </Box>

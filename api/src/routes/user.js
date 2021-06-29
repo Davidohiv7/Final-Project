@@ -101,7 +101,7 @@ router.get('/data', passport.authenticate('jwt', {session: false}), async (req, 
     
 })
 
-router.get('/', passport.authenticate('jwt', {session: false}), async (req, res) => {
+router.get('/', async (req, res) => {
 
     try {
         let {role, page = 1, limit = 8 } = req.query;
@@ -163,7 +163,7 @@ router.get('/', passport.authenticate('jwt', {session: false}), async (req, res)
     }
 })
 
-router.delete('/:id', passport.authenticate('jwt', {session: false}), async (req, res) => {
+router.delete('/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
@@ -188,7 +188,7 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-router.patch('', passport.authenticate('jwt', {session: false}), async (req, res) => {
+router.patch('/', async (req, res) => {
     try {
         let { id, role } = req.body;
         const user = await models.Person.findOne({

@@ -2,17 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import useStyles from './styles';
 //Import components
-import ProductDetailsTab from './ProductDetailsTab/ProductDetailsTab.jsx'
-import ProductDetailsPhotoSlider from './ProductDetailsPhotoSlider/ProductDetailsPhotoSlider.jsx'
+import ProductDetailsTab from './ProductDetailsTab/ProductDetailsTab.jsx';
+import ProductDetailsPhotoSlider from './ProductDetailsPhotoSlider/ProductDetailsPhotoSlider.jsx';
 //Imports Material UI components:
-import {Paper, Card, CardContent, Box, Typography, TextField, Button, IconButton, Divider, Snackbar} from '@material-ui/core'
+import {Paper, Card, CardContent, Box, Typography, TextField, Button, IconButton, Divider, Snackbar} from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 //Imports Material UI icons:
 import { Star, ShoppingCartOutlined, FavoriteBorder, Close } from '@material-ui/icons';
 //Custom functions
-import { addToCart, addToFavorites } from '../../assets/utils/productCardFunctions'
+import { addToCart } from '../../assets/utils/productCardFunctions';
 //actions
-import { addProductToCart, setLocalCart } from '../../actions/cart/cart_actions'
+import { addProductToCart, setLocalCart } from '../../actions/cart/cart_actions';
+import { addToFavorites } from '../../actions/favorites/favorites_actions';
 
 
 
@@ -22,7 +23,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
     const dispatch = useDispatch();
 
     const { payment } = useSelector((state) => ({ ...state.checkoutReducer }))
-    const { logged } = useSelector((state) => ({ ...state.authenticationReducer }))
+    const { logged, user } = useSelector((state) => ({ ...state.authenticationReducer }))
     const { cart } = useSelector((state) => ({ ...state.cartReducer }))
 
     const [quantity, setQuantity] = useState(1);
@@ -66,9 +67,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
     }
 
     async function handleAddToFavs(product) {
-        const addedToFav = addToFavorites(product)
-        if(addedToFav) return setFavSnackbar(true)
-        return setAlreadyFavSnackbar(true)
+        dispatch(addToFavorites(product, user.email));
     }
 
     return (

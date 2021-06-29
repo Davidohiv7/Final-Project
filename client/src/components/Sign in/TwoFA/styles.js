@@ -8,19 +8,23 @@ const useStyles = makeStyles((theme) => ({
         height: '100%',
     },
     input: {
-        marginTop: 25,
-        width: 250,
+        width: 37,
+        marginLeft: 5,
     },
-    button: {
-        marginTop: 25,
-        width: 120,
+    verifyButton: {
+        marginTop: 40,
+        width: 165,
     },
-    forgotPassAnchor: {
-        display: 'block',
-        width: "100%",
+    resendButon: {
         marginTop: 5,
-        textAlign: 'right'
-    }
+        width: 165,
+    },
+    backButton: {
+        marginTop: 24,
+    },
+    popover: {
+        marginTop: 10,
+    },
 }));
 
 export default useStyles;

@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down('xs')]: {
           marginTop: 3,
           marginBottom: 3,
+          backgroundColor: theme.palette.secondary.main,
         },
     },
     catalogueContainer: {

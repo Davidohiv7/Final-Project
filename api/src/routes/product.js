@@ -369,7 +369,7 @@ router.delete('/:id', passport.authenticate('jwt', {session: false}), async (req
 
 
 router.post('/stockbyid', passport.authenticate('jwt', {session: false}), async (req, res) => {
-  const { idArray } = req.body 
+  const { idArray } = req.body
   try {
     const productList = await models.Product.findAll({ 
       where: { id: idArray }, 

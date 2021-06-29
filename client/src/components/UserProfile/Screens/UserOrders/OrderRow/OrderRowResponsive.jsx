@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 //Components 
 import OrderDetails from './OrderDetails/OrderDetails'
+import ModalReviewResponsive from './ModalReviewResponsive/ModalReviewResponsive'
 // Material UI imports
 import { Typography, Box, TableRow, TableCell, IconButton, Collapse } from "@material-ui/core";
 import useStyles from "./styles";
@@ -11,14 +12,23 @@ import { capitalize } from '../../../../../assets/utils/stringFunctions'
 import axios from 'axios'
 
 export default function OrderRowResponsive({ order }) {
-
     const classes = useStyles();
+
+    const [productsData, setProductsData] = useState([]);
+    const [open, setOpen] = useState(false);
 
     async function handleOrderClick(e) {
         const jwt = localStorage.getItem('jwt');
         const response = await axios.post("http://localhost:3001/orders/products", { order }, { headers: { 'Authorization': jwt } })
         const orderDetailedData = response.data.data.orderData;
+        orderDetailedData && setProductsData(orderDetailedData);
+        //console.log(orderDetailedData)
+        setOpen(true);
     }
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
         <React.Fragment>
@@ -45,6 +55,7 @@ export default function OrderRowResponsive({ order }) {
                 </TableCell>
                 <TableCell align="center">${order.total}</TableCell>
             </TableRow>
+            <ModalReviewResponsive order={order} productsData={productsData} open={open} onClose={() => handleClose()} setProductsData={setProductsData}/>
         </React.Fragment>
     )
 }

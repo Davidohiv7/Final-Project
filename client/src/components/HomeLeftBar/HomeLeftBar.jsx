@@ -1,21 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import React, { useState} from 'react';
-<<<<<<< HEAD
-import { Box, Button, Grid}from '@material-ui/core';
-import Divider from '@material-ui/core/Divider';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-=======
-import { Box, Button, Grid, Dialog, DialogActions, DialogContent, DialogTitle, InputLabel, Input, FormControl, Select }from '@material-ui/core';
->>>>>>> c601e41ec2845990d1b1a9ffc79ebbfbb77e998f
-import { Home } from '@material-ui/icons'
+import { Box, Button, Grid, Dialog, DialogActions, DialogContent, DialogTitle, InputLabel, Input, FormControl, Select, Divider }from '@material-ui/core';
+import { Home, ArrowDropDown } from '@material-ui/icons'
 import useStyles from './styles'
 
 import { getProductsByCategory, getAllProducts, updateCategory, updateSearching } from '../../actions/home/home_actions'
@@ -25,11 +11,6 @@ export default function HomeLeftBar() {
     const { searched, order, filter, categories } = useSelector((state) => ({ ...state.homeReducer }))
 
     const [open, setOpen] = useState(false);
-<<<<<<< HEAD
-
-=======
-    
->>>>>>> c601e41ec2845990d1b1a9ffc79ebbfbb77e998f
     const classes = useStyles();  
     const dispatch = useDispatch();
 
@@ -77,7 +58,7 @@ export default function HomeLeftBar() {
         <Grid className={classes.filter_responsive}>
             <Button className={classes.category_bttn} onClick={handleClickOpen}>
             Select Categories
-            <ArrowDropDownIcon/>
+            <ArrowDropDown/>
             </Button>
             <Divider className={classes.divider}/>
             <Dialog  disableBackdropClick disableEscapeKeyDown open={open} onClose={handleClose}>

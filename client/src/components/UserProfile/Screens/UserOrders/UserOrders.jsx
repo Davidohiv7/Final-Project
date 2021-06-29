@@ -81,7 +81,7 @@ export default function UserOrders() {
                             </TableHead>
                             <TableBody>
                                 {
-                                    orders && orders.map(order => <OrderRowResponsive order={order} openOrder={openOrder} setOpenOrder={setOpenOrder}/>)
+                                    orders && orders.map(order => <OrderRowResponsive order={order} />)
                                 }   
                             </TableBody>
                         </Table>

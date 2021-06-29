@@ -10,12 +10,14 @@ import { capitalize } from '../../../../../assets/utils/stringFunctions'
 //axios
 import axios from 'axios'
 
-export default function OrderRowResponsive({ order, openOrder, setOpenOrder }) {
+export default function OrderRowResponsive({ order }) {
 
     const classes = useStyles();
 
     async function handleOrderClick(e) {
-        console.log('lets put a modal here')
+        const jwt = localStorage.getItem('jwt');
+        const response = await axios.post("http://localhost:3001/orders/products", { order }, { headers: { 'Authorization': jwt } })
+        const orderDetailedData = response.data.data.orderData;
     }
 
     return (

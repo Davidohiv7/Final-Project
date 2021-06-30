@@ -33,7 +33,7 @@ export default function  CustomerInformation({activeStep, setActiveStep }) {
     const [errors, setErrors] = React.useState(['initial']);
     const [inputErrorsPopover, setInputErrorsPopover] = useState(false);
     const [inputErrorsPopoverAnchor, setInputErrorsPopoverAnchor] = useState(null);
-
+    /* eslint-disable */
     useEffect(() => {
         const getUserAddresses = async () => {
             const jwt = localStorage.getItem('jwt')
@@ -59,7 +59,7 @@ export default function  CustomerInformation({activeStep, setActiveStep }) {
             setActiveStep(activeStep + 1)
         }
       }, [])
-
+    /* eslint-enable */
     const handleInputChange = function(e) {
         setCustomerInformation({
             ...customerInformation,

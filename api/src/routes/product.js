@@ -2,7 +2,18 @@ const { Router } = require('express');
 const router = Router();
 const models = require('../database/models/');
 const response = require('../utils/response');
-const { Op } = require("sequelize");
+const { Op, col, fn } = require("sequelize");
+
+const {
+  transporter,
+  authMailing
+} = require('../mailingMid/NodemailerGoogleMid')
+const {
+  mailInStock
+} = require('../utils/mailtemplates');
+const {
+  GOOGLE_MAIL,
+} = process.env;
 
 
 router.get('/', async (req, res) => {
@@ -302,6 +313,29 @@ router.put('/', async (req, res) => {
 				{ model: models.Image, attributes: ['id', 'productId', 'url']} 
 			]
 		});
+    
+    if(product.stock == 0 && stock !== 0) {
+      models.wishlist_item.findAll({
+        where: {ProductId: id}
+      })
+      .then(favs => {
+        favs.forEach(fav => {
+          models.Person.findOne({
+            where: {id: fav.PersonId}
+          })
+          .then(person => {
+              transporter.sendMail({
+              from: `Onion Food Sup. <${GOOGLE_MAIL}>`,
+              to: person.email,
+              subject: 'An item on your wishlist is now in stock',
+              html: mailInStock(person.name, person.lastName, name, images[0]),
+              auth: authMailing,
+          });
+          })
+        })
+      })
+    }  
+    
 
 		if (!product) return response.success(req, res, { message: "Product not found." }, 404);
 
@@ -379,6 +413,7 @@ router.post('/stockbyid', async (req, res) => {
     response.error(req, res, error, 500);
   }
 })
+
 
 
 module.exports = router;

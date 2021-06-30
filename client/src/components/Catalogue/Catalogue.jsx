@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { getProducts, updateSearching, updateCategory } from '../../actions/home/home_actions';
-import { fade, makeStyles } from '@material-ui/core/styles';
-import { Grid, Paper, InputBase, Typography } from '@material-ui/core';
+import useStyles from './styles'
+import { Grid, Paper, InputBase, Typography, List, ListItem, ListItemText } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import ProductCards from '../ProductCards/ProductCards.jsx'
 import PaginationBar from './PaginationBar/PaginationBar.jsx'
@@ -13,12 +13,18 @@ import SortSelect from './SortSelect/SortSelect.jsx'
 export default function Catalogue() {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const { searched, products, filter, order } = useSelector((state) => ({ ...state.homeReducer }))
+    const { searched, products, filter, order } = useSelector((state) => ({ ...state.homeReducer }));
+    const [autoComplete, setAutocomplete] = useState(false);
 
-    const handleSearchChange = event => {
-      dispatch(getProducts({name: event.target.value, filter, order}))
-      dispatch(updateSearching(event.target.value))
-      dispatch(updateCategory(''))
+    const handleSearchChange = value => {
+      dispatch(getProducts({name: value, filter, order}));
+      dispatch(updateSearching(value));
+      dispatch(updateCategory(''));
+      if (value.length > 0 && products) {
+        setAutocomplete(true);
+      } else {
+        setAutocomplete(false);
+      }
     };
 
 
@@ -29,6 +35,7 @@ export default function Catalogue() {
                 <div className={classes.searchIcon}>
                         <SearchIcon />
                     </div>
+                    <div className={classes.demo}>
                     <InputBase
                         placeholder="Search…"
                         classes={{
@@ -36,10 +43,24 @@ export default function Catalogue() {
                         input: classes.inputInput,
                         }}
                         inputProps={{ 'aria-label': 'search' }}
-                        onChange={handleSearchChange}
+                        onChange={(event) => handleSearchChange(event.target.value)}
                         value={searched}
                     />
-
+                        {
+                          autoComplete && products.length > 1 &&
+                          <List className={classes.autoCompleteList}>
+                           {
+                             products.map(product => {
+                               return (
+                                 <ListItem onClick={() => handleSearchChange(product.name)}>
+                                   <ListItemText primary={product.name} />
+                                 </ListItem>
+                               )
+                             })
+                           }
+                          </List>
+                        }
+                    </div>
                 </div>
                 <SortSelect/>
             </div>
@@ -65,81 +86,4 @@ export default function Catalogue() {
     )
 };
 
-// Styles
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  catalogueMainContainer: {
-      backgroundColor: theme.palette.secondary.main,
-      boxShadow: '1px 1px 15px -1px rgba(0,0,0,0.6)',
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      height: '100%',
-      padding: '15px',
-      borderRadius: '10px',
-  },
-  searchSortContainer: {
-    display: 'flex',  
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '98%',
-    borderRadius: '10px',
-    padding: '5px',
-    marginBottom: '24px',
-  },
-  search: {
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-    height: '100%',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: theme.palette.common.white,
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white),
-    },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(1),
-      width: 'auto',
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputRoot: {
-    color: 'inherit',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: '25ch',
-    },
-  },
-  gridContainer: {
-    display: 'flex',
-    justifyContent: 'space-evenly',
-  },
-  productCard: {
-    margin: '10px',
-  },
-  paginationContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    margin: '15px',
-    width: '100%'
-  }
-}));
+

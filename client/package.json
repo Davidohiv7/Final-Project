@@ -17,7 +17,7 @@
     "dotenv": "^10.0.0",
     "mercadopago": "^1.5.8",
     "notistack": "^1.0.9",
-    "query-string": "^7.0.0",
+    "query-string": "^7.0.1",
     "react": "^17.0.2",
     "react-cookie": "^4.0.3",
     "react-dom": "^17.0.2",
@@ -30,6 +30,7 @@
     "redux": "^4.1.0",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
+    "validator": "^13.6.0",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
@@ -41,8 +42,21 @@
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
-    ]
+      "react-app/jest",
+      "plugin:react-hooks/recommended"
+    ],
+    "plugins": [
+      "react-hooks"
+    ],
+    "rules": {
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": [
+        "warn",
+        {
+          "additionalHooks": "(useMyCustomHook|useMyOtherCustomHook)"
+        }
+      ]
+    }
   },
   "browserslist": {
     "production": [
@@ -57,6 +71,7 @@
     ]
   },
   "devDependencies": {
+    "eslint-plugin-react-hooks": "^4.2.0",
     "redux-devtools": "^3.7.0"
   },
   "description": "This project is brought to you by Henry12 Group 2",

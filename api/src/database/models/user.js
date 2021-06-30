@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    twofapassword: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     role: {
       type: DataTypes.STRING,
       allowNull: false
@@ -48,6 +52,10 @@ module.exports = (sequelize, DataTypes) => {
 
     Person.hasMany(models.ShippingAddress, {
       foreignKey: 'personId'
+    })
+
+    Person.belongsToMany(models.Product, {
+      through: 'WishlistItem'
     })
 
     

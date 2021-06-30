@@ -15,6 +15,12 @@ const useStyles = makeStyles((theme) => ({
         marginTop: 25,
         width: 120,
     },
+    forgotPassAnchor: {
+        display: 'block',
+        width: "100%",
+        marginTop: 5,
+        textAlign: 'right'
+    }
 }));
 
 export default useStyles;

@@ -13,19 +13,16 @@ export default function  MercadoPagoIntegration() {
     const dispatch = useDispatch();
     const { url, subtotal, payment } = useSelector((state) => ({ ...state.checkoutReducer }))
     const { cart } = useSelector((state) => ({ ...state.cartReducer }))
-
+    /* eslint-disable */
     useEffect(() => {
-        if (url && url != '') {
+        if (url && url !== '') {
             const Mercadopago = window.open(url);
         }
     }, [url])
-
+    /* eslint-enable */
     function getMercadoPagoOrder() {
         dispatch(setMercadoPagoOrder(cart));
     }
-  
-
-
 
     return (
         <> 
@@ -48,7 +45,7 @@ export default function  MercadoPagoIntegration() {
                         <Typography variant="h5" className={classes.truePayment}>Total order: {`$${subtotal}`}</Typography>
                         <Typography variant="h6"  color='common-black'>Go to MercadoPago:</Typography>
                         <Button type='submit' variant="contained" className={classes.button} onClick={() => getMercadoPagoOrder()}>
-                            <img src='./mercadopago-logo.png' />
+                            <img src='./mercadopago-logo.png' alt="Mercado Pago Logo"/>
                         </Button>
                     </Box>
                 }

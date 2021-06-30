@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { makeStyles } from '@material-ui/core/styles';
+import useStyles from './styles';
 //Import components
-import ProductDetailsTab from './ProductDetailsTab/ProductDetailsTab.jsx'
-import ProductDetailsPhotoSlider from './ProductDetailsPhotoSlider/ProductDetailsPhotoSlider.jsx'
+import ProductDetailsTab from './ProductDetailsTab/ProductDetailsTab.jsx';
+import ProductDetailsPhotoSlider from './ProductDetailsPhotoSlider/ProductDetailsPhotoSlider.jsx';
 //Imports Material UI components:
-import {Paper, Card, CardMedia, CardContent, Box, Typography, TextField, Button, IconButton, Divider, Snackbar} from '@material-ui/core'
+import {Paper, Card, CardContent, Box, Typography, TextField, Button, IconButton, Divider, Snackbar} from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 //Imports Material UI icons:
-import { Star, ShoppingCartOutlined, FavoriteBorder, Close, CodeOutlined } from '@material-ui/icons';
+import { Star, ShoppingCartOutlined, FavoriteBorder, Close } from '@material-ui/icons';
 //Custom functions
-import { addToCart, addToFavorites } from '../../assets/utils/productCardFunctions'
+import { addToCart } from '../../assets/utils/productCardFunctions';
 //actions
-import { addProductToCart, setLocalCart } from '../../actions/cart/cart_actions'
+import { addProductToCart, setLocalCart } from '../../actions/cart/cart_actions';
+import { addToFavorites } from '../../actions/favorites/favorites_actions';
 
 
 
@@ -22,7 +23,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
     const dispatch = useDispatch();
 
     const { payment } = useSelector((state) => ({ ...state.checkoutReducer }))
-    const { logged } = useSelector((state) => ({ ...state.authenticationReducer }))
+    const { logged, user } = useSelector((state) => ({ ...state.authenticationReducer }))
     const { cart } = useSelector((state) => ({ ...state.cartReducer }))
 
     const [quantity, setQuantity] = useState(1);
@@ -32,7 +33,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
     const [cartDisabledSnackbar, setDisabledCartSnackbar] = useState(false);
     const [favSnackbar, setFavSnackbar] = useState(false);
     const [alreadyFavSnackbar, setAlreadyFavSnackbar] = useState(false);
-
+    /* eslint-disable */
     useEffect(() => {
         const validateCartProduct = cart.find(p => p.id === product.id);
         if(validateCartProduct) {
@@ -46,6 +47,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
             setQuantityInCart(validateCartProduct.quantity)
         }
     }, [cart])
+    /* eslint-enable */
 
     function handleAddToCart(product, quantity, setQuantity) {
         if(payment.state) {
@@ -65,9 +67,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
     }
 
     async function handleAddToFavs(product) {
-        const addedToFav = addToFavorites(product)
-        if(addedToFav) return setFavSnackbar(true)
-        return setAlreadyFavSnackbar(true)
+        dispatch(addToFavorites(product, user.email));
     }
 
     return (
@@ -196,46 +196,3 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
     )
 }
 
-
-//Custom styles
-const useStyles = makeStyles((theme) => ({
-    root: {
-      width: 750,
-      height: 500,
-      backgroundColor: theme.palette.secondary.main,
-      borderRadius: theme.shape.borderRadius,
-    },
-    container: {
-        height: '100%',
-      },
-    section: {
-        height: '100%',
-        width: '100%'
-    },
-    scoreContainer: {
-        width: 120,
-        marginBottom: 6,
-        marginLeft: 65
-    },
-    card: {
-        height: '100%',
-    },
-    name: {
-        marginRight: 17,
-    },
-    quantityInput: {
-        width: 80,
-        borderRadius: 5,
-        backgroundColor: theme.palette.common.white,
-      },
-    closeButton: {
-        margin: 0,
-        padding: 0,
-      },
-    cartTotal: {
-        marginLeft: 25,
-      },
-    favButton: {
-        width: 155,
-      },
-    }));

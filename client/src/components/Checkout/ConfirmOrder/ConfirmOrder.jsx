@@ -26,7 +26,7 @@ export default function  ConfirmOrder( { activeStep, setActiveStep }) {
     function handleConfirmOrder(e) {
         dispatch(confirmOrderAction({ subtotal, cart, customerInformation }));
     }
-
+    /* eslint-disable */
     useEffect(() => {
         if(confirmOrder.success) {
             setConfirmOrderSuccessSnackbar(true);
@@ -39,7 +39,7 @@ export default function  ConfirmOrder( { activeStep, setActiveStep }) {
             return setConfirmOrderErrorSnackbar(true);
         }
     }, [confirmOrder.error])
-
+    /* eslint-enable */
     return (
         <Box display="flex" justifyContent="center" alignItems="center" flexDirection='column' m={2}>
             <Box mb={1}>

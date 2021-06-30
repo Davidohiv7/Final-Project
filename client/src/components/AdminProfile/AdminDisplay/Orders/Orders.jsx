@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 
 //Imports Material UI components:
-import { TableContainer, Table, TableBody, TableCell, TableHead, TableRow, Paper, Button, Modal, Box, Backdrop, Fade}from '@material-ui/core'
+import { TableContainer, Table, TableBody, TableCell, TableHead, TableRow, Paper, Button, Box }from '@material-ui/core'
 import useStyles from './styles';
 import edit from './edit.png'
 import { getOrders } from '../../../../actions/admin/admin_actions';
@@ -12,10 +12,11 @@ export default function Orders({ setDisplayStatus, setEditOrder }) {
   
   const dispatch = useDispatch();
   
-  
+  /* eslint-disable */
   useEffect(() => {
     dispatch(getOrders())
   }, [])
+  /* eslint-enable */
   
   const { orders } = useSelector((state)=> state.adminReducer)
   
@@ -27,7 +28,7 @@ export default function Orders({ setDisplayStatus, setEditOrder }) {
     setEditOrder(order)
     setDisplayStatus('orderDetail')
   }}
-  className= {classes.editButton}><img width='25px' src={edit}></img></Button>))
+  className= {classes.editButton}><img width='25px' src={edit} alt="edit icon"></img></Button>))
   return (
     <Box className= {classes.container}>
       <TableContainer component={Paper}>

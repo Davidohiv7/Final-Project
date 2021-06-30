@@ -18,9 +18,21 @@ const useStyles = makeStyles((theme) => ({
     },
     tableContainer: {
         marginBottom: 15,
+        [theme.breakpoints.down('sm')]: {
+            display: 'none'
+        },
+    },
+    tableContainerResponsive: {
+        marginBottom: 3,
+        [theme.breakpoints.up('sm')]: {
+            display: 'none'
+        },
     },
     productName: {
         marginLeft: 15,
+        [theme.breakpoints.down('sm')]: {
+            margin: 0,
+        },
     },
     divider: {
         color: theme.palette.secondary.dark,
@@ -29,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
         width: 75,
         borderRadius: 5,
         backgroundColor: theme.palette.common.white,
+        [theme.breakpoints.down('sm')]: {
+            width: 50,
+        },
     },
     subtotal: {
         margin: 25,

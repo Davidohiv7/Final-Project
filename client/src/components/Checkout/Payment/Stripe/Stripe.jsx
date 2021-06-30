@@ -126,7 +126,7 @@ export default function  Stripe() {
                     <Box mb={3}>
                         <Typography variant="h5" className={classes.truePayment}>Total order: {`$${subtotal}`}</Typography>
                     </Box>
-                    <Box width='75%'>
+                    <Box className={classes.paymentBox}>
                         <Elements stripe={stripePromise}>
                             <StripeElements/>
                         </Elements>

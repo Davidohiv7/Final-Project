@@ -193,7 +193,7 @@ export default function Cart() {
 
 
     return (
-        <Box bgcolor='secondary.main' mt={6} m={5} p={5} className={classes.root}>
+        <Box bgcolor='secondary.main' mt={6} m={5} p={{xs:0, sm:5}} className={classes.root}>
             {
                 cartProducts && cartProducts.length > 0 ?
                 <Box>
@@ -249,10 +249,59 @@ export default function Cart() {
                         </Table>
                     </TableContainer>
 
+                    <TableContainer component={Paper} className={classes.tableContainerResponsive}>
+                        <Table aria-label="customized table">
+                            <TableHead className={classes.head}>
+                                <TableRow>
+                                    <TableCell className={classes.title} >Product</TableCell>
+                                    <TableCell align="center" className={classes.title} >Quantity</TableCell>
+                                    <TableCell align="center" className={classes.title} >Total price</TableCell>
+                                    <TableCell align="center" className={classes.title} >Delete</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                            {cartProducts && cartProducts.map((product) => (
+                                <TableRow key={product.name}>
+                                    <TableCell align="center">
+                                        <Box justifyContent="flex-start" alignItems="center" >
+                                            <Avatar src={product.Images[0].url}/>
+                                            <Typography className={classes.productName} variant="p" color="initial">{`${product.name.substr(0, 20)}...`}</Typography>
+                                        </Box>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        <TextField
+                                            size='small'
+                                            value={product.quantity}
+                                            onChange={e => handleQuantityChange(product, e)}
+                                            className={classes.quantityInput}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                            InputProps={{
+                                                inputProps: { 
+                                                    max: product.stock, 
+                                                    min: 1
+                                                }
+                                            }}
+                                            variant="outlined"
+                                        />
+                                    </TableCell>
+                                    <TableCell align="center">${(product.price * product.quantity).toFixed(2)}</TableCell>
+                                    <TableCell align="center">
+                                        <IconButton variant='contained' color='primary' aria-label="delete" onClick={e => handleDelete(product)}>
+                                            <Delete />
+                                        </IconButton>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+
                     <Divider className={classes.divider} />
 
                     <Box display='flex' flexDirection='column' justifyContent="space-around" alignItems="center" >
-                        <Typography variant="h3" color="secondary.dark" className={classes.subtotal}> {`Subtotal: $${subtotal.toFixed(2)}`}</Typography>
+                        <Typography variant="h4" color="secondary.dark" className={classes.subtotal}> {`Subtotal: $${subtotal.toFixed(2)}`}</Typography>
                         <Box display='flex' justifyContent="center" alignItems="center" >
                             <Button
                                 variant="contained"

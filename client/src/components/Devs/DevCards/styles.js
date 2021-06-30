@@ -5,6 +5,9 @@ import {
 const useStyles = makeStyles((theme) => ({
     root: {
         maxWidth: 800,
+        [theme.breakpoints.down('xs')]: {
+            maxWidth: 270,
+        },
     },
     media: {
         height: 0,

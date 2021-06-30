@@ -100,6 +100,7 @@ export default function Home() {
                     >
                       <option onClick={() => setScreenDisplay('accountConfig')}> Account Information</option>) :
                       <option onClick={() => setScreenDisplay('orderHistory')}> Order History </option>) :
+                      <option onClick={() => setScreenDisplay('whishlist')}> Wishlist </option>) :
                     </Select>
                   </FormControl>
                 </form>

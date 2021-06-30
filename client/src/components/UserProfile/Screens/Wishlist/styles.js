@@ -7,7 +7,6 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'auto'
   },
   table: {
-    minWidth: 650,
     marginTop: 10,
   },
   header: {

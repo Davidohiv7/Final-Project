@@ -29,7 +29,7 @@ const devs = [{
                 },
                 {
                     name: 'Rosales Federico',
-                    linkedinURL: 'https://www.linkedin.com/404?_l=en_US'
+                    linkedinURL: 'https://www.linkedin.com/in/federico-rosales96/'
                 }
             ]
         }

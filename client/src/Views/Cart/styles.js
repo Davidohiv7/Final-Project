@@ -5,9 +5,15 @@ import {
 const useStyles = makeStyles((theme) => ({
     root: {
         borderRadius: theme.shape.borderRadius,
+        [theme.breakpoints.down('sm')]: {
+            width: '95%',
+            marginLeft: 5,
+            marginBottom: 40,
+        },
     },
     head: {
         backgroundColor: theme.palette.primary.main,
+        padding: 6,
     },
     title: {
         color: theme.palette.secondary.main,
@@ -25,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     tableContainerResponsive: {
         marginBottom: 3,
         [theme.breakpoints.up('md')]: {
-            display: 'none'
+            display: 'none',
         },
     },
     productName: {

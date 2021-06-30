@@ -71,7 +71,7 @@ export default function HomeLeftBar() {
         <Grid className={classes.filter_responsive}>
             <Button className={classes.category_bttn} onClick={handleClickOpen}>
             Select Categories
-            <ArrowDropDown/>
+            <ArrowDropDownIcon/>
             </Button>
             <Divider className={classes.divider}/>
             <Dialog  disableBackdropClick disableEscapeKeyDown open={open} onClose={handleClose}>

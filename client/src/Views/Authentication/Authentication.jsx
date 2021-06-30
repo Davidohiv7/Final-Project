@@ -21,9 +21,10 @@ export default function Authentication() {
   return (
     <Box
       bgcolor="secondary.main"
-      mt={6}
-      m={5}
-      p={5}
+      mt={{xs:1, sm:6}}
+      mb={{xs:6, sm:5}}
+      m={{xs:1, sm:5}}
+      p={{xs:1, sm:5}}
       className={classes.root}
       display="flex"
       justifyContent="center"

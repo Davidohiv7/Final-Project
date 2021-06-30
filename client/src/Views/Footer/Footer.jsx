@@ -1,5 +1,5 @@
 //Footer
-import { Box, Container, Grid, Link, Avatar } from "@material-ui/core";
+import { Box, Container, Grid, Link, Avatar, BottomNavigation } from "@material-ui/core";
 import React from "react";
 import useStyles from "./styles";
 
@@ -8,6 +8,7 @@ const Footer = () => {
   const classes = useStyles();
 
   return (
+    <BottomNavigation>
     <Box
       px={{ xs: 3, sm: 5 }}
       py={{ xs: 5, sm: 5 }}
@@ -39,6 +40,7 @@ const Footer = () => {
       </Grid>
     </Container>
   </Box>
+  </BottomNavigation>
   );
 };
 

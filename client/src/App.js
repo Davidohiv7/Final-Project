@@ -66,11 +66,6 @@ export default function App() {
       />
 
       <Route
-        path='/'
-        render={() => <Footer/>}
-      />
-
-      <Route
         path='/authentication/google/success'
         render={() => <GoogleAuthSuccess/>}
       />
@@ -78,6 +73,11 @@ export default function App() {
       <Route
         path='/authentication/google/error'
         render={() => <GoogleAuthError/>}
+      />
+
+      <Route
+        path='/'
+        render={() => <Footer/>}
       />
 
     </ThemeProvider>

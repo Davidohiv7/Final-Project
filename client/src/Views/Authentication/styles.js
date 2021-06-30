@@ -5,6 +5,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.shape.borderRadius,
     [theme.breakpoints.down("xs")]: {
       backgroundColor: "white",
+      height: '100%',
     },
   },
 

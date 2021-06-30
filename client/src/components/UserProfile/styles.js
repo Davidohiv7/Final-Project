@@ -6,9 +6,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "3%",
     height: theme.spacing(100),
     [theme.breakpoints.down('sm')]: {
-      margin: 0,
       marginTop: theme.spacing(1),
-      height: theme.spacing(80),
+      height: theme.spacing(90),
     },
   },
   slide: {
@@ -30,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
     boxShadow: "1px 1px 8px -1px rgba(0,0,0,0.6)",
     maxWidth: "70%",
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       display: "none"
     },
   },
@@ -67,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
   filter_responsive: {
     height: "1%",
     [theme.breakpoints.up('sm')]: {
-      display: "none"
+      display: "none",
     },
   },
   responsive_container: {
@@ -84,6 +83,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     backgroundColor: theme.palette.secondary.main,
     borderRadius: theme.shape.borderRadius,
+    marginTop: 10,
   },
 }));
 

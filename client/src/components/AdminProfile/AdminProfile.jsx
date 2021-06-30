@@ -24,10 +24,11 @@ export default function AdminProfile() {
     //Route protection
   /* eslint-disable */
   useEffect(() => {
-    if(!logged) {
+    const jwt = localStorage.getItem('jwt')
+    if(!jwt) {
       return history.push("/authentication");
     }
-    if(user.role === 'customer') {
+    if(logged && user.role === 'customer') {
       return history.push("/authentication");
     }
   }, [logged])

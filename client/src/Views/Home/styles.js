@@ -9,8 +9,6 @@ const useStyles = makeStyles((theme) => ({
     grid_container: {
         marginTop: theme.spacing(2),
         marginBottom: theme.spacing(2),
-        borderRadius: 5,
-        color: theme.palette.secondary.main,
         textAlign: 'center',
         display: 'flex',
         justifyContent: 'space-evenly',

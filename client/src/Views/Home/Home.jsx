@@ -25,7 +25,7 @@ export default function Home() {
 
   return (
     <Container maxWidth="lg">
-      <Grid container spacing={{ xs: 2, sm: 3 }} className={classes.grid_container}>
+      <Grid container spacing={2} className={classes.grid_container}>
         <Grid item sm={12} className={classes.carousel}>
           <Paper className={classes.slide} elevation={3}>
             <Carousel />

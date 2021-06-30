@@ -21,7 +21,7 @@ const wishlistReducer = (state = initialState, action = {}) => {
         case DELETE_FAVORITE: {
             return {
                 ...state,
-                favorites: state.favorites.filter(favorite => favorite.id != action.payload),
+                favorites: state.favorites.filter(favorite => favorite.id !== action.payload),
             }
         }
         default:

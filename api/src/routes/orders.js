@@ -185,6 +185,7 @@ router.get('/', async (req, res) => {
             const orders = await models.Cart.findAll({
                 limit: limit,
                 offset: (page * limit) - limit,
+                order: [['id', 'DESC']]
             });
 
             return response.success(req, res, { ...data, count, pages, pageNumber, orders }, 200);
@@ -209,6 +210,7 @@ router.get('/', async (req, res) => {
             where: { status: status },
             limit: limit,
             offset: (page * limit) - limit,
+            order: [['id', 'DESC']]
         });
 
         response.success(req, res, { ...data, count, pages, pageNumber, orders }, 200);

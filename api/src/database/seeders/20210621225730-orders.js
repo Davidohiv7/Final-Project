@@ -123,7 +123,7 @@ module.exports = {
 
     const cart01 = {
       personId: customers[0].id,
-      status: "paid",
+      status: "completed",
       paymentMethod: "Stripe",
       total: 999,
       createdAt: new Date(),
@@ -132,7 +132,7 @@ module.exports = {
 
     const cart02 = {
       personId: customers[0].id,
-      status: "paid",
+      status: "completed",
       paymentMethod: "MercadoPago",
       total: 2000,
       createdAt: new Date(),
@@ -150,7 +150,7 @@ module.exports = {
 
     const cart04 = {
       personId: customers[1].id,
-      status: "created",
+      status: "completed",
       paymentMethod: "none",
       total: 10000,
       createdAt: new Date(),

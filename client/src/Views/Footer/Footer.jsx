@@ -16,24 +16,24 @@ const Footer = () => {
       className={classes.footer}
     >
       <Container maxWidth="lg">
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={5} align="center">
-          <Box borderBottom={2}>How can we help you?</Box>
+      <Grid container spacing={{xs: 1, sm: 3}}>
+        <Grid item xs={5} sm={5} align="center">
+          <Box borderBottom={2} className={classes.boxResponsive}>How can we help you?</Box>
           <Box>
             <Link href="/contact" color="inherit">
               Contact
             </Link>
           </Box>
         </Grid>
-        <Grid item xs={12} sm={5} align="center">
-          <Box borderBottom={2}>About Us</Box>
+        <Grid item xs={5} sm={5} align="center">
+            <Box borderBottom={2} className={classes.boxResponsive}>About Us</Box>
           <Box>
             <Link href="/devs" color="inherit">
               Devs
             </Link>
           </Box>
         </Grid>
-        <Grid item xs={12} sm={2} align='center'>
+        <Grid item xs={2} sm={2} align='center'>
             <Avatar src='https://assets.soyhenry.com/henry-landing/assets/LOGO-REDES-01_og.jpg'/>
         </Grid>
       </Grid>

@@ -13,6 +13,7 @@ import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { Home } from '@material-ui/icons'
+
 import useStyles from './styles'
 
 import { getProductsByCategory, getAllProducts, updateCategory, updateSearching } from '../../actions/home/home_actions'
@@ -70,7 +71,7 @@ export default function HomeLeftBar() {
         <Grid className={classes.filter_responsive}>
             <Button className={classes.category_bttn} onClick={handleClickOpen}>
             Select Categories
-            <ArrowDropDownIcon/>
+            <ArrowDropDown/>
             </Button>
             <Divider className={classes.divider}/>
             <Dialog  disableBackdropClick disableEscapeKeyDown open={open} onClose={handleClose}>

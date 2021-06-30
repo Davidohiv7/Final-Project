@@ -11,8 +11,10 @@ import { Route } from 'react-router-dom';
 import Authentication from './Views/Authentication/Authentication';
 import GoogleAuthSuccess from '../src/components/GoogleAuth/GoogleAuthSuccess/GoogleAuthSuccess';
 import GoogleAuthError from '../src/components/GoogleAuth/GoogleAuthError/GoogleAuthError';
+import PasswordReset from './Views/PasswordReset/PasswordReset';
 import Contact from './Views/Contact/Contact'
 import Devs from './components/Devs/Devs'
+
 
 export default function App() {
   return (
@@ -49,6 +51,11 @@ export default function App() {
       />
 
       <Route
+        exact path='/passwordReset'
+        render={() => <PasswordReset/>}
+      />
+      
+      <Route
         exact path='/contact'
         render={() => <Contact/>}
       />
@@ -57,7 +64,6 @@ export default function App() {
         exact path='/devs'
         render={() => <Devs/>}
       />
-
 
       <Route
         path='/'

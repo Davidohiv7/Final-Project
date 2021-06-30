@@ -4,10 +4,7 @@ const models = require('../database/models/');
 const passport = require('passport');
 const Stripe = require('stripe')
 const response = require('../utils/response');
-const {
-    STRIPE_SECRET_KEY,
-    GOOGLE_MAIL,
-} = process.env
+const { STRIPE_SECRET_KEY } = process.env
 const { Op } = require("sequelize");
 
 const stripe = new Stripe(STRIPE_SECRET_KEY)
@@ -20,6 +17,9 @@ const {
     mailBuy,
     mailDispatched
 } = require('../utils/mailtemplates');
+const {
+    GOOGLE_MAIL,
+} = process.env
 
 
 router.post('/confirm_order', passport.authenticate('jwt', {session: false}), async (req, res) => {
@@ -72,7 +72,7 @@ router.post('/confirm_order', passport.authenticate('jwt', {session: false}), as
             transporter.sendMail({
                 from: `Onion Food Sup. <${GOOGLE_MAIL}>`,
                 to: user.email,
-                subject: 'Welcome to Onion Food Sup.',
+                subject: 'Your order is in process',
                 html: mailBuy(user.name, order, cart),
                 auth: authMailing,
             });
@@ -219,7 +219,7 @@ router.get('/', async (req, res) => {
 
 })
 
-router.patch('/', passport.authenticate('jwt', {session: false}), async (req, res) => {
+router.patch('/', async (req, res) => {
     try {
         let { id, status } = req.body;
         const order = await models.Cart.findOne({

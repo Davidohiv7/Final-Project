@@ -3,7 +3,6 @@ const router = Router();
 const models = require('../database/models/');
 const response = require('../utils/response');
 const { Op, col, fn } = require("sequelize");
-const passport = require('passport');
 
 
 router.get('/', async (req, res) => {
@@ -248,7 +247,7 @@ router.get('/', async (req, res) => {
 })
 
 
-router.post('/', passport.authenticate('jwt', {session: false}), async (req, res) => {
+router.post('/', async (req, res) => {
   const { name, price, description = "", stock, score = 5, categories, images } = req.body;
   if (!name || !price || !stock) return response.success(req, res, { message: "Required fields are missing." });
   
@@ -292,7 +291,7 @@ router.post('/', passport.authenticate('jwt', {session: false}), async (req, res
   }
 })
 
-router.put('/', passport.authenticate('jwt', {session: false}), async (req, res) => {
+router.put('/', async (req, res) => {
   
   try {
     const { name, id, images, categories, stock, score, price, description } = req.body
@@ -352,7 +351,7 @@ router.put('/', passport.authenticate('jwt', {session: false}), async (req, res)
 	}
 })
 
-router.delete('/:id', passport.authenticate('jwt', {session: false}), async (req, res) => {
+router.delete('/:id', async (req, res) => {
 
 	try {
 		const { id } = req.params;
@@ -368,7 +367,7 @@ router.delete('/:id', passport.authenticate('jwt', {session: false}), async (req
 })
 
 
-router.post('/stockbyid', passport.authenticate('jwt', {session: false}), async (req, res) => {
+router.post('/stockbyid', async (req, res) => {
   const { idArray } = req.body 
   try {
     const productList = await models.Product.findAll({ 

@@ -9,7 +9,7 @@ import { addressValidation }  from '../../../../../../assets/utils/ordersInforma
 import axios from 'axios'
 
 
-export default function AddAddress( { setUserAddresses, setAddressModalState } ) {
+export default function AddAddress( { setUserAddresses, handleCloseModal } ) {
 
     const classes = useStyles();
 
@@ -40,7 +40,7 @@ export default function AddAddress( { setUserAddresses, setAddressModalState } )
                 const response = await axios.post("http://localhost:3001/shippingaddress/add", { ...shippingAddress }, { headers: { 'Authorization': jwt }} )
                 const userAddresses = response.data.data.userAddresses
                 setUserAddresses(userAddresses)
-                return setAddressModalState(false)
+                return handleCloseModal()
             } catch (error) {
                 console.log(error)
             }

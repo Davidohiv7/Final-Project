@@ -40,7 +40,7 @@ export default function  Payment({activeStep, setActiveStep }) {
         <Box display="flex" flexDirection='column' justifyContent="center" alignItems="center" width='100%'>
             <Typography variant="h3" color="primary">Payment</Typography>
 
-            <Box width='100%' height='343px'>
+            <Box height='343px' className={classes.boxPayment}>
 
                 <Tabs value={selectedTab} onChange={handleTabChange} width='100%' centered>
                     <Tab label="Stripe" />

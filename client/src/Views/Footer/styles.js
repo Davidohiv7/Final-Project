@@ -3,15 +3,23 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   footer: {
     height: 20,
-    minHeight: 20,
+    width: '100%',
     bottom: 0,
-    marginBottom: 0,
+    marginTop: theme.spacing(2),
+    [theme.breakpoints.down('xs')]: {
+      width: "88%"
+    },
   },
   logo: {
-    width: theme.spacing(5),
-    height: theme.spacing(5),
-    boxShadow: "1px 3px 2px -1px rgba(255,255, 255,1)",
+    [theme.breakpoints.down('xs')]: {
+      display: "none"
+    },
   },
+  boxResponsive: {
+    [theme.breakpoints.down('xs')]: {
+      display: "none"
+    },
+  }
 }));
 
 export default useStyles;

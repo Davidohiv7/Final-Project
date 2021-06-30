@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 import useStyles from './styles'
 
 //Imports Material UI components:
@@ -7,13 +8,19 @@ import { Card, CardMedia, CardActionArea, Typography, CardContent, Box, IconButt
 import { FavoriteBorder, ShoppingCartOutlined, Star } from '@material-ui/icons';
 
 //Custom functions
-import { createArrayFromNumber, addToFavorites } from '../../assets/utils/productCardFunctions'
+import { createArrayFromNumber } from '../../assets/utils/productCardFunctions'
 //React components
 import ProductDetailsCard from '../ProductDetailsCard/ProductDetailsCard'
+//actions
+import { addToFavorites } from '../../actions/favorites/favorites_actions';
 
 export default function ProductCards({ product }) {
 
     const classes = useStyles();
+    const dispatch = useDispatch();
+
+    const { user } = useSelector((state) => ({ ...state.authenticationReducer }))
+
 
     const [scoreArray, setScoreArray] = useState([]);
     const [modalState, setModalState] = useState(false);
@@ -24,19 +31,32 @@ export default function ProductCards({ product }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-
     return (
         <Box>
             <Card className={classes.body}>
+                {
+                user ? 
                 <IconButton 
                     color="primary" 
                     aria-label="upload picture" 
                     component="span" 
                     className={classes.favButton}
-                    onClick={() => addToFavorites(product)}
+                    onClick={() => dispatch(addToFavorites(product, user.email))}
                 >
                     <FavoriteBorder/>
                 </IconButton>
+                :
+                <IconButton 
+                    color="primary" 
+                    aria-label="upload picture" 
+                    component="span" 
+                    className={classes.favButton}
+                >
+                    <FavoriteBorder/>
+                </IconButton>
+                    
+                }
+                
                 <CardActionArea onClick={() => setModalState(true)}>
                     <CardMedia
                         className={classes.image}

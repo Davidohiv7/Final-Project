@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     },
     tableContainerResponsive: {
         marginBottom: 3,
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('md')]: {
             display: 'none'
         },
     },

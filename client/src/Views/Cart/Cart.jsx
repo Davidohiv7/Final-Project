@@ -249,6 +249,7 @@ export default function Cart() {
                         </Table>
                     </TableContainer>
 
+{/*This table will only render in mobile*/}
                     <TableContainer component={Paper} className={classes.tableContainerResponsive}>
                         <Table aria-label="customized table">
                             <TableHead className={classes.head}>
@@ -297,6 +298,7 @@ export default function Cart() {
                             </TableBody>
                         </Table>
                     </TableContainer>
+{/*This table will only render in mobile*/}
 
                     <Divider className={classes.divider} />
 

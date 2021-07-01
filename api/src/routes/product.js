@@ -39,7 +39,8 @@ router.get('/', async (req, res) => {
     // Select all categories
     const allCategories = await models.Category.findAll({
       attributes: ['name'],
-      where: { id: { [Op.in]: categoryIds } }
+      where: { id: { [Op.in]: categoryIds } },
+      order: [['name', 'ASC']]
     })
     const categories = allCategories.map(category => category.name)
 

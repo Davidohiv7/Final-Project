@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         height: '100%',
         padding: '15px',
-        borderRadius: '10px',
+        borderRadius: '5px',
     },
     searchSortContainer: {
         display: 'flex',

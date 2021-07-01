@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-evenly',
     },
     carousel:{
+        padding: '0px !important',
         [theme.breakpoints.down('xs')]: {
           display: "none"
         },

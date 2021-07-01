@@ -3,8 +3,9 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 // Material UI imports
-import {Grid, Container, CardContent, Typography, Avatar, Button, Box, Dialog, DialogTitle, DialogContent, FormControl, Select, Input, DialogActions} from "@material-ui/core";
+import {Grid, Container, CardContent, Typography, Button, Box, Dialog, DialogTitle, DialogContent, FormControl, Select, Input, DialogActions} from "@material-ui/core";
 import useStyles from "./styles";
+import { AccountBoxRounded } from '@material-ui/icons';
 //Components imports
 import UserOrders from "./Screens/UserOrders/UserOrders";
 import UserInfo from "./Screens/UserInfo/UserInfo";
@@ -70,12 +71,11 @@ export default function Home() {
         <Grid item sm={2} className={classes.filterGrid}>
           <CardContent align="center">
             <Typography
-              variant="h5"
-              className={classes.title}
+              variant="h5" color="secondary" display='inline'
             >
               {`${user && user.name} ${user && user.lastName}`}
             </Typography>
-            <Avatar className={classes.profilePic}></Avatar>
+            <AccountBoxRounded className={classes.profilePic} />
             <Button className={classes.button} onClick={() => setScreenDisplay('accountConfig')}> Account Information</Button>
             <Button className={classes.button} onClick={() => setScreenDisplay('orderHistory')}> Order History </Button>
             <Button className={classes.button} onClick={() => setScreenDisplay('wishlist')}> Wishlist </Button>

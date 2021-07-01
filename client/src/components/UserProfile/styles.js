@@ -38,10 +38,10 @@ const useStyles = makeStyles((theme) => ({
     height: "57%",
   },
   profilePic: {
-    width: theme.spacing(15),
-    height: theme.spacing(15),
+    width: theme.spacing(10),
+    height: theme.spacing(10),
     margin: 10,
-    boxShadow: "1px 9px 18px -1px rgba(0,0,0,1)",
+    color: "white",
   },
   BoxLogOut: {
     marginTop: 100,

@@ -51,9 +51,10 @@ const useStyles = makeStyles((theme) => ({
         height: "57%",
     },
     profilePic: {
-        width: theme.spacing(15),
-        height: theme.spacing(15),
+        width: theme.spacing(10),
+        height: theme.spacing(10),
         margin: 10,
+        color: "white",
     },
 
     profileContainer: {

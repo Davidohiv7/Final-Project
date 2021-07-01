@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 // Material UI imports
-import { Grid, Paper, Container, CardContent, Typography, Avatar, Button } from '@material-ui/core';
+import { Grid, Paper, Container, CardContent, Typography, Button } from '@material-ui/core';
 import useStyles from './styles';
+import { SupervisorAccountRounded } from '@material-ui/icons';
 //Actions
 import { logOut } from '../../actions/authentication/authentication_actions'
 //Component imports
@@ -48,7 +49,7 @@ export default function AdminProfile() {
         <Grid item xs={2} className={classes.filterGrid} >
           <CardContent className= {classes.profileContainer}>
             <Typography variant="h5" color="secondary" display='inline'>{`${user && user.name} ${user && user.lastName}`}</Typography>
-            <Avatar className={classes.profilePic}>U</Avatar>
+            <SupervisorAccountRounded className={classes.profilePic}/>
 
             <Button onClick={() => {displayHandler('products')}} size= 'small' className={classes.button}><Typography variant= 'button'>Products</Typography></Button>
             <Button onClick={(e) => {displayHandler('categories')}} size= 'small' className={classes.button}><Typography variant= 'button'>Categories</Typography></Button>

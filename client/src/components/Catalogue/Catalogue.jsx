@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { getProducts, updateSearching, updateCategory } from '../../actions/home/home_actions';
 import useStyles from './styles'
@@ -10,11 +10,10 @@ import SortSelect from './SortSelect/SortSelect.jsx'
 
 //Params catalogue function products, getAllProducts,
 // Catalogue
-export default function Catalogue() {
+export default function Catalogue({ autoComplete, setAutocomplete }) {
     const classes = useStyles();
     const dispatch = useDispatch();
     const { searched, products, filter, order } = useSelector((state) => ({ ...state.homeReducer }));
-    const [autoComplete, setAutocomplete] = useState(false);
 
     const handleSearchChange = value => {
       dispatch(getProducts({name: value, filter, order}));

@@ -18,7 +18,7 @@ import useStyles from './styles'
 
 import { getProductsByCategory, getAllProducts, updateCategory, updateSearching } from '../../actions/home/home_actions'
 
-export default function HomeLeftBar() {
+export default function HomeLeftBar({ setAutocomplete }) {
 
     const { searched, order, filter, categories } = useSelector((state) => ({ ...state.homeReducer }))
 
@@ -31,11 +31,13 @@ export default function HomeLeftBar() {
         dispatch(getAllProducts())
         dispatch(updateCategory(''))
         dispatch(updateSearching(''))
+        setAutocomplete(false)
     }
 
     function handleClick(category) {
         dispatch(getProductsByCategory({name: searched, category, order, filter}))
         dispatch(updateCategory(category))
+        setAutocomplete(false)
     }
 
 

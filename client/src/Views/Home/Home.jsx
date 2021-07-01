@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getAllProducts } from './../../actions/home/home_actions';
 
@@ -17,6 +17,7 @@ import Carousel from '../../components/Carousel/Carousel';
 export default function Home() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [autoComplete, setAutocomplete] = useState(false);
 
   useEffect(() => {
     dispatch(getAllProducts())
@@ -32,11 +33,11 @@ export default function Home() {
           </Paper>
         </Grid>
         <Grid item xs={12} sm={2} className={classes.filterGrid}>
-          <HomeLeftBar />
+          <HomeLeftBar setAutocomplete={setAutocomplete} />
         </Grid>
         <Grid item xs={12} sm={10} className={classes.catalogueContainer}>
           <Paper elevation={3}>
-            <Catalogue />
+            <Catalogue autoComplete={autoComplete} setAutocomplete={setAutocomplete}/>
           </Paper>
         </Grid>
       </Grid>

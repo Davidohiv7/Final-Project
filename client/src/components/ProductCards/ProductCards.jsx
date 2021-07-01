@@ -19,7 +19,7 @@ export default function ProductCards({ product }) {
     const classes = useStyles();
     const dispatch = useDispatch();
 
-    const { user } = useSelector((state) => ({ ...state.authenticationReducer }))
+    const { logged, user } = useSelector((state) => ({ ...state.authenticationReducer }))
 
 
     const [scoreArray, setScoreArray] = useState([]);
@@ -35,7 +35,7 @@ export default function ProductCards({ product }) {
         <Box>
             <Card className={classes.body}>
                 {
-                user ? 
+                logged ? 
                 <IconButton 
                     color="primary" 
                     aria-label="upload picture" 
@@ -46,15 +46,7 @@ export default function ProductCards({ product }) {
                     <FavoriteBorder/>
                 </IconButton>
                 :
-                <IconButton 
-                    color="primary" 
-                    aria-label="upload picture" 
-                    component="span" 
-                    className={classes.favButton}
-                >
-                    <FavoriteBorder/>
-                </IconButton>
-                    
+                undefined 
                 }
                 
                 <CardActionArea onClick={() => setModalState(true)}>
@@ -64,7 +56,7 @@ export default function ProductCards({ product }) {
                         image={product.Images[0].url}
                     />
                     <CardContent className={classes.cardContent}>
-                        <Typography align='left' variant="subtitle2" color='black' >{product.name}</Typography>
+                        <Typography align='left' variant="subtitle2" color='black' className={classes.name}>{product.name}</Typography>
                         <Box display="flex" justifyContent="center">
                             {
                                 scoreArray.map(number => <Star key={number} className={classes.star} />) 

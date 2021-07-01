@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft:10,
         paddingRight:10 
     },
+    name: {
+        height: 44,
+    },
     cardContent: {
         padding: 8,
     },

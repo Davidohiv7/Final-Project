@@ -213,7 +213,7 @@ export default function Cart() {
                                 <TableRow key={product.name}>
                                     <TableCell align="center">
                                         <Box display='flex' justifyContent="flex-start" alignItems="center" >
-                                            <Avatar src={product.Images[0].url}/>
+                                            <Avatar src={product.Images[0].url} className={classes.image}/>
                                             <Typography className={classes.productName} display='inline' variant="h6" color="initial">{product.name}</Typography>
                                         </Box>
                                     </TableCell>

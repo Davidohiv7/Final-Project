@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAllProducts } from './../../actions/home/home_actions';
+import { getFavorites } from './../../actions/favorites/favorites_actions'
 
 /* eslint-disable */
 // Material UI imports
@@ -15,13 +16,25 @@ import Carousel from '../../components/Carousel/Carousel';
 
 
 export default function Home() {
+
   const classes = useStyles();
+
+  const { user } = useSelector((state) => ({ ...state.authenticationReducer }))
+  const { favorites } = useSelector((state) => ({ ...state.wishlistReducer }))
+
   const dispatch = useDispatch();
   const [autoComplete, setAutocomplete] = useState(false);
 
   useEffect(() => {
     dispatch(getAllProducts())
   }, []
+  )
+
+  useEffect(() => {
+    if(user) {
+      dispatch(getFavorites(user.email))
+    }
+  }, [user]
   )
 
   return (

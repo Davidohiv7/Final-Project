@@ -49,7 +49,7 @@ export default function Home() {
           <HomeLeftBar setAutocomplete={setAutocomplete} />
         </Grid>
         <Grid item xs={12} sm={10} className={classes.catalogueContainer}>
-          <Paper elevation={3}>
+          <Paper elevation={0} className={classes.paperConfig}>
             <Catalogue autoComplete={autoComplete} setAutocomplete={setAutocomplete}/>
           </Paper>
         </Grid>

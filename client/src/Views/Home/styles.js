@@ -26,11 +26,11 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 5,
     },
     filterGrid: {
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: "white",
         borderRadius: theme.shape.borderRadius,
         marginTop: 11,
         marginBottom: 11,
-        boxShadow: '1px 1px 8px -1px rgba(0,0,0,0.6)',
+        boxShadow: '0px 0px 0px 0px rgba(0,0,0,0.6)',
 
         [theme.breakpoints.down('xs')]: {
           marginTop: 3,
@@ -40,6 +40,11 @@ const useStyles = makeStyles((theme) => ({
     },
     catalogueContainer: {
         height: "57%",
+        boxShadow: '0px 0px 0px 0px rgba(0,0,0,0.6)'
+    },
+    paperConfig: {
+        boxShadow: '0px 0px 0px 0px rgba(0,0,0,0.6)',
+        backgroundColor: "white"
     }
 }));
 

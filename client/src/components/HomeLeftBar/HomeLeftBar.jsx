@@ -13,6 +13,8 @@ import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { Home } from '@material-ui/icons'
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
 import useStyles from './styles'
 
@@ -23,6 +25,12 @@ export default function HomeLeftBar() {
     const { searched, order, filter, categories } = useSelector((state) => ({ ...state.homeReducer }))
 
     const [open, setOpen] = useState(false);
+
+    const [selectedTab, setSelectedTab] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+      setSelectedTab(newValue);
+    };
 
     const classes = useStyles();  
     const dispatch = useDispatch();
@@ -51,21 +59,33 @@ export default function HomeLeftBar() {
     //--------------
 
     return (
-        <Grid container>
+        <Grid container className={classes.color}>
         <Box display='flex' flexDirection='column' alignItems='center' justifyContent='flex-start' className={classes.filter} elevation={3}>
             <Button
-                color="secondary"
+                color="black"
                 className={classes.button}
                 startIcon={<Home/>}
                 onClick={() => handleGetAllClick()}
             >
                 get all
             </Button>
-            {/* <Link href="/" className={classes.links}><HomeIcon /></Link> */}
-            {categories ? 
-            categories.map(category => 
-            <Button size='small' color="secondary" onClick={() => handleClick(category)}>{category}</Button>) :
-            <p>No Such Category</p>}
+            <Box className={classes.root}>
+              <Tabs
+                orientation="vertical"
+                indicatorColor="primary"
+                indicator={classes.indicator}
+                textColor="primary"
+                value={selectedTab}
+                onChange={handleChange}
+                aria-label="Vertical tabs example"
+                className={classes.tabs}
+              >
+                {categories ? 
+                    categories.map(category => 
+                    <Tab size='small' label={category} onClick={() => handleClick(category)}></Tab>) :
+                    <p>No Such Category</p>}
+              </Tabs>
+            </Box>
         </Box>
 
         <Grid className={classes.filter_responsive}>

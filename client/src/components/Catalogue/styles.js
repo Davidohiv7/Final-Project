@@ -7,8 +7,8 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
     },
     catalogueMainContainer: {
-        backgroundColor: theme.palette.secondary.main,
-        boxShadow: '1px 1px 15px -1px rgba(0,0,0,0.6)',
+        backgroundColor: "white",
+        boxShadow: '0px 0px 0px 0px rgba(0,0,0,0.6)',
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
@@ -32,10 +32,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         height: '100%',
         borderRadius: theme.shape.borderRadius,
-        backgroundColor: theme.palette.common.white,
-        '&:hover': {
-            backgroundColor: fade(theme.palette.common.white),
-        },
+        backgroundColor: "#E5E7EB",
         marginLeft: 0,
         width: '100%',
         [theme.breakpoints.up('sm')]: {

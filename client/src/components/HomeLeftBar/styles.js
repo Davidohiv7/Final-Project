@@ -3,15 +3,20 @@ import {
 } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
+    color:{
+        backgroundColor: 'white',
+        height: '100%'
+    },
     divider:{
         backgroundColor: theme.palette.primary.main,
         display:'flex',
         width: '100%'
     },
     filter: {
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: 'white',
         paddingBottom: theme.spacing(40),
         paddingTop: theme.spacing(3),
+        paddingLeft: 30,
         [theme.breakpoints.down('xs')]: {
           display: "none",
        },
@@ -37,8 +42,17 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         width: '100%',
         backgroundColor: theme.palette.secondary.main
-    }
-    }
+    },
+    root: {
+        flexGrow: 1,
+        backgroundColor: theme.palette.background.paper,
+        display: 'flex',
+       
+    },
+    tabs: {
+        borderRight: `1px solid ${theme.palette.divider}`,
+    },
+}
 ));
 
 export default useStyles;

@@ -80,7 +80,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                     <Grid className={classes.section}  >
                         <Card className={classes.card}>
                             <CardContent>
-                                <Box className={classes.container} display="flex" justifyContent="center" alignItems="flex-start">
+                                <Box className={classes.container} display="flex" justifyContent="space-between" alignItems="flex-start">
                                     <Typography className={classes.name} gutterBottom={false} variant="h6" color="initial">{product.name}</Typography>
                                     <IconButton 
                                         color="initial" 
@@ -108,10 +108,10 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                             
                             <Divider/>
                             <CardContent className={classes.bttn_container}>
-                                <Box display="flex" flexDirection='row' justifyContent="center" alignItems="center" >
+                                <Box display="flex" flexDirection='row' justifyContent="center" alignItems="center" mt={1}>
                                     <Box display="flex" flexDirection='column' justifyContent="center" alignItems="center" >
                                         <Button
-                                            className={classes.favButton}
+                                            className={logged ? classes.favButton : classes.favButtonNot}
                                             variant="outlined"
                                             color="initial"
                                             startIcon={<FavoriteBorder/>}
@@ -155,7 +155,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                                             }}
                                             variant="outlined"
                                         />
-                                        <Typography variant="h5" color="initial" display='inline'>${(product.price*quantity).toFixed(2)} EA</Typography>
+                                        <Typography className={classes.total} variant="h5" color="initial" display='inline'>${(product.price*quantity).toFixed(2)} EA</Typography>
                                     </Box>
                                 </Box>
                             </CardContent>

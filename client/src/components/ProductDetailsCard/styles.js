@@ -54,7 +54,19 @@ const useStyles = makeStyles((theme) => ({
           height:11,
         },
     },
+    total: {
+        marginBottom: 8,
+    },
     favButton: {
+        width: 155,
+        marginBottom: 8,
+        [theme.breakpoints.down('xs')]: {
+          width: 50,
+          height:50,
+        },
+    },
+    favButtonNot: {
+        visibility: 'hidden',
         width: 155,
         [theme.breakpoints.down('xs')]: {
           width: 50,

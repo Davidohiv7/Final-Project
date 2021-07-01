@@ -83,9 +83,16 @@ router.delete('/:name', async (req, res) => {
 })
 
 
-router.get('/all', (req, res) => {
-  models.Category.findAll()
-  .then(resp => response.success(req, res, resp, 200))
+router.get('/all', async (req, res) => {
+  try {
+    const categories = await models.Category.findAll({
+      order: [['name', 'ASC']]
+    });
+    response.success(req, res, categories);
+  } catch (error) {
+    response.error(req, res, error);
+  }
 })
+
 module.exports = router;
 

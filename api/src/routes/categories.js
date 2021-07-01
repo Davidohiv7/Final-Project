@@ -80,5 +80,10 @@ router.delete('/:name', async (req, res) => {
 	}
 })
 
+
+router.get('/all', (req, res) => {
+  models.Category.findAll()
+  .then(resp => response.success(req, res, resp, 200))
+})
 module.exports = router;
 

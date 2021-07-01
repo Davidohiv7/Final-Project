@@ -7,3 +7,4 @@ export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 export const GET_ORDERS = 'GET_ORDERS';
 export const SET_STATUS = 'SET_STATUS';
 export const GET_USERS = 'GET_USERS';
+export const GET_ALL_CATEGORIES = 'GET_ALL_CATEGORIES';

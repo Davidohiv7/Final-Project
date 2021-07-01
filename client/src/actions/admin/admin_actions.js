@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_CATEGORIES, CREATE_CATEGORY, ADD_URL_TO_DELETE, GET_ORDERS, GET_USERS } from '../../actions_types/admin/admin_action_types'
+import { GET_CATEGORIES, CREATE_CATEGORY, ADD_URL_TO_DELETE, GET_ORDERS, GET_USERS, GET_ALL_CATEGORIES } from '../../actions_types/admin/admin_action_types'
 
 const jwt = localStorage.getItem('jwt')
 
@@ -108,5 +108,16 @@ export function setRole(user) {
   return (dispatch) => {
       axios.patch(`http://localhost:3001/user`, user, { headers: { 'Authorization': jwt }})
       .catch(e => {console.error(e)})
+  }
+}
+
+export function getAllCategories(params) {
+  return (dispatch) => {
+      return axios.get("http://localhost:3001/categories/all", {params: params}, { headers: { 'Authorization': jwt }})
+              .then(res => res.data)
+              .then(res => {
+                  dispatch({type: GET_ALL_CATEGORIES, payload: res.data})
+              })
+              .catch(e => console.error(e))
   }
 }

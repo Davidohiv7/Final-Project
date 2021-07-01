@@ -10,7 +10,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import useStyles from './styles';
 
-import { getCategories, deleteImages, deleteProductImage, createProduct, updateProduct, deleteProduct } from '../../../../actions/admin/admin_actions';
+import { getAllCategories, deleteImages, deleteProductImage, createProduct, updateProduct, deleteProduct } from '../../../../actions/admin/admin_actions';
 
 
 export default function CreateForm({ setDisplayStatus, editProduct }) {
@@ -160,11 +160,11 @@ useEffect(() => {
         setDisplayStatus('products')
     }
     
-    const categories = useSelector((state) => state.adminReducer.categories)
+    const allCategories = useSelector((state) => state.adminReducer.allCategories)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(getCategories())
+        dispatch(getAllCategories())
     },[])
     /* eslint-enable */
 
@@ -202,6 +202,7 @@ useEffect(() => {
         maxFiles: 4
     });
 
+    console.log(allCategories)
 
     return (
             <CardContent className={classes.container}>
@@ -223,7 +224,7 @@ useEffect(() => {
                         onClickCapture = {()=>setCategoriesTouch(true)}
                         id= 'categorySelector'
                         className = {classes.input}
-                        options={categories}
+                        options={allCategories}
                         getOptionLabel={(option) => option.name}
                         renderInput={(params) => <TextField {...params} label="Categories" variant="outlined" />}
                         onChange={(e, v) => {

@@ -2,10 +2,12 @@ const passport = require('passport');
 const axios = require('axios')
 const { v4: uuidv4 } = require('uuid');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const bcrypt = require('bcrypt');
 
 const models = require('../database/models')
 
 const {
+    SALT_ROUNDS,
     GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET
 } = process.env
@@ -18,11 +20,13 @@ passport.use(new GoogleStrategy({
     passReqToCallback: true
 }, async (req, accessToken, refreshToken, profile, cb) => {
 
+    const hashedPassword = bcrypt.hashSync('12345', Number(SALT_ROUNDS));
+
     const googleUser = {
         email: profile.emails[0].value,
         name: profile.name.givenName,
         lastName: profile.name.familyName,
-        password: '1234',
+        password: hashedPassword,
         role: "customer",
         createdAt: new Date(),
         updatedAt: new Date(),

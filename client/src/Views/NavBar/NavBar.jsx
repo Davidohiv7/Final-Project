@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { AppBar, Toolbar, Typography, Button, Badge } from '@material-ui/core';
 import { Eco, ShoppingCart, AccountCircle } from '@material-ui/icons';
 import useStyles from './NavBarStyles';
@@ -7,11 +8,17 @@ import { Link } from 'react-router-dom';
 import { getUserData } from '../../actions/authentication/authentication_actions'
 
 export default function NavBar() {
+
   let classes = useStyles();
+
+  let history = useHistory();
 
   const { logged, user } = useSelector((state) => ({ ...state.authenticationReducer }))
   const { cart } = useSelector((state) => ({ ...state.cartReducer }))
+
   const dispatch = useDispatch();
+
+  const jwt = localStorage.getItem('jwt')
 
   const [cartLength, setCartLength] = useState(0);
 
@@ -42,6 +49,12 @@ export default function NavBar() {
       dispatch(getUserData(jwt))
     }
   }, [logged])
+
+  useEffect(() => {
+    if(user && user.role === 'admin') {
+      history.push("/admin");
+    }
+  }, [user])
   /* eslint-enable */
   
   return (
@@ -67,7 +80,7 @@ export default function NavBar() {
             </Link>
 
               {
-                logged && user ? 
+                jwt && user ? 
                 <Link to={user.role === 'admin' || user.role === 'staff' ? '/admin' : '/user'}>
                   <Button
                     variant="contained"
@@ -75,7 +88,7 @@ export default function NavBar() {
                     className={classes.buttonUser}
                     startIcon={<AccountCircle />}
                   >
-                    {user.role === 'admin' || user.role === 'staff' ? 'Admin' : 'User'}
+                    {user.role === 'admin' || user.role === 'staff' ? 'Admin' : user.name}
                   </Button>
                 </Link>
                 :

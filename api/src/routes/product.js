@@ -328,7 +328,7 @@ router.put('/', async (req, res) => {
               from: `Onion Food Sup. <${GOOGLE_MAIL}>`,
               to: person.email,
               subject: 'An item on your wishlist is now in stock',
-              html: mailInStock(person.name, person.lastName, name, images[0]),
+              html: mailInStock(person.name, person.lastName, name, product.Images[0].url),
               auth: authMailing,
           });
           })

@@ -27,6 +27,7 @@ router.get('/', async (req, res) => {
           const categories = await models.Category.findAll({
               limit: limit,
               offset: (page * limit) - limit,
+              order: [['name', 'ASC']]
           });
 
           return response.success(req, res, { ...data, count, pages, pageNumber, categories }, 200);
@@ -51,6 +52,7 @@ router.get('/', async (req, res) => {
           where: {name: { [Op.iLike]: `%${name}%` }},
           limit: limit,
           offset: (page * limit) - limit,
+          order: [['name', 'ASC']]
       });
 
       response.success(req, res, { ...data, count, pages, pageNumber, categories }, 200);

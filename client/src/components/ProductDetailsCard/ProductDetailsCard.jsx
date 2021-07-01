@@ -13,7 +13,7 @@ import { Star, ShoppingCartOutlined, FavoriteBorder, Close } from '@material-ui/
 import { addToCart } from '../../assets/utils/productCardFunctions';
 //actions
 import { addProductToCart, setLocalCart } from '../../actions/cart/cart_actions';
-import { addToFavorites } from '../../actions/favorites/favorites_actions';
+import { addToFavorites, getFavorites } from '../../actions/favorites/favorites_actions';
 
 
 
@@ -25,6 +25,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
     const { payment } = useSelector((state) => ({ ...state.checkoutReducer }))
     const { logged, user } = useSelector((state) => ({ ...state.authenticationReducer }))
     const { cart } = useSelector((state) => ({ ...state.cartReducer }))
+    const { favorites } = useSelector((state) => ({ ...state.wishlistReducer }))
 
     const [quantity, setQuantity] = useState(1);
     const [quantityInCart, setQuantityInCart] = useState(0);
@@ -47,6 +48,12 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
             setQuantityInCart(validateCartProduct.quantity)
         }
     }, [cart])
+
+    useEffect(() => {
+        if(user) {
+            dispatch(getFavorites(user.email));
+        }
+    }, [])
     /* eslint-enable */
 
     function handleAddToCart(product, quantity, setQuantity) {
@@ -67,7 +74,11 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
     }
 
     async function handleAddToFavs(product) {
+        if(!!favorites.find(p => p.id === product.id)) {
+            return setAlreadyFavSnackbar(true)
+        }
         dispatch(addToFavorites(product, user.email));
+        setFavSnackbar(true);
     }
 
     return (

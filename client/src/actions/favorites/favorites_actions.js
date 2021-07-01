@@ -29,6 +29,7 @@ export const deleteFavorite = (ProductId, userEmail) => {
                 .then(res => res.data)
                 .then(res => {
                     dispatch({type: DELETE_FAVORITE, payload: res.data});
+                    dispatch(getFavorites(userEmail));
                 })
                 .catch(e => console.log(e))
     }

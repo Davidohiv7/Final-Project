@@ -3,10 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import useStyles from './styles'
 
 //Imports Material UI components:
-import { Card, CardMedia, CardActionArea, Typography, CardContent, Box, IconButton, Button, Modal, Fade, Backdrop } from '@material-ui/core/'
+import { Card, CardMedia, CardActionArea, Typography, CardContent, Box, IconButton, Button, Modal, Fade, Backdrop, Snackbar } from '@material-ui/core/'
+import { Alert } from '@material-ui/lab';
 //Imports Material UI icons:
-import { FavoriteBorder, ShoppingCartOutlined, Star } from '@material-ui/icons';
-
+import { FavoriteBorder, ShoppingCartOutlined, Star, Favorite } from '@material-ui/icons';
 //Custom functions
 import { createArrayFromNumber } from '../../assets/utils/productCardFunctions'
 //React components
@@ -20,16 +20,27 @@ export default function ProductCards({ product }) {
     const dispatch = useDispatch();
 
     const { logged, user } = useSelector((state) => ({ ...state.authenticationReducer }))
-
+    const { favorites } = useSelector((state) => ({ ...state.wishlistReducer }))
 
     const [scoreArray, setScoreArray] = useState([]);
     const [modalState, setModalState] = useState(false);
+
+    const [favSnackbar, setFavSnackbar] = useState(false);
+    const [alreadyFavSnackbar, setAlreadyFavSnackbar] = useState(false);
 
     useEffect(() => {
         const newScoreArray = createArrayFromNumber(product.score)
         setScoreArray(newScoreArray)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    function handleAddToFav() {
+        if(!!favorites.find(p => p.id === product.id)) {
+            return setAlreadyFavSnackbar(true)
+        }
+        dispatch(addToFavorites(product, user.email));
+        setFavSnackbar(true);
+    }
 
     return (
         <Box>
@@ -41,9 +52,9 @@ export default function ProductCards({ product }) {
                     aria-label="upload picture" 
                     component="span" 
                     className={classes.favButton}
-                    onClick={() => dispatch(addToFavorites(product, user.email))}
+                    onClick={() => handleAddToFav()}
                 >
-                    <FavoriteBorder/>
+                    {!!favorites.find(p => p.id === product.id) ? <Favorite/> : <FavoriteBorder/>}
                 </IconButton>
                 :
                 undefined 
@@ -96,8 +107,19 @@ export default function ProductCards({ product }) {
                     <ProductDetailsCard scoreArray={scoreArray} product={product} setModalState={setModalState}></ProductDetailsCard>
                 </Fade>
             </Modal>
+
+            <Snackbar open={favSnackbar} autoHideDuration={3000} onClose={() => setFavSnackbar(false)} variant="filled">
+                <Alert onClose={() => setFavSnackbar(false)} severity="success">
+                    The product was successfully added to favourites!
+                </Alert>
+            </Snackbar>
+
+            <Snackbar open={alreadyFavSnackbar} autoHideDuration={3000} onClose={() => setAlreadyFavSnackbar(false)} variant="filled">
+                <Alert onClose={() => setAlreadyFavSnackbar(false)} severity="info">
+                    The product is already in favourites!
+                </Alert>
+            </Snackbar> 
         </Box>
-        
     );
 }
 

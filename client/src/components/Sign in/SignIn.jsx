@@ -11,9 +11,9 @@ import { VpnKey } from '@material-ui/icons';
 import GoogleAuth from '../GoogleAuth/GoogleAuth'
 import TwoFA from './TwoFA/TwoFA'
 //Actions
-import { signIn, twofaSignIn } from '../../actions/authentication/authentication_actions'
+import { twofaSignIn } from '../../actions/authentication/authentication_actions'
 //Custom functions
-import { signInValidation, resetSignInInput } from '../../assets/utils/authentication'
+import { signInValidation } from '../../assets/utils/authentication'
 
 export default function SignIn() {
     let classes = useStyles();

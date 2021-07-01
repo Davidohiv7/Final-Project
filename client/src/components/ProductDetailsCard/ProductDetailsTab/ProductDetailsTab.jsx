@@ -48,6 +48,10 @@ const useStyles = makeStyles((theme) => ({
     },
     tabContainer: {
         height: 180,
+        [theme.breakpoints.down('xs')]: {
+          height:80,
+          paddingBottom: 10,
+        },
     },
     tabsTypography: {
         fontSize: 16,

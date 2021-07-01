@@ -64,22 +64,22 @@ export default function ProductCards({ product }) {
                         image={product.Images[0].url}
                     />
                     <CardContent className={classes.cardContent}>
-                        <Typography align='center' variant="p" color='secondary' >{product.name}</Typography>
+                        <Typography align='left' variant="subtitle2" color='black' >{product.name}</Typography>
                         <Box display="flex" justifyContent="center">
                             {
-                                scoreArray.map(number => <Star key={number} color='secondary' />) 
+                                scoreArray.map(number => <Star key={number} className={classes.star} />) 
                             }
                         </Box>
                         <Box display="flex" justifyContent="center" alignItems="center" >
-                            <Typography align ='center' variant='body1' color='secondary'>${product.price} EA</Typography>
+                            <Typography align ='center' variant='body1' color='black'>${product.price} EA</Typography>
                         </Box>
                     </CardContent>
 
                     <Box display="flex" justifyContent="center" alignItems="center" >
                         <Button
                             variant="outlined"
-                            color="secondary"
-                            startIcon={<ShoppingCartOutlined/>}
+                            color="primary"
+                            startIcon={<ShoppingCartOutlined color='primary'/>}
                             onClick={() => setModalState(true)}
                         >
                             add to cart

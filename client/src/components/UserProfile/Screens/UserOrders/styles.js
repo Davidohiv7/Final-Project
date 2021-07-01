@@ -8,6 +8,14 @@ const useStyles = makeStyles((theme) => ({
   tableContainer: {
     marginBottom: 15,
     maxHeight: 600,
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  },
+  tableContainerResponsive: {
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
   },
   title: {
     color: theme.palette.secondary.main,
@@ -27,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
     position: "sticky",
     top: 0,
     zIndex: 5,
+    [theme.breakpoints.down('sm')]: {
+      zIndex: 3,
+    },
   },
   homeButton: {
     margin: 16,

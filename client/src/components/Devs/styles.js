@@ -24,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
         padding: '15px',
         borderRadius: '10px',
         margin: theme.spacing(2),
+        [theme.breakpoints.down('xs')]: {
+            flexDirection: "column",
+            margin: 0,
+        },
     },
 }));
 

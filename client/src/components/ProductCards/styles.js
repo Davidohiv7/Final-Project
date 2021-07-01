@@ -7,11 +7,14 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: '1px 1px 8px -1px rgba(0,0,0,0.6)',
         width: 220,
         height: 300,
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: theme.palette.common.white,
         borderRadius: theme.shape.borderRadius,
     },
     image: {
+        backgroundSize:'contain',
         height: 150,
+        paddingLeft:10,
+        paddingRight:10 
     },
     cardContent: {
         padding: 8,
@@ -30,6 +33,14 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        [theme.breakpoints.down('xs')]: {
+           alignItems: 'flex-start',
+           marginTop: 20,
+        },
+    },
+    star:{
+        color: '#FCD34D',
+        fontSize: 12
     },
 }));
 

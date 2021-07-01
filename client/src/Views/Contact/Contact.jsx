@@ -45,7 +45,7 @@ const Contact = () => {
 
     return (
         <Box p={5} m={5} display='flex' flexDirection='column' alignItems='center' bgcolor='secondary.main' className={classes.root}>
-            <Typography variant="h4" color="initial">How can we help you?</Typography>
+            <Typography variant="h4" color="primary.dark" align="center" >How can we help you?</Typography>
             <form onSubmit={e => handleSubmit(e)}>
                 <Box display='flex' flexDirection='column' alignItems='center' className={classes.inputsContainer}>
                     <TextField

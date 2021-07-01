@@ -42,10 +42,6 @@ export default function  ConfirmOrder( { activeStep, setActiveStep }) {
     /* eslint-enable */
     return (
         <Box display="flex" justifyContent="center" alignItems="center" flexDirection='column' m={2}>
-            <Box mb={1}>
-                <Typography variant="h3" color="primary">Confirm Order</Typography>
-            </Box>
-
             {
             confirmOrder.success ? 
             <Box mt={8} isplay="flex" justifyContent="center" alignItems="center">
@@ -79,11 +75,7 @@ export default function  ConfirmOrder( { activeStep, setActiveStep }) {
                     <Typography variant="h5" color="default">{`Total: $${subtotal}`}</Typography>
                 </Box>
             
-                <Box display="flex" justifyContent="center" alignItems="center" >
-                    <Button variant="contained" color="primary" onClick={() => setActiveStep(activeStep - 1)} className={classes.button}>
-                        Back
-                    </Button>
-
+                <Box display="flex" justifyContent="center" alignItems="center"  m={3}>
                     <Button variant="contained" color="primary" onClick={(e) => handleConfirmOrder(e)}>
                         Confirm Order
                     </Button>

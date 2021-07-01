@@ -79,7 +79,7 @@ export default function TwoFA( { formInputs, setFormInputs } ) {
             return setErrorSignInSnackbar(false);
         }
     }, [authMessage])
-
+    /* eslint-disable */
     useEffect(() => {
         if(twofa.attempts > 3) {
             setVerifying(true)
@@ -88,7 +88,7 @@ export default function TwoFA( { formInputs, setFormInputs } ) {
             setTimeout(() => dispatch({type: FINISH_TWOFA}), 3000)
         }
     }, [twofa.attempts])
-
+    /* eslint-enable */
     const handleInputChange = function(e) {
         const i = e.target.name[e.target.name.length - 1]
         const regex = /^(?:[1-9]\d*|\d)$/;

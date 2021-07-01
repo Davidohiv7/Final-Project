@@ -72,6 +72,44 @@ export default function UserAddresses( { addresses, setUserAddresses } ) {
                     </TableBody>
                 </Table>
             </TableContainer>
+
+            {/*This displays only in mobile*/}
+            <TableContainer className={classes.tableContainerResponsive} component={Paper}>
+                <Table size="small">
+                    <TableHead className={classes.addressTableHead}>
+                        <TableCell align="center" className={classes.title} width="35%">
+                            Address
+                        </TableCell>
+                        <TableCell align="center" className={classes.title} width="20%">
+                            City
+                        </TableCell>
+                        <TableCell width="10%" />
+                    </TableHead>
+                    <TableBody>
+                        {
+                            addresses.map(address => {
+                                return (
+                                    <TableRow key={address.zip} className={classes.row}>
+
+                                        <TableCell align="center">
+                                            {address.street}
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            {address.city}
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            <IconButton size="small" color='primary' onClick={() => handleDelete(address)}>
+                                                <Delete />
+                                            </IconButton>
+                                        </TableCell>
+                                    </TableRow>
+                                )
+                            })
+                        }
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            {/*This displays only in mobile*/}
         </Box>
     );
 }

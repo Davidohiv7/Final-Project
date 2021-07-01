@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from "react-router-dom";
 //Imports Material UI components:
-import { Button, TableContainer, Table, TableBody, TableCell, TableHead, TableRow, Paper, Box, Typography  }from '@material-ui/core'
+import { Button, TableContainer, Table, TableBody, TableCell, TableHead, TableRow, Box, Typography  }from '@material-ui/core'
 import { Home } from '@material-ui/icons'
 import useStyles from './styles';
 //actions
@@ -27,13 +27,13 @@ export default function Wishlist() {
     return (
       <Box className={classes.generalContainer}>
         {favorites && favorites.length > 0 ? 
-          <TableContainer component={Paper}>
+          <TableContainer className={classes.tableContainer}>
             <Table className={classes.table} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell className={classes.header} align='left'>Products:</TableCell>
-                  <TableCell className={classes.header} align='left'>Name</TableCell>
-                  <TableCell className={classes.header} align='right'></TableCell>
+              <TableHead className={classes.head}>
+                <TableRow className={classes.headRow}>
+                  <TableCell className={classes.header} align='left'></TableCell>
+                  <TableCell className={classes.header} align='left'>Product name</TableCell>
+                  <TableCell className={classes.header} align='right'>Delete</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

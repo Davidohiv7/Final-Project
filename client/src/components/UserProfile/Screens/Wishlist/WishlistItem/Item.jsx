@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 //Imports Material UI components:
-import { TableCell, TableRow, Button, Modal, Fade, Backdrop  }from '@material-ui/core'
-import ClearIcon from '@material-ui/icons/Clear';
+import { TableCell, TableRow, Button, Modal, Fade, Backdrop, Avatar  }from '@material-ui/core'
+import { Delete } from '@material-ui/icons';
 import useStyles from './styles';
 //components
 import ProductDetailsCard from '../../../../ProductDetailsCard/ProductDetailsCard';
@@ -30,12 +30,12 @@ export default function Items({ favorite, user }) {
     return (
         <TableRow key={favorite.name}>
           <TableCell padding= '0' className={classes.openDetails} onClick={() => setModalState(true)}>
-            <img width='50px' src={favorite.Images[0].url} alt={favorite.name}></img>
+            <Avatar src={favorite.Images[0].url} className={classes.image}/>
           </TableCell>
           <TableCell align= 'left' onClick={() => setModalState(true)} className={classes.openDetails}>{favorite.name}</TableCell>
           <TableCell align= 'right'>
-            <Button onClick={() => deleteHandler(favorite.id, user.email)}>
-              <ClearIcon/>
+            <Button color='primary' aria-label="delete" onClick={() => deleteHandler(favorite.id, user.email)}>
+              <Delete/>
             </Button>
           </TableCell>
           <Modal

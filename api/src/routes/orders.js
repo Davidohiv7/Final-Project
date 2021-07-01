@@ -234,6 +234,7 @@ router.patch('/', async (req, res) => {
         
         order.status = status.toLowerCase();
         await order.save();
+
         //Mailing when dispatched
         if(order.status === 'completed') {
             const {

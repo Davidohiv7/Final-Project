@@ -132,6 +132,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                                         </Button>
 
                                         <Button
+                                            disabled={product.stock === 0}
                                             variant="outlined"
                                             color="initial"
                                             startIcon={<ShoppingCartOutlined/>}
@@ -141,7 +142,8 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                                         </Button>
                                     </Box>
                                     <Box className={classes.cartTotal} display="flex" flexDirection='column-reverse' justifyContent="center" alignItems="center" >
-                                        <TextField
+                                        {product.stock !== 0 ? 
+                                            <TextField
                                             size='small'
                                             value={quantityInCart === product.stock ? 0 : quantity}
                                             onChange={e => {
@@ -165,8 +167,15 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                                                 }
                                             }}
                                             variant="outlined"
-                                        />
-                                        <Typography className={classes.total} variant="h5" color="initial" display='inline'>${(product.price*quantity).toFixed(2)} EA</Typography>
+                                        /> :
+                                        undefined
+                                        }
+                                        
+                                        {
+                                            product.stock !== 0 ? 
+                                            <Typography variant="subtitle5" color="initial" display='inline'>${(product.price*quantity).toFixed(2)} EA</Typography> :
+                                            <Typography variant="h6" color="primary" display='inline'>No stock</Typography>
+                                        }
                                     </Box>
                                 </Box>
                             </CardContent>
@@ -257,7 +266,12 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                                             }}
                                             variant="outlined"
                                         />
-                                        <Typography variant="subtitle5" color="initial" display='inline'>${(product.price*quantity).toFixed(2)} EA</Typography>
+                                        {
+                                            product.stock !== 0 ? 
+                                            <Typography variant="subtitle5" color="initial" display='inline'>${(product.price*quantity).toFixed(2)} EA</Typography> :
+                                            <Typography variant="subtitle5" color="primary" display='inline'>No stock</Typography>
+                                        }
+                                        
                                     </Box>
                                 </Box>
                             </CardContent>

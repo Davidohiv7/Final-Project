@@ -66,7 +66,7 @@ export default function OrderRow( { order, openOrder, setOpenOrder }) {
                     </Typography>
                 </TableCell>
                 <TableCell align="center">{order.updatedAt.split('T')[0]}</TableCell>
-                <TableCell align="center">${order.total} EA</TableCell>
+                <TableCell align="center">${order.total}</TableCell>
             </TableRow>
 
             <TableRow>

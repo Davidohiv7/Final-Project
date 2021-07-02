@@ -15,7 +15,7 @@ export const useStyles = makeStyles((theme) => ({
       overflow: 'hidden',
     },
     stepper: {
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        backgroundColor: 'rgba(0, 0, 0, 0)',
         height: 20,
         position: 'relative',
         top: '-35px',

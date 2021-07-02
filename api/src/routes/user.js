@@ -168,9 +168,9 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.delete('/:id', async (req, res) => {
-    const { id } = req.params;
-
+router.delete('/delete_user', async (req, res) => {
+    console.log(req.body)
+    const { id } = req.body;
     try {
         const user = await models.Person.findOne({ where: { id: id } });
         if (!user) return response.success(req, res, { message: "User not found." }, 200);

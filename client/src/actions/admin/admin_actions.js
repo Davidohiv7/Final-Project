@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_CATEGORIES, CREATE_CATEGORY, ADD_URL_TO_DELETE, GET_ORDERS, GET_USERS, GET_ALL_CATEGORIES } from '../../actions_types/admin/admin_action_types'
+import { GET_CATEGORIES, CREATE_CATEGORY, ADD_URL_TO_DELETE, GET_ORDERS, GET_USERS, GET_ALL_CATEGORIES, DELETE_USER } from '../../actions_types/admin/admin_action_types'
 
 const jwt = localStorage.getItem('jwt')
 
@@ -101,6 +101,17 @@ export function getUsers(params) {
       .catch(e => {
         console.error(e)
       })
+  }
+}
+
+export function deleteUser(id) {
+  return () => {
+    return axios.delete(`http://localhost:3001/user/delete_user`, {data: {id: id}}, {
+        headers: {
+          'Authorization': jwt
+        }
+      })
+      .catch(e => console.error(e))
   }
 }
 

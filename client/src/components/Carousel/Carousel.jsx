@@ -17,18 +17,18 @@ const Steps = [
   {
     label: '1',
     imgPath:
-      './pageinfo.jpg',
+      './Banner02.jpg',
   },
   {
     label: '2',
     imgPath:
-      './offers.jpg',
+      './Banner01.jpg',
   },
-  {
-    label: '3',
-    imgPath:
-      './bestproducts.jpg',
-  },
+  // {
+  //   label: '3',
+  //   imgPath:
+  //     './bestproducts.jpg',
+  // },
 ];
 
 

@@ -74,7 +74,7 @@ export default function ProductCards({ product }) {
                             }
                         </Box>
                         <Box display="flex" justifyContent="center" alignItems="center" >
-                            <Typography align ='center' variant='body1' color='black'>${product.price} EA</Typography>
+                            <Typography align ='center' variant='body1' color='black'>${product.price}</Typography>
                         </Box>
                     </CardContent>
 

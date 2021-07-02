@@ -28,7 +28,7 @@ export default function UserDetail({editUser, setDisplayStatus }) {
     const handleDelete = () => {
         dispatch(deleteUser(editUser.id));
         //setDeletedOpen(true);
-        setDisplayStatus('products')
+        setDisplayStatus('users')
     }
 
     return (
@@ -65,7 +65,9 @@ export default function UserDetail({editUser, setDisplayStatus }) {
                         setEditRole(v)
                     }}
                 />
-                <Button onClick={handleDelete} className={classes.button}>Delete User</Button>
+                {editUser.role === 'admin' ? <Button disabled className={classes.button} >Can't Delete Admin</Button> : 
+                    <Button onClick={handleDelete} className={classes.button} >Delete User</Button>}
+                
             </Paper>
             <Snackbar open={open} autoHideDuration={4000} onClose={()=> setOpen(false)}>
                 <Alert onClose={()=> setOpen(false)} severity="success">
@@ -74,7 +76,7 @@ export default function UserDetail({editUser, setDisplayStatus }) {
             </Snackbar>
             <Snackbar open={deletedOpen} autoHideDuration={4000} onClose={() => setDeletedOpen(false)}>
                 <Alert onClose={() => setDeletedOpen(false)} severity="success">
-                    'The user has been deleted, redirecting to admin root profile'
+                    'The user has been deleted, redirecting to admin profile'
                 </Alert>
             </Snackbar>
         </Box>

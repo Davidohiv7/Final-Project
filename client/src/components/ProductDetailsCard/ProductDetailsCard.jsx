@@ -104,7 +104,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                                     </IconButton>
                                 </Box>
                                 <Box display="flex" flexDirection='row' justifyContent="flex-start" alignItems="center">
-                                    <Typography variant="h5" color="initial" display='inline'>${product.price} EA</Typography>
+                                    <Typography variant="h5" color="initial" display='inline'>${product.price}</Typography>
                                     <Box display="flex" justifyContent="center" className={classes.scoreContainer}>
                                         {
                                             scoreArray.map(number => <Star key={number} color='white' />) 
@@ -170,10 +170,9 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                                         /> :
                                         undefined
                                         }
-                                        
                                         {
                                             product.stock !== 0 ? 
-                                            <Typography variant="subtitle5" color="initial" display='inline'>${(product.price*quantity).toFixed(2)} EA</Typography> :
+                                            <Typography variant="subtitle5" color="initial" display='inline'>${(product.price*quantity).toFixed(2)}</Typography> :
                                             <Typography variant="h6" color="primary" display='inline'>No stock</Typography>
                                         }
                                     </Box>
@@ -205,7 +204,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                                     </IconButton>
                                 </Box>
                                 <Box display="flex" flexDirection='row' justifyContent="flex-start" alignItems="center">
-                                    <Typography variant="subtitle5" color="initial" display='inline'>${product.price} EA</Typography>
+                                    <Typography variant="subtitle5" color="initial" display='inline'>${product.price}</Typography>
                                     <Box display="flex" justifyContent="center" className={classes.scoreContainer}>
                                         {
                                             scoreArray.map(number => <Star key={number} color='white' />) 
@@ -268,7 +267,7 @@ export default function ProductDetailsCard({ product, scoreArray, setModalState 
                                         />
                                         {
                                             product.stock !== 0 ? 
-                                            <Typography variant="subtitle5" color="initial" display='inline'>${(product.price*quantity).toFixed(2)} EA</Typography> :
+                                            <Typography variant="subtitle5" color="initial" display='inline'>${(product.price*quantity).toFixed(2)} </Typography> :
                                             <Typography variant="subtitle5" color="primary" display='inline'>No stock</Typography>
                                         }
                                         

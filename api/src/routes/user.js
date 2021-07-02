@@ -77,6 +77,7 @@ router.get('/data', passport.authenticate('jwt', {session: false}), async (req, 
                 status: { [Op.not]: ['created', 'paid']},
             },
             attributes:  { exclude: ['createdAt'] },
+            order: [['id', 'DESC']],
         })
     
         const orders = userOrders ? userOrders : []

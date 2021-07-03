@@ -104,6 +104,22 @@ export function getUsers(params) {
   }
 }
 
+export function deleteUser(id) {
+  return (dispatch) => {
+    return axios.delete(`http://localhost:3001/user/delete_user`, {data: {id: id}}, {
+        headers: {
+          'Authorization': jwt
+        }
+      }).then(res => {
+        dispatch({
+          type: GET_USERS,
+          payload: res.data
+        })
+      })
+      .catch(e => console.error(e))
+  }
+}
+
 export function setRole(user) {
   return (dispatch) => {
       axios.patch(`http://localhost:3001/user`, user, { headers: { 'Authorization': jwt }})

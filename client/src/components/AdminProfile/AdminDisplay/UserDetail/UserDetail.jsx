@@ -7,14 +7,15 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { Autocomplete } from '@material-ui/lab';
 import useStyles from './styles';
-import { setRole } from '../../../../actions/admin/admin_actions';
+import { setRole, deleteUser } from '../../../../actions/admin/admin_actions';
 
 export default function UserDetail({editUser, setDisplayStatus }) {
     const classes = useStyles();
     const dispatch = useDispatch();
     const [editRole, setEditRole] = useState(editUser.role);
     const [open, setOpen] = useState(false);
-
+    const [deletedOpen, setDeletedOpen] = useState(false);
+    
     function Alert(props) {
         return <MuiAlert elevation={6} variant="filled" {...props} />;
     }
@@ -22,6 +23,12 @@ export default function UserDetail({editUser, setDisplayStatus }) {
     const handleSubmit = () => {
         dispatch(setRole({id: editUser.id, role: editRole}))
         setOpen(true)
+    }
+
+    const handleDelete = () => {
+        dispatch(deleteUser(editUser.id));
+        //setDeletedOpen(true);
+        setDisplayStatus('users')
     }
 
     return (
@@ -58,10 +65,18 @@ export default function UserDetail({editUser, setDisplayStatus }) {
                         setEditRole(v)
                     }}
                 />
+                {editUser.role === 'admin' ? <Button disabled className={classes.button} >Can't Delete Admin</Button> : 
+                    <Button onClick={handleDelete} className={classes.button} >Delete User</Button>}
+                
             </Paper>
             <Snackbar open={open} autoHideDuration={4000} onClose={()=> setOpen(false)}>
                 <Alert onClose={()=> setOpen(false)} severity="success">
                 The user role has been updated succesfully!
+                </Alert>
+            </Snackbar>
+            <Snackbar open={deletedOpen} autoHideDuration={4000} onClose={() => setDeletedOpen(false)}>
+                <Alert onClose={() => setDeletedOpen(false)} severity="success">
+                    'The user has been deleted, redirecting to admin profile'
                 </Alert>
             </Snackbar>
         </Box>

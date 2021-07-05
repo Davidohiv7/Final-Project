@@ -4,10 +4,9 @@
 
 # Group project by Pablo Basili, David Vivas, Mariano Baeza, Antonio Montero, Federico Leon, Federico Rosales, Theo Radicella
 
-# TL - Leandro Nicolau
-
-## Goals  -   
-
-## Intro  -  
-
-## Get In Touch -
+## Goals  -   eCommerce based on a restaurant's supplier using the following technologies
+- React/Redux
+- NodeJS
+- Express
+- PostgresSQL
+- MaterialUI

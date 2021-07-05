@@ -4,7 +4,7 @@
 
 # Group project by Pablo Basili, David Vivas, Mariano Baeza, Antonio Montero, Federico Leon, Federico Rosales, Theo Radicella
 
-## Goals  -   eCommerce based on a restaurant's supplier using the following technologies
+## eCommerce based on a restaurant's supplier using the following technologies
 - React/Redux
 - NodeJS
 - Express

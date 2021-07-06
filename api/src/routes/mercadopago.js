@@ -3,7 +3,7 @@ const router = Router();
 // SDK de Mercado Pago
 const mercadopago = require ('mercadopago');
 // Agrega credenciales
-const {PROD_MP_ACCESS_TOKEN } = process.env;
+const {PROD_MP_ACCESS_TOKEN, FRONT_URL } = process.env;
 
 mercadopago.configure({
      access_token: PROD_MP_ACCESS_TOKEN

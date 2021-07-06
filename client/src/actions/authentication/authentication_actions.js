@@ -10,7 +10,6 @@ export function twofaSignIn(obj) {
         try {
             const response = await axios.post(apiURL +  "/signin/twofa/email", {...obj})
             const data = response.data.data
-            console.log(data) 
             if(data) {
                 dispatch({type: INIT_TWOFA});
             }

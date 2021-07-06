@@ -1,8 +1,10 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
+  footerContainer: {
+    
+  },
   footer: {
-    height: 20,
     width: '100%',
     [theme.breakpoints.down('xs')]: {
       width: "88%",

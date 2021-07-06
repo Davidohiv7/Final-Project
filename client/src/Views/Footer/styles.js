@@ -5,6 +5,10 @@ const useStyles = makeStyles((theme) => ({
     
   },
   footer: {
+    paddingRight: 0,
+    paddingLeft: 0,
+    paddingTop: 40,
+    paddingBottom: 40,
     width: '100%',
     [theme.breakpoints.down('xs')]: {
       width: "88%",

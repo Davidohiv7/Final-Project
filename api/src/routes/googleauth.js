@@ -14,13 +14,14 @@ const {
   SALT_ROUNDS,
   GOOGLE_MAIL,
   SECRET_KEY_JWT,
+  FRONT_URL
 } = process.env
 
 googleAuthRouter.get('/signin', passport.authenticate('google', { session: false, scope: ['profile', 'email'] }))
 
 googleAuthRouter.get('/callback', passport.authenticate('google', { 
     session: false, 
-    failureRedirect: 'http://localhost:3000/authentication/google/error',
+    failureRedirect: `${FRONT_URL}/authentication/google/error`,
     // successRedirect: 
    }),
     
@@ -44,10 +45,10 @@ googleAuthRouter.get('/callback', passport.authenticate('google', {
         auth: authMailing,
       });
 
-      res.cookie('jwt', jasonWebToken).cookie('newUser', 'true').redirect('http://localhost:3000/authentication/google/success')
+      res.cookie('jwt', jasonWebToken).cookie('newUser', 'true').redirect(`${FRONT_URL}/authentication/google/success`)
     }
     const jasonWebToken = jwt.sign({id: req.user[0].id, email: req.user[0].email}, SECRET_KEY_JWT)
-    res.cookie('jwt', jasonWebToken).redirect('http://localhost:3000/authentication/google/success')
+    res.cookie('jwt', jasonWebToken).redirect(`${FRONT_URL}/authentication/google/success`)
   }
 );
 

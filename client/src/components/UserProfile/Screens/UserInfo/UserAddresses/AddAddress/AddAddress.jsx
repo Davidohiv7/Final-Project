@@ -11,6 +11,8 @@ import axios from 'axios'
 
 export default function AddAddress( { setUserAddresses, handleCloseModal } ) {
 
+    const apiURL = process.env.REACT_APP_API_URL
+
     const classes = useStyles();
 
     const [shippingAddress, setShippingAddress] = useState({
@@ -37,7 +39,7 @@ export default function AddAddress( { setUserAddresses, handleCloseModal } ) {
         if(Object.keys(inputErrors).length === 0) {
             const jwt = localStorage.getItem('jwt')
             try {
-                const response = await axios.post("http://localhost:3001/shippingaddress/add", { ...shippingAddress }, { headers: { 'Authorization': jwt }} )
+                const response = await axios.post(apiURL + "/shippingaddress/add", { ...shippingAddress }, { headers: { 'Authorization': jwt }} )
                 const userAddresses = response.data.data.userAddresses
                 setUserAddresses(userAddresses)
                 return handleCloseModal()

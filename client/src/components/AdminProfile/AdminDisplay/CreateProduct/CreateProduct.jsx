@@ -216,7 +216,13 @@ useEffect(() => {
                     <TextField onClickCapture = {()=>setPriceTouch(true)} helperText={priceTouch &&(<Typography className={classes.errorText}>{ePrice}</Typography>)} value= {product.price} onChange= {(e)=> setProduct({...product, price: e.target.value})} className= {classes.input} id="outlined-number" label="Price" type="number" InputLabelProps={{shrink: true,}} variant="outlined" InputProps={{startAdornment: <InputAdornment position="start">$</InputAdornment>,}}/>
 
                     
-                    <TextField onClickCapture = {()=>setStockTouch(true)} helperText={stockTouch &&(<Typography className={classes.errorText}>{eStock}</Typography>)} value= {product.stock} onChange= {(e)=> setProduct({...product, stock: e.target.value})} className= {classes.input} id="outlined-number" label="Stock" type="number" InputLabelProps={{shrink: true,}} variant="outlined"/>
+                    <TextField onClickCapture = {()=>setStockTouch(true)} helperText={stockTouch &&(<Typography className={classes.errorText}>{eStock}</Typography>)} value= {product.stock} onChange= {(e)=> setProduct({...product, stock: e.target.value >= 0 ? e.target.value : 1})} className= {classes.input} id="outlined-number" label="Stock" type="number" InputLabelProps={{shrink: true,}} variant="outlined"
+                        InputProps={{
+                            inputProps: { 
+                                min: 0
+                            }
+                        }}
+                    />
                     
                     <TextField value= {product.description} onChange= {(e)=> setProduct({...product, description: e.target.value})} className= {classes.input} id="outlined-basic" label="Description" variant="outlined" multiline />
 

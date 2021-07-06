@@ -3,10 +3,12 @@ import { SIGN_UP, SIGN_IN, LOG_OUT, AUTH_ERROR, GET_USER_DATA, SET_USER_ORDERS, 
 import { SET_CART, } from '../../actions_types/cart/cart_actions_types'
 import { SET_CHECKOUT_CUSTOMER_INFORMATION, CONFIRM_PAYMENT, SET_CHECKOUT_SUBTOTAL} from '../../actions_types/checkout/checkout_actions_types'
 
+const apiURL = process.env.REACT_APP_API_URL
+
 export function twofaSignIn(obj) {
     return async (dispatch) => {
         try {
-            const response = await axios.post("http://localhost:3001/signin/twofa/email", {...obj})
+            const response = await axios.post(apiURL +  "/signin/twofa/email", {...obj})
             const data = response.data.data
             console.log(data) 
             if(data) {
@@ -27,7 +29,7 @@ export function twofaSignIn2(obj, code) {
     const cart = JSON.parse(localStorage.getItem('cart'))
     return async (dispatch) => {
         try {
-            const response = await axios.post("http://localhost:3001/signin/twofa/email/confirm", {...obj, localCart: cart, code})
+            const response = await axios.post(apiURL +  "/signin/twofa/email/confirm", {...obj, localCart: cart, code})
             if(response.data.data.token) {
                 localStorage.removeItem('cart')
                 localStorage.setItem('jwt', `Bearer ${response.data.data.token}`)
@@ -55,7 +57,7 @@ export function twofaSignIn2(obj, code) {
 //     const cart = JSON.parse(localStorage.getItem('cart'))
 //     return async (dispatch) => {
 //         try {
-//             const response = await axios.post("http://localhost:3001/signin", {...obj, localCart: cart})
+//             const response = await axios.post(apiURL + "/signin", {...obj, localCart: cart})
 //             if(response.data.data.token) {
 //                 localStorage.removeItem('cart')
 //                 localStorage.setItem('jwt', `Bearer ${response.data.data.token}`)
@@ -74,7 +76,7 @@ export function twofaSignIn2(obj, code) {
 export function signUp(obj) {
     return async (dispatch) => {
         try {
-            const response = await axios.post("http://localhost:3001/signup", obj)
+            const response = await axios.post(apiURL + "/signup", obj)
             if(response.data.data.token) {
                 localStorage.removeItem('cart')
                 localStorage.setItem('jwt', `Bearer ${response.data.data.token}`)
@@ -97,7 +99,8 @@ export function signUp(obj) {
 export function getUserData(jwt) {
     return async (dispatch) => {
         try {
-            const response = await axios.get("http://localhost:3001/user/data", { headers: { 'Authorization': jwt } })
+            console.log()
+            const response = await axios.get(apiURL + "/user/data", { headers: { 'Authorization': jwt } })
             const data = response.data.data
             await dispatch({type: GET_USER_DATA, payload: data.userData});
             if(data.orders) {
@@ -133,7 +136,7 @@ export function setGoogleUserNewCart(jwt, cart) {
     const data = {cart}
     return async (dispatch) => {
         try {
-            const response = await axios.post("http://localhost:3001/googleAuth/setnewcart", data, { headers: { 'Authorization': jwt } })
+            const response = await axios.post(apiURL + "/googleAuth/setnewcart", data, { headers: { 'Authorization': jwt } })
             if(response) {
                 dispatch({type: GOOGLE_AUTH})
                 localStorage.removeItem('cart')
@@ -149,7 +152,7 @@ export function getGoogleUserCart(jwt) {
     return async (dispatch) => {
         try {
             //CUANDO NO HAY UNA ORDEN CREADA NO RESPONDE AQUI
-            const response = await axios.post("http://localhost:3001/googleAuth/getcart", {localCart}, { headers: { 'Authorization': jwt } })
+            const response = await axios.post(apiURL + "/googleAuth/getcart", {localCart}, { headers: { 'Authorization': jwt } })
             if(response) {
                 dispatch({type: GOOGLE_AUTH})
                 localStorage.removeItem('cart')

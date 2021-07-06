@@ -7,6 +7,8 @@ import axios from 'axios';
 
 export default function Review({ product }) {
 
+  const apiURL = process.env.REACT_APP_API_URL
+
   const classes = useStyles();
 
   const [reviews, setReviews] = useState([]);
@@ -14,7 +16,7 @@ export default function Review({ product }) {
   useEffect(() => {
     const functionGetReviews = async() => {
       try {
-        const response = await axios.get("http://localhost:3001/reviews/getById", { params: { id: product.id } });
+        const response = await axios.get(apiURL + "/reviews/getById", { params: { id: product.id } });
         const reviewsOnProd = response.data.data;
         setReviews(reviewsOnProd);
       } catch (error) {

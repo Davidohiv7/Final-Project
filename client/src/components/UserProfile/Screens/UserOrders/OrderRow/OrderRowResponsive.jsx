@@ -11,6 +11,9 @@ import { capitalize } from '../../../../../assets/utils/stringFunctions'
 import axios from 'axios'
 
 export default function OrderRowResponsive({ order }) {
+
+    const apiURL = process.env.REACT_APP_API_URL
+
     const classes = useStyles();
 
     const [productsData, setProductsData] = useState([]);
@@ -18,7 +21,7 @@ export default function OrderRowResponsive({ order }) {
 
     async function handleOrderClick(e) {
         const jwt = localStorage.getItem('jwt');
-        const response = await axios.post("http://localhost:3001/orders/products", { order }, { headers: { 'Authorization': jwt } })
+        const response = await axios.post(apiURL + "/orders/products", { order }, { headers: { 'Authorization': jwt } })
         const orderDetailedData = response.data.data.orderData;
         orderDetailedData && setProductsData(orderDetailedData);
         //console.log(orderDetailedData)

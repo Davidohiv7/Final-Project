@@ -21,9 +21,9 @@ router.post("/", (req, res) => {
       }
     }),
     back_urls: {
-      "success": "http://localhost:3000/cart",
-      "failure": "http://localhost:3000/",
-      "pending": "http://localhost:3000/"
+      "success": `${FRONT_URL}/cart`,
+      "failure": `${FRONT_URL}/`,
+      "pending": `${FRONT_URL}/`
     },
     auto_return: 'approved',
   };

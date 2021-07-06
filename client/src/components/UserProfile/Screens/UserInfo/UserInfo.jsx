@@ -11,18 +11,20 @@ import axios from 'axios'
 
 export default function UserInfo({ user }) {
 
+    const apiURL = process.env.REACT_APP_API_URL
+
     const classes = useStyles();
 
     const [modalState, setModalState] = useState(false);
     const [modalType, setModalType] = useState('');
     const [userAddresses, setUserAddresses] = useState([]);
     
-
+    /* eslint-disable */
     useEffect(() => {
         const getUserAddresses = async () => {
             const jwt = localStorage.getItem('jwt')
             try {
-                const response = await axios.get("http://localhost:3001/shippingaddress/", { headers: { 'Authorization': jwt }} )
+                const response = await axios.get(apiURL + "/shippingaddress/", { headers: { 'Authorization': jwt }} )
                 const userAddresses = response.data.data.userAddresses
                 return setUserAddresses(userAddresses)
             } catch (error) {
@@ -31,7 +33,7 @@ export default function UserInfo({ user }) {
         }
         getUserAddresses()
     }, [])
-
+    /* eslint-enable */
     
 
     function handleOpenModal(type) {

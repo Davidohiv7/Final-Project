@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { GET_CATEGORIES, CREATE_CATEGORY, ADD_URL_TO_DELETE, GET_ORDERS, GET_USERS, GET_ALL_CATEGORIES } from '../../actions_types/admin/admin_action_types'
 
+const apiURL = process.env.REACT_APP_API_URL
 const jwt = localStorage.getItem('jwt')
 
 export function getCategories(params) {
   return (dispatch) => {
-      return axios.get("http://localhost:3001/categories", {params: params}, { headers: { 'Authorization': jwt }})
+      return axios.get(apiURL +  "/categories", {params: params}, { headers: { 'Authorization': jwt }})
               .then(res => res.data)
               .then(res => {
                   dispatch({type: GET_CATEGORIES, payload: res.data})
@@ -16,7 +17,7 @@ export function getCategories(params) {
 
 export function createCategory(name) {
   return (dispatch) => {
-      return axios.post("http://localhost:3001/categories", {name: name}, { headers: { 'Authorization': jwt }})
+      return axios.post(apiURL +  "/categories", {name: name}, { headers: { 'Authorization': jwt }})
                   .then(res => {
                       dispatch({type: CREATE_CATEGORY, payload: {name: name} })
                   })
@@ -26,21 +27,21 @@ export function createCategory(name) {
 
 export function deleteCategory(name) {
   return (dispatch) => {
-      return axios.delete(`http://localhost:3001/categories/${name}`, { headers: { 'Authorization': jwt }} )
+      return axios.delete(`${apiURL}/categories/${name}`, { headers: { 'Authorization': jwt }} )
                   .catch(e => console.error(e))
   }
 }
 
 export function deleteProductImage(file) {
   return (dispatch) => {
-        axios.delete(`http://localhost:3001/image/cloudinary/${file.public_id}`, { headers: { 'Authorization': jwt }})
+        axios.delete(`${apiURL}/image/cloudinary/${file.public_id}`, { headers: { 'Authorization': jwt }})
         .catch(e => console.error(e))
   }
 }
 
 export function createProduct(product) {
   return (dispatch) => {
-      return axios.post("http://localhost:3001/products", {...product}, { headers: { 'Authorization': jwt }})
+      return axios.post(apiURL + "/products", {...product}, { headers: { 'Authorization': jwt }})
                   .catch(e => console.error(e))
   }
 }
@@ -54,28 +55,28 @@ export function addUrlToDelete(url) {
 
 export function deleteImages(images) {
   return (dispatch) => {
-      return axios.post("http://localhost:3001/images", {images: images}, { headers: { 'Authorization': jwt }})
+      return axios.post(apiURL + "/images", {images: images}, { headers: { 'Authorization': jwt }})
                   .catch(e => console.error(e))
   }
 }
 
 export function updateProduct(product) {
   return (dispatch) => {
-    return axios.put("http://localhost:3001/products", {...product}, { headers: { 'Authorization': jwt }})
+    return axios.put(apiURL + "/products", {...product}, { headers: { 'Authorization': jwt }})
                 .catch(e => console.error(e))
   }
 }
 
 export function deleteProduct(id) {
   return (dispatch) => {
-    return axios.delete(`http://localhost:3001/products/${id}`, { headers: { 'Authorization': jwt }})
+    return axios.delete(`${apiURL}/products/${id}`, { headers: { 'Authorization': jwt }})
                 .catch(e => console.error(e))
   }
 }
 
 export function getOrders(params) {
   return (dispatch) => {
-      axios.get(`http://localhost:3001/orders`, { params: params}, { headers: { 'Authorization': jwt }})
+      axios.get(`${apiURL}/orders`, { params: params}, { headers: { 'Authorization': jwt }})
       .then(res => {
         dispatch({type: GET_ORDERS, payload: res.data})
       })
@@ -87,14 +88,14 @@ export function getOrders(params) {
 
 export function setStatus(order) {
   return (dispatch) => {
-      axios.patch(`http://localhost:3001/orders`, order, { headers: { 'Authorization': jwt }})
+      axios.patch(`${apiURL}/orders`, order, { headers: { 'Authorization': jwt }})
       .catch(e => {console.error(e)})
   }
 }
 
 export function getUsers(params) {
   return (dispatch) => {
-      axios.get(`http://localhost:3001/user`, { params: params}, { headers: { 'Authorization': jwt }})
+      axios.get(`${apiURL}/user`, { params: params}, { headers: { 'Authorization': jwt }})
       .then(res => {
         dispatch({type: GET_USERS, payload: res.data})
       })
@@ -106,7 +107,7 @@ export function getUsers(params) {
 
 export function deleteUser(id) {
   return (dispatch) => {
-    return axios.delete(`http://localhost:3001/user/delete_user`, {data: {id: id}}, {
+    return axios.delete(apiURL + "/user/delete_user", {data: {id: id}}, {
         headers: {
           'Authorization': jwt
         }
@@ -122,14 +123,14 @@ export function deleteUser(id) {
 
 export function setRole(user) {
   return (dispatch) => {
-      axios.patch(`http://localhost:3001/user`, user, { headers: { 'Authorization': jwt }})
+      axios.patch(apiURL +  "/user", user, { headers: { 'Authorization': jwt }})
       .catch(e => {console.error(e)})
   }
 }
 
 export function getAllCategories(params) {
   return (dispatch) => {
-      return axios.get("http://localhost:3001/categories/all", {params: params}, { headers: { 'Authorization': jwt }})
+      return axios.get(apiURL +  "/categories/all", {params: params}, { headers: { 'Authorization': jwt }})
               .then(res => res.data)
               .then(res => {
                   dispatch({type: GET_ALL_CATEGORIES, payload: res.data})

@@ -231,6 +231,7 @@ router.patch('/', async (req, res) => {
                 attributes: ['name', 'lastName', 'email']
             }
         });
+
         if (!order) return response.success(req, res, { message: "Order not found."}, 200);
         if (order.status === status.toLowerCase()) return response.success(req, res, {message: "Order is already in this status."}, 200);
         
@@ -254,6 +255,32 @@ router.patch('/', async (req, res) => {
             });
 
         }
+
+        if(order.status === 'cancelled') {
+            const orderProducts = await models.CartItem.findAll({
+                where: {
+                    CartId: id,
+                },
+                attributes: ['quantity', 'ProductId'],
+                order: [['ProductId', 'ASC']]
+            })
+            const productsIDs = orderProducts.map(p => p.ProductId)
+
+            const products = await models.Product.findAll({
+                where: {
+                    id: productsIDs,
+                },
+                attributes: ['stock', 'id'],
+                order: [['id', 'ASC']]
+            })
+            
+            //Returning the stock to the products
+            products.forEach((product, i) => { product.stock = (product.stock + orderProducts[i].quantity)})
+            const savingArray = products.map(product => product.save())
+            await Promise.all(savingArray)
+        }
+
+
         response.success(req, res, { message: "Order updated successfully." });
 
     } catch (error) {

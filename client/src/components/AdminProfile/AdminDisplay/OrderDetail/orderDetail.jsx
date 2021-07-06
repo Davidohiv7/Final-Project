@@ -20,7 +20,7 @@ export default function OrderDetail({editOrder, setDisplayStatus }) {
     }
 
     const handleSubmit = () => {
-        dispatch(setStatus({id: editOrder.id, status: editStatus}))
+        dispatch(setStatus({id: editOrder.id, status: editStatus.toLowerCase() }))
         setOpen(true)
     }
 
@@ -50,7 +50,7 @@ export default function OrderDetail({editOrder, setDisplayStatus }) {
                 <Autocomplete
                     className = {classes.status}
                     id= 'statusSelector'
-                    options={['created', 'paid', 'progress', 'cancelled', 'completed']}
+                    options={['Created', 'Paid', 'Progress', 'Cancelled', 'Completed']}
                     getOptionLabel={(option) => option}
                     renderInput={(params) => <TextField {...params} label="Status" variant="outlined" />}
                     value = {editStatus}

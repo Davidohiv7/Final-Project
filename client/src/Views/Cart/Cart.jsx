@@ -23,6 +23,8 @@ import { confirmMercadoPagoOrder } from '../../actions/checkout/checkout_actions
 
 export default function Cart() {
 
+    const apiURL = process.env.REACT_APP_API_URL
+
     const classes = useStyles();
 
     const dispatch = useDispatch();
@@ -159,7 +161,7 @@ export default function Cart() {
             if(cartProducts && cartProducts.length > 0) {
                 const idArray = cartProducts.map(p => p.id);
                 try {
-                    const response = await axios.post("http://localhost:3001/products/stockbyid", { idArray });
+                    const response = await axios.post(apiURL + "/products/stockbyid", { idArray });
                     const updateProductListStock = response.data.data.productList;
                     const lessStockProducts = []
                     cartProducts.forEach(p => {

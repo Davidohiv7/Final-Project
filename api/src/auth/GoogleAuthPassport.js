@@ -9,9 +9,11 @@ const models = require('../database/models')
 const {
     SALT_ROUNDS,
     GOOGLE_CLIENT_ID,
-    GOOGLE_CLIENT_SECRET
+    GOOGLE_CLIENT_SECRET,
+    API_URL
 } = process.env
-const GOOGLE_CALLBACK_URL = 'http://localhost:3001/googleauth/callback'
+
+const GOOGLE_CALLBACK_URL = `${API_URL}/googleauth/callback`
 
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,

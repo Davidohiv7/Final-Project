@@ -14,6 +14,7 @@ import validate from 'validator';
 import useStyles from './styles';
 
 function PasswordReset() {
+    const apiURL = process.env.REACT_APP_API_URL
     const styles = useStyles();
     const [email, setEmail] = useState('');
     const [errorPresent, setErrorPresent] = useState(false);
@@ -44,7 +45,7 @@ function PasswordReset() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         if(validate.isEmail(email)) {
-            axios.post('http://localhost:3001/passwordReset/getKey', { email });
+            axios.post(apiURL + '/passwordReset/getKey', { email });
             setPasswordRequested(true);
             setErrorPresent(false);
         } else {
@@ -65,7 +66,7 @@ function PasswordReset() {
         let error = validatePassword(newPass, confirmPass);
         if(error === '') {
            setErrorMessage('');
-           axios.put('http://localhost:3001/passwordReset/updatePass', { userId, newPass })
+           axios.put(apiURL + '/passwordReset/updatePass', { userId, newPass })
             .then(() => {
                 setUpdated(true);
             })
@@ -87,7 +88,7 @@ function PasswordReset() {
         const token = getTokenFromQuery();
         if(token) {
             setTokenLoaded(true);
-            axios.post('http://localhost:3001/passwordReset/verifyKey', { token })
+            axios.post(apiURL + '/passwordReset/verifyKey', { token })
                 .then(({ data }) => {
                     setUserId(data.data.id);
                     console.log(userId);

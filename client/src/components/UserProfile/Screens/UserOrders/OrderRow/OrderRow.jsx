@@ -14,6 +14,8 @@ import axios from 'axios'
 
 export default function OrderRow( { order, openOrder, setOpenOrder }) {
 
+    const apiURL = process.env.REACT_APP_API_URL
+
     const classes = useStyles();
 
     const [open, setOpen] = useState(false);
@@ -22,7 +24,7 @@ export default function OrderRow( { order, openOrder, setOpenOrder }) {
     async function handleOrderClick(e) {
         if(!open) {
             const jwt = localStorage.getItem('jwt')
-            const response = await axios.post("http://localhost:3001/orders/products", { order }, { headers: { 'Authorization': jwt }} )
+            const response = await axios.post(apiURL + "/orders/products", { order }, { headers: { 'Authorization': jwt }} )
             const orderDetailedData = response.data.data.orderData
             setOpenOrder(order.id)
             orderDetailedData && setProductsData(orderDetailedData)

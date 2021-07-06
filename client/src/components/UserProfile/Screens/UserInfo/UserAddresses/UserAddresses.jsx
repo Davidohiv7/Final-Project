@@ -10,12 +10,14 @@ import axios from 'axios'
 
 export default function UserAddresses( { addresses, setUserAddresses } ) {
 
+    const apiURL = process.env.REACT_APP_API_URL
+
     const classes = useStyles();
 
     async function handleDelete(address) {
         const jwt = localStorage.getItem('jwt')
         try {
-            const response = await axios.put("http://localhost:3001/shippingaddress/delete", { address }, { headers: { 'Authorization': jwt }} )
+            const response = await axios.put(apiURL + "/shippingaddress/delete", { address }, { headers: { 'Authorization': jwt }} )
             const userAddresses = response.data.data.userAddresses
             return setUserAddresses(userAddresses)
         } catch (error) {

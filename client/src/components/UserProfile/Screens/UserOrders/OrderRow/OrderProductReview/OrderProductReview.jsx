@@ -17,6 +17,8 @@ import { getAllProducts } from '../../../../../../actions/home/home_actions';
 
 export default function OrderProductReview( { productData,  order, setProductsData, setProductReviewModalState }) {
 
+    const apiURL = process.env.REACT_APP_API_URL
+
     const classes = useStyles();
 
     const dispatch = useDispatch();
@@ -57,10 +59,10 @@ export default function OrderProductReview( { productData,  order, setProductsDa
                 review
             }
             const jwt = localStorage.getItem('jwt')
-            const response = await axios.post("http://localhost:3001/reviews/add", {...requestData }, { headers: { 'Authorization': jwt }} )
+            const response = await axios.post(apiURL + "/reviews/add", {...requestData }, { headers: { 'Authorization': jwt }} )
             const data = response.data.data
             if(data.isNew) {
-                const responseUpdate = await axios.post("http://localhost:3001/orders/products", { order }, { headers: { 'Authorization': jwt }} )
+                const responseUpdate = await axios.post(apiURL + "/orders/products", { order }, { headers: { 'Authorization': jwt }} )
                 const orderDetailedData = responseUpdate.data.data.orderData
                 orderDetailedData && setProductsData(orderDetailedData)
                 dispatch(getAllProducts())

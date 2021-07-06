@@ -13,6 +13,7 @@ import axios from 'axios'
 
 export default function  CustomerInformation({activeStep, setActiveStep }) {
 
+    const apiURL = process.env.REACT_APP_API_URL
     const classes = useStyles();
     const dispatch = useDispatch();
 
@@ -38,7 +39,7 @@ export default function  CustomerInformation({activeStep, setActiveStep }) {
         const getUserAddresses = async () => {
             const jwt = localStorage.getItem('jwt')
             try {
-                const response = await axios.get("http://localhost:3001/shippingaddress/", { headers: { 'Authorization': jwt }} )
+                const response = await axios.get(apiURL + "/shippingaddress/", { headers: { 'Authorization': jwt }} )
                 const userAddresses = response.data.data.userAddresses
                 return setSavedAddresses(userAddresses)
             } catch (error) {

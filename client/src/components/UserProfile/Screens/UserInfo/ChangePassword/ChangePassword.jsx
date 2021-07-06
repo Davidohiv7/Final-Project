@@ -12,6 +12,8 @@ import axios from 'axios'
 
 export default function ChangePassword( { handleCloseModal } ) {
 
+    const apiURL = process.env.REACT_APP_API_URL
+
     const classes = useStyles();
 
     const [changePasswordInput, setChangePasswordInput] = useState({
@@ -41,7 +43,7 @@ export default function ChangePassword( { handleCloseModal } ) {
         if(Object.keys(inputErrors).length === 0) {
             const jwt = localStorage.getItem('jwt')
             try {
-                const response = await axios.post("http://localhost:3001/user/change_password", { passwords: {...changePasswordInput} }, { headers: { 'Authorization': jwt }} )
+                const response = await axios.post(apiURL + "/user/change_password", { passwords: {...changePasswordInput} }, { headers: { 'Authorization': jwt }} )
                 const data = response.data.data
                 if(data.success) {
                     setUpdateMessage(data.message)

@@ -10,6 +10,8 @@ import { setGoogleUserNewCart, getGoogleUserCart, getUserData } from '../../acti
 
 export default function GoogleAuth() {
 
+    const apiURL = process.env.REACT_APP_API_URL
+
     let history = useHistory();
 
     let cookies = new Cookies()
@@ -19,7 +21,7 @@ export default function GoogleAuth() {
     const [errorSignInSnackbar, setErrorSignInSnackbar] = useState(false);
 
     const handleGoogleLogIn = () => {
-        const googleAuthURL = 'http://localhost:3001/googleAuth/signin'
+        const googleAuthURL = apiURL + '/googleAuth/signin'
         const newWindow = window.open(googleAuthURL, 'blank','width=500,height=600')
 
         if(newWindow) {

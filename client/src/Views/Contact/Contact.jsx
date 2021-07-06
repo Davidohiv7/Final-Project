@@ -10,6 +10,9 @@ import { messageValidation, resetMessage } from '../../assets/utils/contactValid
 import axios from 'axios'
 
 const Contact = () => {
+
+    const apiURL = process.env.REACT_APP_API_URL
+
     const classes = useStyles();
 
     const [formInputs, setFormInputs] = useState({
@@ -35,7 +38,7 @@ const Contact = () => {
         e.preventDefault()
         const inputErrors = messageValidation(formInputs)
         if (Object.keys(inputErrors).length === 0) {
-            axios.post("http://localhost:3001/reviews/message", { ...formInputs })
+            axios.post(apiURL + "/reviews/message", { ...formInputs })
             return setFormInputs(resetMessage)
         }
         setErrorsArray(Object.values(inputErrors).reduce((acc, v) => [...acc, ...v], []))

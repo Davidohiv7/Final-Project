@@ -150,7 +150,7 @@ exports.mailInStock = function (name, lastName, productName, productImage) {
                     </div>
                     
                     <div class='link-container'>
-                        <a class='link' href="http://localhost:3000/">
+                        <a class='link' href="${FRONT_URL}/">
                             <span>Check products</span>
                         </a>
                     </div>
@@ -300,7 +300,7 @@ exports.mailSignUp = function (name, lastName, email) {
                     
     
                     <div class='link-container'>
-                        <a class='link' href="http://localhost:3000/">
+                        <a class='link' href="${FRONT_URL}/">
                             <span>Check catalogue</span>
                         </a>
                     </div>
@@ -556,7 +556,7 @@ exports.mailBuy = function (name, order, cart) {
     
                     </div>
                     
-                    <a class='link' href="http://localhost:3000/">
+                    <a class='link' href="${FRONT_URL}/">
                         <span>Home</span>
                     </a>
     
@@ -750,7 +750,7 @@ exports.mailDispatched = function (name, lastName, order) {
                         </div>
         
                         <div class='link-container'>
-                            <a class='link' href="http://localhost:3000/user">
+                            <a class='link' href="${FRONT_URL}/user">
                                 <span>Check orders</span>
                             </a>
                         </div>
@@ -918,7 +918,7 @@ exports.twoFAEmailMail = function (name, token) {
                     </div>
     
                     <div class='link-container'>
-                      <a class='link' href="http://localhost:3000/contact">
+                      <a class='link' href="${FRONT_URL}/contact">
                         <span>Contact us!</span>
                       </a>
                     </div>
@@ -1123,7 +1123,7 @@ exports.mailResetPass = function (name, lastName, email, token) {
                         <span>${name}, click the following button to change your password:</span>
                     </div>
     
-                    <a class='reset-button' href="http://localhost:3000/passwordReset?token=${token}">
+                    <a class='reset-button' href="${FRONT_URL}/passwordReset?token=${token}">
                       <span>Reset password</span>
                     </a>
     
@@ -1134,7 +1134,7 @@ exports.mailResetPass = function (name, lastName, email, token) {
                     </div>
     
                     <div class='link-container'>
-                      <a class='link' href="http://localhost:3000/contact">
+                      <a class='link' href="${FRONT_URL}/contact">
                         <span>Contact us!</span>
                       </a>
                     </div>
@@ -1280,7 +1280,7 @@ exports.changePasswordMail = function (name) {
                     </div>
     
                     <div class='link-container'>
-                      <a class='link' href="http://localhost:3000/contact">
+                      <a class='link' href="${FRONT_URL}/contact">
                         <span>Contact us!</span>
                       </a>
                     </div>

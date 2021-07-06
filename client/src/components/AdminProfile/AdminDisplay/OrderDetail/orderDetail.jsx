@@ -27,9 +27,13 @@ export default function OrderDetail({editOrder, setDisplayStatus }) {
     return (
         <Box className={classes.root}>
             <Box className= {classes.buttonContainer}>
-                    <Button onClick={()=> setDisplayStatus('orders')} className = {classes.cancel}>Cancel</Button>
+                <Button display='flex' onClick={()=> setDisplayStatus('orders')} className = {classes.cancel}>Back</Button>
+                {
+                    editOrder.status === 'cancelled' ?
+                    <Typography color='primary' variant="subtitle2" >The order is cancelled, and can`t be modified</Typography> :
                     <Button onClick={handleSubmit} className = {classes.button}>Save</Button>
-                </Box>
+                }
+            </Box>
             <Paper>
                 <Typography>Order ID</Typography>
                 <Typography>{editOrder.id}</Typography>
@@ -48,6 +52,7 @@ export default function OrderDetail({editOrder, setDisplayStatus }) {
                     </Box>
                 </Box>
                 <Autocomplete
+                    disabled={editOrder.status === 'cancelled'}
                     className = {classes.status}
                     id= 'statusSelector'
                     options={['Created', 'Paid', 'Progress', 'Cancelled', 'Completed']}

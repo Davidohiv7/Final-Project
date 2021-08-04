@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+              font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+              text-align: center;
+            }
+            .container {
+              position: relative;
+              margin: -10px auto;
+              background-color: #EEEBDD;
+              border-radius: 0.5rem;
+              width: 95%;
+              text-align: center;
+              max-width: 800px;
+              padding: 1rem;
+            }
+            .page {
+              position:relative;
+              transform: translateX(0%);
+              text-align: center; 
+              background-color: #fff;
+              border-radius: 0.5rem;
+              margin: 1rem;
+              width: 90%;
+              height: 90%;
+              box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+              padding: 1rem;
+            }
+            .titleContainer {
+              display: block;
+              margin-top: 1.5rem;
+              text-align: center;
+              margin-top: 1rem;
+            }
+
+            .titleContainer > span{
+              display: inline-block;
+              color: #FA314A;
+              font-size: 2rem;
+              margin-top: 1rem;
+              vertical-align: top;
+            }
+            .titleContainer img{
+              height: 50px;
+              width: 50px;
+            }
+
+            .dispatch-icon {
+                width: 250px;
+                margin: 1.5rem;
+            }
+
+            .dispatch-title {
+              display: block;
+              width: 100%;
+              text-align: center;
+              margin-top: 1.5rem;
+              margin-bottom: 1.5rem;
+            }
+
+            .dispatch-title span{
+              font-size: 2rem;
+              text-align: center;
+              padding: 0.7rem;
+            }
+
+            .content {
+                text-decoration: none;
+                display: inline-block;
+                width: 90%;
+                text-align: justify;
+                font-size: 1.2rem;
+                margin-top: 1rem;
+            }
+
+            .content2 {
+                text-decoration: none;
+                display: inline-block;
+                width: 90%;
+                text-align: justify;
+                font-size: 1.2rem;
+                margin-top: 1rem;
+            }
+
+            .address{
+                width: 100%;
+                text-align: left;
+            }
+
+            .address ul{
+                list-style: none;
+                margin-left: 4rem;
+                padding-left: 0;
+                font-size: 1.2rem;
+            }
+
+            .address li{
+                padding-bottom: 0.5rem;
+            }
+
+            li:before{
+                content: "-";
+                margin-right: 1rem;
+            }
+
+            .link-container {
+                margin-top: 3rem;
+                margin-bottom: 1rem;
+            }
+
+            .link {
+                text-decoration: none;
+                background-color: #FA314A;
+                border-radius: 0.5rem;
+                box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+                padding: 0.7rem;
+                margin: 0rem 0rem 2rem 0rem;
+            }
+
+            .link:hover {
+                background-color: #da0019;
+                box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.8) 0px 1px 3px -1px;
+            }
+
+            .link span{
+                color: #fff;
+                font-size: 18px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <div class='page'>
+
+                <div class='titleContainer'>
+                    <img class="celebration-icon" src="https://img.icons8.com/pastel-glyph/2x/fa314a/onion--v2.png" alt="celebration-icon">
+                    <span>Onion food</span>
+                </div>
+
+                <img class="dispatch-icon" src="https://360deliveryexpress.com/wp-content/uploads/2020/08/360-delivery-express-logistica-transporte-lima-9829-1024x894.png" alt="dispatch-icon">
+
+                
+                <div class='dispatch-title'>
+                    <span>${name}, your order ${order.id} has been dispatched!</span>
+                </div>
+
+                <div class='content'>
+                    <span >
+                        The order will arrive as soon as possible to the destination you provided:
+                     </span>
+                </div>
+
+                <div class='address'>
+                    <ul>
+                        <li>
+                            Address: ${order.street}
+                        </li>
+                        <li>
+                            Neighborhood: ${order.neighborhood ? order.neighborhood : 'no provided'}
+                        </li>
+                        <li>
+                            City: ${order.city}
+                        </li>
+                        <li>
+                            Zip: ${order.zip}
+                        </li>
+                    </ul>
+                </div>
+
+                <div class='content2'>
+                    <span>
+                        You can check the order details and review the products at your User's console, just click the button!
+                     </span>
+                </div>
+
+                <div class='link-container'>
+                    <a class='link' href="http://localhost:3000/user">
+                        <span>Check orders</span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </body>
+</html>

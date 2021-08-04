@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+                text-align: center;
+            }
+            .container {
+                position: relative;
+                margin: -10px auto;
+                background-color: #EEEBDD;
+                border-radius: 0.5rem;
+                width: 95%;
+                text-align: center;
+                max-width: 800px;
+                padding: 1rem;
+            }
+            .page {
+                position:relative;
+                transform: translateX(0%);
+                text-align: center; 
+                background-color: #fff;
+                border-radius: 0.5rem;
+                margin: 1rem;
+                width: 90%;
+                height: 90%;
+                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                padding: 1rem;
+            }
+            .titleContainer {
+                display: block;
+                margin-top: 1.5rem;
+                text-align: center;
+                margin-top: 1rem;
+            }
+
+            .titleContainer > span{
+                display: inline-block;
+                color: #FA314A;
+                font-size: 2rem;
+                margin-top: 1rem;
+                vertical-align: top;
+            }
+            .titleContainer img{
+                height: 50px;
+                width: 50px;
+            }
+
+            .product-icon-container {
+                position:relative;
+                width: 100%;
+                text-align: center;
+            }
+
+            .product-icon {
+                display: inline-block;
+                margin-top: 1rem;
+                width: 200px;
+                height: 200px;
+                margin: 1.5rem;
+                border-radius: 50%;
+                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                background-image: url(${productImage});
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center center;
+            }
+
+            .product-title {
+                display: block;
+                width: 100%;
+                text-align: center;
+                margin-top: 2rem;
+                margin-bottom: 3rem;
+            }
+
+            .product-title span{
+                font-size: 2rem;
+                font-weight: 600;
+                text-align: center;
+                padding: 0.7rem;
+            }
+
+            .content {
+                margin-left: 1rem;
+                text-decoration: none;
+                display: inline-block;
+                width: 90%;
+                text-align: justify;
+                font-size: 1.2rem;
+            }
+
+            .content span{
+                font-size: 1.3rem;
+            }
+
+            .link-container {
+                margin-top: 3rem;
+                margin-bottom: 2rem;
+            }
+
+            .link {
+                text-decoration: none;
+                background-color: #FA314A;
+                border-radius: 0.5rem;
+                box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+                padding: 0.7rem;
+                margin: 0rem 0rem 2rem 0rem;
+            }
+
+            .link:hover {
+                background-color: #da0019;
+                box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.8) 0px 1px 3px -1px;
+            }
+
+            .link span{
+                color: #fff;
+                font-size: 18px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <div class='page'>
+
+                <div class='titleContainer'>
+                    <img class="celebration-icon" src="https://img.icons8.com/pastel-glyph/2x/fa314a/onion--v2.png" alt="celebration-icon">
+                    <span>Onion food</span>
+                </div>
+                
+                <div class="product-icon-container">
+                    <div class="product-icon"></div>
+                </div>
+
+                
+                <div class='product-title'>
+                    <span>${name}, we have good news!</span>
+                </div>
+
+                <div class='content'>
+                    <span class='content'>
+                        The product <strong>${productName}</strong>, that you previously added to your wishlist, <strong>has stock again</strong>. 
+                        Go to our catalogue or your wishlit and buy it, you will no regret it!.
+                    </span>
+                </div>
+                
+                <div class='link-container'>
+                    <a class='link' href="http://localhost:3000/">
+                        <span>Check products</span>
+                    </a>
+                </div>
+            
+            </div>
+        </div>
+    </body>
+</html>

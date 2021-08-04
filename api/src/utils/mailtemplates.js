@@ -1,3 +1,5 @@
+const { FRONT_URL } = process.env
+
 exports.mailInStock = function (name, lastName, productName, productImage) {
   return (
     `
